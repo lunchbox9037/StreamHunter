@@ -14,7 +14,7 @@ struct TrendingMedia: Codable {
 struct Media: Codable {
     let title: String?
     let name: String?
-    let mediaType: String
+    let mediaType: String?
     let overview: String?
     let releaseDate: String?
     let firstAirDate: String?

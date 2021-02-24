@@ -13,8 +13,10 @@ class MediaDetailViewController: UIViewController {
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
+    let recommendationsSection: [Int] = [2]
     
     var providers: [Provider] = []
+    var recommendations: [Media] = []
     
     // MARK: - Views
     lazy var dismissViewButton: UIButton = {
@@ -35,6 +37,7 @@ class MediaDetailViewController: UIViewController {
         //register new cells
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
+        collectionView.register(RecommendationsCollectionViewCell.self, forCellWithReuseIdentifier: "recommendationCell")
         collectionView.register(TrendingSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -50,6 +53,7 @@ class MediaDetailViewController: UIViewController {
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
+        fetchRecommendations()
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
         
@@ -71,8 +75,10 @@ class MediaDetailViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             if self.selectedMediaSection.contains(section) {
                 return LayoutBuilder.buildMediaDetailSection()
-            } else {
+            } else if self.whereToWatchSection.contains(section) {
                 return LayoutBuilder.buildWhereToWatchIconSection()
+            } else {
+                return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
             }
         }
         return layout
@@ -80,12 +86,11 @@ class MediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: media.mediaType) { [weak self] (result) in
+        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: media.mediaType ?? "movie") { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
                     self?.providers = location.streaming
-//                    self?.deepLink = location.deepLink
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):
@@ -96,6 +101,22 @@ class MediaDetailViewController: UIViewController {
         }
     }//end func
     
+    func fetchRecommendations() {
+        guard let media = selectedMedia else {return}
+        RecommendationsController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let recommendations):
+                    self?.recommendations = recommendations.results
+                    self?.collectionView.reloadData()
+                    print("got providers")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
@@ -105,16 +126,18 @@ class MediaDetailViewController: UIViewController {
 // MARK: - Extensions
 extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        2
+        3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if selectedMediaSection.contains(section) {
             return 1
         }
-        
         if whereToWatchSection.contains(section) {
             return providers.count
+        }
+        if recommendationsSection.contains(section) {
+            return recommendations.count
         }
         return 0
     }
@@ -122,15 +145,21 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrendingSectionHeader else {return UICollectionReusableView()}
         if selectedMediaSection.contains(indexPath.section) {
-            if selectedMedia?.mediaType == "movie" {
-                header.setup(label: self.selectedMedia?.title ?? "Unknown")
-            } else {
-                header.setup(label: self.selectedMedia?.name ?? "Unknown")
-            }
+//            if selectedMedia?.mediaType == "movie" {
+//                header.setup(label: self.selectedMedia?.title ?? "Unknown")
+//            } else {
+//                header.setup(label: self.selectedMedia?.name ?? "Unknown")
+//            }
+            header.setup(label: (self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix")
+
         }
         
         if whereToWatchSection.contains(indexPath.section) {
             header.setup(label: "Stream")
+        }
+        
+        if recommendationsSection.contains(indexPath.section) {
+            header.setup(label: "Similar")
         }
         
         return header
@@ -149,6 +178,21 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             cell.setup(provider: providers[indexPath.row])
             return cell
         }
+        
+        if recommendationsSection.contains(indexPath.section) {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendationCell", for: indexPath) as? RecommendationsCollectionViewCell else {return UICollectionViewCell()}
+            cell.setup(media: recommendations[indexPath.row])
+            return cell
+        }
+        
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if recommendationsSection.contains(indexPath.section) {
+            self.selectedMedia = recommendations[indexPath.row]
+            setupViews()
+//            self.collectionView.reloadData()
+        }
     }
 }//end extension
