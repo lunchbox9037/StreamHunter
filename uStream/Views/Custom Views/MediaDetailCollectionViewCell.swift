@@ -11,7 +11,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemRed
+//        view.backgroundColor = UIColor.systemFi
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 20
         view.layer.shadowOpacity = 0.3
@@ -65,7 +65,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
-        self.contentView.backgroundColor = .red
         self.container.addSubview(self.backdropImageView)
         self.container.addSubview(self.addToListButton)
         self.container.addSubview(self.synopsisLabel)
@@ -82,7 +81,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: 0)
+            self.backdropImageView.heightAnchor.constraint(equalToConstant: 200)
 
         ])
         
@@ -103,6 +102,8 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.overviewLabel.topAnchor.constraint(equalTo: self.synopsisLabel.bottomAnchor, constant: 10),
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
+            self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
+
 //            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
     }
