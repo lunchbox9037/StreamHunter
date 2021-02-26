@@ -1,13 +1,13 @@
 //
-//  RecommendationsCollectionViewCell.swift
+//  TrendingMediaCollectionViewCell.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/24/21.
+//  Created by stanley phillips on 2/18/21.
 //
 
 import UIKit
 
-public class RecommendationsCollectionViewCell: UICollectionViewCell {
+public class TrendingMediaCollectionViewCell: UICollectionViewCell {
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -29,14 +29,14 @@ public class RecommendationsCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+//    var subtitleLabel: UILabel = {
+//        let label: UILabel = UILabel()
+//        label.text = "Some subtitle"
+//        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
+//        label.numberOfLines = 0
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        return label
+//    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,16 +68,10 @@ public class RecommendationsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(media: Media) {
-        RecommendationsController.fetchPosterFor(media: media) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let image):
-                    self?.posterImageView.image = image
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
     }
+    
+    
 }//end class

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrendingViewController: UIViewController {
+class DiscoverViewController: UIViewController {
     // MARK: - Properties
     let trendingMovieSection: [Int] = [0]
     let trendingTVSection: [Int] = [1]
@@ -19,11 +19,6 @@ class TrendingViewController: UIViewController {
     let mediaTypes: [String] = ["movie", "tv"]
     
     // MARK: - Views
-//    lazy var searchBar: UISearchBar = {
-//        let view: UISearchBar = UISearchBar()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
     lazy var topBar: UIView = {
         let view: UIView = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,11 +45,14 @@ class TrendingViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.makeLayout())
         collectionView.backgroundColor = UIColor.systemFill
+        collectionView.isPrefetchingEnabled = true
+//        collectionView.prefetchDataSource = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "mediaCell")
+        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
+        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
-        collectionView.register(TrendingSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -62,24 +60,18 @@ class TrendingViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchTrendingMedia()
-        fetchTrendingPeople()
         setupViews()
     }
     
     // MARK: - Methods
     func setupViews() {
-//        self.view.addSubview(self.searchBar)
+        fetchTrendingMedia()
+        fetchTrendingPeople()
+        
         self.view.addSubview(self.topBar)
         self.topBar.addSubview(self.searchButton)
         self.topBar.addSubview(self.logoImageView)
         self.view.addSubview(self.collectionView)
-        
-//        NSLayoutConstraint.activate([
-//            self.searchBar.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
-//            self.searchBar.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-//            self.searchBar.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-//        ])
         
         NSLayoutConstraint.activate([
             self.topBar.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
@@ -111,32 +103,38 @@ class TrendingViewController: UIViewController {
     }//end func
     
     func fetchTrendingMedia() {
-        for type in mediaTypes {
-            TrendingMediaController.fetchTrendingResultsFor(mediaType: type) { [weak self] (result) in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let trending):
-                        if type == "movie" {
-                            self?.trendingMovies = trending.results
-                        } else if type == "tv" {
-                            self?.trendingTV = trending.results
-                        }
-                        self?.collectionView.reloadData()
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
+        TrendingMediaController.fetchTrendingResultsFor(mediaType: "movie") { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let trending):
+                    self.trendingMovies = trending.results
+                    self.collectionView.reloadSections(IndexSet(integer: 0))
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+        TrendingMediaController.fetchTrendingResultsFor(mediaType: "tv") { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let trending):
+                    self.trendingTV = trending.results
+                    self.collectionView.reloadSections(IndexSet(integer: 1))
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
             }
         }
     }//end func
     
     func fetchTrendingPeople() {
-        TrendingPeopleController.fetchTrendingPeople() { [weak self] (result) in
+        TrendingPeopleController.fetchTrendingPeople() { (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let trending):
-                    self?.trendingPeople = trending.results
-                    self?.collectionView.reloadData()
+                    self.trendingPeople = trending
+                    self.collectionView.reloadSections(IndexSet(integer: 2))
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -145,8 +143,11 @@ class TrendingViewController: UIViewController {
     }//end func
     
     func makeLayout() -> UICollectionViewLayout {
+        print("called")
         let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            if self.trendingMovieSection.contains(section) || self.trendingTVSection.contains(section) {
+            if self.trendingMovieSection.contains(section) {
+                return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
+            } else if self.trendingTVSection.contains(section) {
                 return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
             } else {
                 return LayoutBuilder.buildPeopleIconLayout()
@@ -163,24 +164,24 @@ class TrendingViewController: UIViewController {
 }//end class
 
 // MARK: - Extentions
-extension TrendingViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrendingSectionHeader else {return UICollectionReusableView()}
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
         
         if trendingMovieSection.contains(indexPath.section) {
-            header.setup(label: "Trending Movies")
+            header.setup(label: "#TrendingMovies")
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            header.setup(label: "Trending TV")
+            header.setup(label: "#TrendingTV")
         }
         
         if trendingPeopleSection.contains(indexPath.section) {
-            header.setup(label: "Trending People")
+            header.setup(label: "#TrendingPeople")
         }
         
         return header
@@ -196,32 +197,65 @@ extension TrendingViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
         if trendingPeopleSection.contains(section) {
-            //change to people
             return trendingPeople.count
         }
         return 0
     }//end func
     
+//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+//        for indexPath in indexPaths {
+//            if trendingMovieSection.contains(indexPath.section) {
+//                print("fetchedMovie")
+//
+//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
+//            }
+//            if trendingTVSection.contains(indexPath.section) {
+//                print("fetchedTv")
+//
+//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
+//            }
+//            if trendingPeopleSection.contains(indexPath.section) {
+//                print("fetchedPEop")
+//
+//                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
+//            }
+//        }
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if trendingMovieSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as? TrendingMediaCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: trendingMovies[indexPath.row])
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            else {return UICollectionViewCell()}
+            self.setupCell(cell: cell, media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaCell", for: indexPath) as? TrendingMediaCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: trendingTV[indexPath.row])
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? TrendingMediaCollectionViewCell else {return UICollectionViewCell()}
+            self.setupCell(cell: cell, media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingPeopleSection.contains(indexPath.section) {
-            //cahnge to people cells
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "peopleCell", for: indexPath) as? TrendingPeopleCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(person: trendingPeople[indexPath.row])
+            cell.setupCell(person: trendingPeople[indexPath.row])
             return cell
         }
         return UICollectionViewCell()
+    }//end func
+    
+    func setupCell(cell: TrendingMediaCollectionViewCell, media: Media, indexPath: IndexPath) {
+        TrendingMediaController.fetchPosterFor(media: media) { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let image):
+                    cell.posterImageView.image = image
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -233,3 +267,45 @@ extension TrendingViewController: UICollectionViewDelegate, UICollectionViewData
         }
     }
 }//end extension
+
+//extension TrendingViewController: UICollectionViewDataSourcePrefetching {
+//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+//        print("fetched")
+//        for indexPath in indexPaths {
+//            if trendingMovieSection.contains(indexPath.section) {
+//                print("fetched")
+//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
+//            }
+//            if trendingTVSection.contains(indexPath.section) {
+//                print("fetched")
+//
+//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
+//            }
+//            if trendingPeopleSection.contains(indexPath.section) {
+//                print("fetched")
+//
+//                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
+//            }
+//        }
+//
+//        var media: Media? = nil
+//        var person: Person? = nil
+//        switch indexPath.section {
+//        case 0:
+//            media = trendingMovies[indexPath.row]
+//        case 1:
+//            media = trendingTV[indexPath.row]
+//        case 2:
+//            person = trendingPeople[indexPath.row]
+//        default:
+//            break
+//        }
+//        if let unwrappedMedia = media {
+//            print("prefetched")
+//            TrendingMediaController.fetchPosterFor(media: unwrappedMedia) { (_) in }
+//        } else if let unwrappedPerson = person {
+//            print("wemade it")
+//            TrendingPeopleController.fetchPosterFor(person: unwrappedPerson) { (_) in }
+//        }
+//    }
+//}

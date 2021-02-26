@@ -16,7 +16,7 @@ struct Locale: Codable {
     let location: Option
     
     enum CodingKeys: String, CodingKey {
-        case location = "PE"
+        case location = "US"
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  Recommendations.swift
+//  Similar.swift
 //  uStream
 //
 //  Created by stanley phillips on 2/24/21.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Recommendations: Codable {
+struct Similar: Codable {
     let results: [Media]
 }

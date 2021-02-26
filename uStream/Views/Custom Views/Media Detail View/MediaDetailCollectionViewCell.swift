@@ -82,7 +82,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
             self.backdropImageView.heightAnchor.constraint(equalToConstant: 200)
-
         ])
         
         NSLayoutConstraint.activate([

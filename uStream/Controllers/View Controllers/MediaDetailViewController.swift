@@ -37,8 +37,8 @@ class MediaDetailViewController: UIViewController {
         //register new cells
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
-        collectionView.register(RecommendationsCollectionViewCell.self, forCellWithReuseIdentifier: "recommendationCell")
-        collectionView.register(TrendingSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "recommendationCell")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -94,7 +94,6 @@ class MediaDetailViewController: UIViewController {
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):
-
                     print(error.localizedDescription)
                 }
             }
@@ -103,7 +102,7 @@ class MediaDetailViewController: UIViewController {
     
     func fetchRecommendations() {
         guard let media = selectedMedia else {return}
-        RecommendationsController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
+        SimilarController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let recommendations):
@@ -143,15 +142,9 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrendingSectionHeader else {return UICollectionReusableView()}
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
         if selectedMediaSection.contains(indexPath.section) {
-//            if selectedMedia?.mediaType == "movie" {
-//                header.setup(label: self.selectedMedia?.title ?? "Unknown")
-//            } else {
-//                header.setup(label: self.selectedMedia?.name ?? "Unknown")
-//            }
             header.setup(label: (self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix")
-
         }
         
         if whereToWatchSection.contains(indexPath.section) {
@@ -180,7 +173,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         if recommendationsSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendationCell", for: indexPath) as? RecommendationsCollectionViewCell else {return UICollectionViewCell()}
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendationCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
             cell.setup(media: recommendations[indexPath.row])
             return cell
         }

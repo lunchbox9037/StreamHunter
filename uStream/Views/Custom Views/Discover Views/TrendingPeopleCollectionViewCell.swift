@@ -48,14 +48,14 @@ public class TrendingPeopleCollectionViewCell: UICollectionViewCell {
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.container.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
             self.container.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            self.container.rightAnchor.constraint(equalTo: self.contentView.rightAnchor)
+            self.container.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
         ])
         
         NSLayoutConstraint.activate([
             self.profileImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.profileImageView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: 0),
             self.profileImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
-            self.profileImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
+            self.profileImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
         
         NSLayoutConstraint.activate([
@@ -68,14 +68,17 @@ public class TrendingPeopleCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(person: Person) {
+    public override func prepareForReuse() {
+        profileImageView.image = nil
+    }
+    
+    func setupCell(person: Person) {
         TrendingPeopleController.fetchPosterFor(person: person) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
                     self?.profileImageView.image = image
                 case .failure(let error):
-                    self?.profileImageView.image = UIImage(systemName: "image")
                     print(error.localizedDescription)
                 }
             }

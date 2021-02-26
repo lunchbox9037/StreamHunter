@@ -1,13 +1,13 @@
 //
-//  TrendingMediaCollectionViewCell.swift
+//  RecommendationsCollectionViewCell.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/18/21.
+//  Created by stanley phillips on 2/24/21.
 //
 
 import UIKit
 
-public class TrendingMediaCollectionViewCell: UICollectionViewCell {
+public class SimilarCollectionViewCell: UICollectionViewCell {
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -69,7 +69,7 @@ public class TrendingMediaCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(media: Media) {
-        TrendingMediaController.fetchPosterFor(media: media) { [weak self] (result) in
+        SimilarController.fetchPosterFor(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):

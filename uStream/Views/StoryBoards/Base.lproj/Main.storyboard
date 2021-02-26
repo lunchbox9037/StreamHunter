@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V9k-a3-osQ">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,7 +12,7 @@
             <objects>
                 <viewController id="wES-rK-jCZ" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCp-bv-yUD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="snY-GV-rhB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -27,9 +26,9 @@
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
             <objects>
-                <viewController id="x1o-cC-BKC" customClass="TrendingViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tUK-bx-tu8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="17P-6S-lBI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
