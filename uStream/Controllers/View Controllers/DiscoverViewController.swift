@@ -8,6 +8,9 @@
 import UIKit
 
 class DiscoverViewController: UIViewController {
+    // MARK: - Outlets
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     // MARK: - Properties
     let trendingMovieSection: [Int] = [0]
     let trendingTVSection: [Int] = [1]
@@ -17,112 +20,50 @@ class DiscoverViewController: UIViewController {
     var trendingTV: [Media] = []
     var trendingPeople: [Person] = []
     let mediaTypes: [String] = ["movie", "tv"]
+
     
-    // MARK: - Views
-    lazy var topBar: UIView = {
-        let view: UIView = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.systemFill
-        return view
-    }()
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchTrendingMedia()
+//        fetchTrendingPeople()
+        setupCollectionView()
+    }
     
-    lazy var searchButton: UIButton = {
-        let button: UIButton = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        button.contentMode = .scaleAspectFill
-        button.backgroundColor = UIColor.red
-        return button
-    }()
-    
-    lazy var logoImageView: UIImageView = {
-        let imageView: UIImageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.blue
-        return imageView
-    }()
-    
-    lazy var collectionView: UICollectionView = {
-        let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.makeLayout())
+    // MARK: - Methods(
+    func setupCollectionView() {
+        collectionView.collectionViewLayout = makeLayout()
         collectionView.backgroundColor = UIColor.systemFill
-        collectionView.isPrefetchingEnabled = true
-//        collectionView.prefetchDataSource = self
+
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isPrefetchingEnabled = true
+
+//        collectionView.prefetchDataSource = self
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-    }()
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
     }
     
-    // MARK: - Methods
-    func setupViews() {
-        fetchTrendingMedia()
-        fetchTrendingPeople()
-        
-        self.view.addSubview(self.topBar)
-        self.topBar.addSubview(self.searchButton)
-        self.topBar.addSubview(self.logoImageView)
-        self.view.addSubview(self.collectionView)
-        
-        NSLayoutConstraint.activate([
-            self.topBar.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor),
-            self.topBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-            self.topBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
-            self.topBar.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.08)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.logoImageView.centerYAnchor.constraint(equalTo: topBar.centerYAnchor),
-            self.logoImageView.leadingAnchor.constraint(equalTo: topBar.leadingAnchor, constant: 0),
-            self.logoImageView.heightAnchor.constraint(equalTo: topBar.heightAnchor, multiplier: 1),
-            self.logoImageView.widthAnchor.constraint(equalTo: topBar.widthAnchor, multiplier: 0.7)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.searchButton.centerYAnchor.constraint(equalTo: topBar.centerYAnchor),
-            self.searchButton.trailingAnchor.constraint(equalTo: topBar.trailingAnchor, constant: 0),
-            self.searchButton.heightAnchor.constraint(equalTo: topBar.heightAnchor, multiplier: 1),
-            self.searchButton.widthAnchor.constraint(equalTo: topBar.widthAnchor, multiplier: 0.3)
-        ])
-        
-        NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.topBar.bottomAnchor, constant: 0),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
-        ])
-    }//end func
-    
     func fetchTrendingMedia() {
-        TrendingMediaController.fetchTrendingResultsFor(mediaType: "movie") { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let trending):
-                    self.trendingMovies = trending.results
-                    self.collectionView.reloadSections(IndexSet(integer: 0))
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
-        
-        TrendingMediaController.fetchTrendingResultsFor(mediaType: "tv") { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let trending):
-                    self.trendingTV = trending.results
-                    self.collectionView.reloadSections(IndexSet(integer: 1))
-                case .failure(let error):
-                    print(error.localizedDescription)
+        for mediaType in mediaTypes {
+            TrendingMediaController.fetchTrendingResultsFor(mediaType: mediaType) { (result) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let trending):
+                        if mediaType == self.mediaTypes[0] {
+                            self.trendingMovies = trending.results
+                            self.collectionView.reloadSections(IndexSet(integer: 0))
+                        }
+                        if mediaType == self.mediaTypes[1] {
+                            self.trendingTV = trending.results
+                            self.collectionView.reloadSections(IndexSet(integer: 1))
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
                 }
             }
         }
@@ -142,18 +83,17 @@ class DiscoverViewController: UIViewController {
         }
     }//end func
     
-    func makeLayout() -> UICollectionViewLayout {
-        print("called")
-        let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            if self.trendingMovieSection.contains(section) {
-                return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
-            } else if self.trendingTVSection.contains(section) {
-                return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
-            } else {
+    func makeLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            switch section {
+            case 0:
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            case 1:
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            default:
                 return LayoutBuilder.buildPeopleIconLayout()
             }
         }
-        return layout
     }//end func
     
     func presentDetailVC(media: Media) {
@@ -163,10 +103,10 @@ class DiscoverViewController: UIViewController {
     }
 }//end class
 
-// MARK: - Extentions
+// MARK: - Extensions
 extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -180,9 +120,9 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             header.setup(label: "#TrendingTV")
         }
         
-        if trendingPeopleSection.contains(indexPath.section) {
-            header.setup(label: "#TrendingPeople")
-        }
+//        if trendingPeopleSection.contains(indexPath.section) {
+//            header.setup(label: "#TrendingPeople")
+//        }
         
         return header
     }//end func
@@ -196,9 +136,9 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             return trendingTV.count
         }
         
-        if trendingPeopleSection.contains(section) {
-            return trendingPeople.count
-        }
+//        if trendingPeopleSection.contains(section) {
+//            return trendingPeople.count
+//        }
         return 0
     }//end func
     
@@ -227,6 +167,8 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if trendingMovieSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? TrendingMediaCollectionViewCell
             else {return UICollectionViewCell()}
+            print(self.collectionView.indexPath(for: cell) as Any)
+
             self.setupCell(cell: cell, media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }

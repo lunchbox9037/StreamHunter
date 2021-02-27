@@ -13,10 +13,10 @@ class MediaDetailViewController: UIViewController {
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
-    let recommendationsSection: [Int] = [2]
+    let similarSection: [Int] = [2]
     
     var providers: [Provider] = []
-    var recommendations: [Media] = []
+    var similar: [Media] = []
     
     // MARK: - Views
     lazy var dismissViewButton: UIButton = {
@@ -37,7 +37,7 @@ class MediaDetailViewController: UIViewController {
         //register new cells
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
-        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "recommendationCell")
+        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -59,7 +59,7 @@ class MediaDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12),
-            self.dismissViewButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
+            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
             self.dismissViewButton.heightAnchor.constraint(equalToConstant: 20)
         ])
         
@@ -78,7 +78,7 @@ class MediaDetailViewController: UIViewController {
             } else if self.whereToWatchSection.contains(section) {
                 return LayoutBuilder.buildWhereToWatchIconSection()
             } else {
-                return LayoutBuilder.buildMediaHorizontalScrollLayout(size: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35), heightDimension: .fractionalHeight(0.25)))
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
             }
         }
         return layout
@@ -105,8 +105,8 @@ class MediaDetailViewController: UIViewController {
         SimilarController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let recommendations):
-                    self?.recommendations = recommendations.results
+                case .success(let similar):
+                    self?.similar = similar.results
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):
@@ -135,8 +135,8 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         if whereToWatchSection.contains(section) {
             return providers.count
         }
-        if recommendationsSection.contains(section) {
-            return recommendations.count
+        if similarSection.contains(section) {
+            return similar.count
         }
         return 0
     }
@@ -151,7 +151,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             header.setup(label: "Stream")
         }
         
-        if recommendationsSection.contains(indexPath.section) {
+        if similarSection.contains(indexPath.section) {
             header.setup(label: "Similar")
         }
         
@@ -172,9 +172,9 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             return cell
         }
         
-        if recommendationsSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recommendationCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: recommendations[indexPath.row])
+        if similarSection.contains(indexPath.section) {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
+            cell.setup(media: similar[indexPath.row])
             return cell
         }
         
@@ -182,8 +182,8 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if recommendationsSection.contains(indexPath.section) {
-            self.selectedMedia = recommendations[indexPath.row]
+        if similarSection.contains(indexPath.section) {
+            self.selectedMedia = similar[indexPath.row]
             setupViews()
 //            self.collectionView.reloadData()
         }

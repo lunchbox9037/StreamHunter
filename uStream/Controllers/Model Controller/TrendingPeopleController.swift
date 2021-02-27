@@ -61,9 +61,10 @@ class TrendingPeopleController {
                 let trending = try JSONDecoder().decode(TrendingPeople.self, from: data)
                 var people: [Person] = []
                 
-                for person in trending.results {
-                    people.append(person)
-                }
+                people = trending.results.filter({ (person) -> Bool in
+                    return person.profilePath != nil
+                })
+                
                 return completion(.success(people))
             } catch {
                 completion(.failure(.thrownError(error)))
@@ -77,7 +78,6 @@ class TrendingPeopleController {
         let finalURL = imageBaseURL.appendingPathComponent(profilePath)
         
         if let image = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
-            print("cached")
             completion(.success(image))
         } else {
             URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
