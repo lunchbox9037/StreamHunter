@@ -94,7 +94,6 @@ class TrendingMediaController {
                 guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
                 //save the poster to the cache
                 imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
-                print("called api")
 
                 completion(.success(poster))
             }.resume()
