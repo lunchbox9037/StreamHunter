@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +22,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thn-9d-YLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="268" y="369"/>
+            <point key="canvasLocation" x="268" y="368.36581709145429"/>
         </scene>
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
@@ -47,7 +46,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9j5-Ti-xmn">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
                                 <connections>
-                                    <segue destination="HAd-Ji-E3U" kind="embed" id="yug-5b-bT5"/>
+                                    <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="yug-5b-bT5"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -91,53 +90,18 @@
             </objects>
             <point key="canvasLocation" x="-636" y="-149"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="LZy-Tt-Xe6">
+        <!--TopBar-->
+        <scene sceneID="HMi-7a-aKT">
             <objects>
-                <viewController id="HAd-Ji-E3U" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4QX-4e-9Hs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jgK-Lg-n0z">
-                                <rect key="frame" x="16" y="8" width="343" height="46"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="üStream" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-xy-g85">
-                                        <rect key="frame" x="0.0" y="0.0" width="289" height="46"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1g-sN-eIv">
-                                        <rect key="frame" x="297" y="0.0" width="46" height="46"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="S1g-sN-eIv" secondAttribute="height" multiplier="1:1" id="Ifb-nK-rMN"/>
-                                        </constraints>
-                                        <state key="normal" image="magnifyingglass" catalog="system">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="26"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="leading" secondItem="4QX-4e-9Hs" secondAttribute="leading" constant="16" id="6xw-2E-wVt"/>
-                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="top" secondItem="4QX-4e-9Hs" secondAttribute="top" constant="8" id="Bzp-HD-olx"/>
-                            <constraint firstAttribute="trailing" secondItem="jgK-Lg-n0z" secondAttribute="trailing" constant="16" id="gJb-ef-glc"/>
-                            <constraint firstAttribute="bottom" secondItem="jgK-Lg-n0z" secondAttribute="bottom" constant="8" id="nnh-eu-cDv"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="e1o-YH-OCO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="TopBar" id="6Cn-Oh-gfg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="di6-9H-Y9q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1192" y="-615"/>
+            <point key="canvasLocation" x="722" y="-452"/>
         </scene>
     </scenes>
     <resources>
         <image name="list.and.film" catalog="system" width="128" height="86"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
-        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

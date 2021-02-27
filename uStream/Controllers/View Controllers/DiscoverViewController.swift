@@ -167,8 +167,6 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if trendingMovieSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? TrendingMediaCollectionViewCell
             else {return UICollectionViewCell()}
-            print(self.collectionView.indexPath(for: cell) as Any)
-
             self.setupCell(cell: cell, media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
@@ -179,11 +177,11 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             return cell
         }
         
-        if trendingPeopleSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "peopleCell", for: indexPath) as? TrendingPeopleCollectionViewCell else {return UICollectionViewCell()}
-            cell.setupCell(person: trendingPeople[indexPath.row])
-            return cell
-        }
+//        if trendingPeopleSection.contains(indexPath.section) {
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "peopleCell", for: indexPath) as? TrendingPeopleCollectionViewCell else {return UICollectionViewCell()}
+//            cell.setupCell(person: trendingPeople[indexPath.row])
+//            return cell
+//        }
         return UICollectionViewCell()
     }//end func
     
