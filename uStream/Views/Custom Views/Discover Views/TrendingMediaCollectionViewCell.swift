@@ -8,6 +8,9 @@
 import UIKit
 
 public class TrendingMediaCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    var currentIndexPath: IndexPath? = nil
+    
     // MARK: - Views
     var container: UIView = {
         let view = UIView()

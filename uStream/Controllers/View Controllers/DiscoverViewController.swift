@@ -25,9 +25,11 @@ class DiscoverViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchTrendingMedia()
 //        fetchTrendingPeople()
+        
         setupCollectionView()
+        fetchTrendingMedia()
+
     }
     
     // MARK: - Methods(
@@ -39,7 +41,7 @@ class DiscoverViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
 
-//        collectionView.prefetchDataSource = self
+        collectionView.prefetchDataSource = self
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
@@ -104,7 +106,7 @@ class DiscoverViewController: UIViewController {
 }//end class
 
 // MARK: - Extensions
-extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -142,25 +144,23 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         return 0
     }//end func
     
-//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        for indexPath in indexPaths {
-//            if trendingMovieSection.contains(indexPath.section) {
-//                print("fetchedMovie")
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
-//            }
-//            if trendingTVSection.contains(indexPath.section) {
-//                print("fetchedTv")
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
-//            }
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+//        print(indexPaths)
+        for indexPath in indexPaths {
+            if trendingMovieSection.contains(indexPath.section) {
+
+                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
+            }
+            if trendingTVSection.contains(indexPath.section) {
+
+                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
+            }
 //            if trendingPeopleSection.contains(indexPath.section) {
-//                print("fetchedPEop")
 //
 //                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
 //            }
-//        }
-//    }
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -172,7 +172,8 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? TrendingMediaCollectionViewCell else {return UICollectionViewCell()}
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            else {return UICollectionViewCell()}
             self.setupCell(cell: cell, media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
         }
@@ -186,14 +187,21 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }//end func
     
     func setupCell(cell: TrendingMediaCollectionViewCell, media: Media, indexPath: IndexPath) {
+        cell.currentIndexPath = indexPath
         TrendingMediaController.fetchPosterFor(media: media) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let image):
-                    cell.posterImageView.image = image
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+            switch result {
+            case .success(let image):
+                    DispatchQueue.main.async {
+                        if cell.currentIndexPath == indexPath {
+                            cell.posterImageView.image = image
+                            print("setImage")
+                        } else {
+                            print("threwout image")
+                        }
+                    }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func

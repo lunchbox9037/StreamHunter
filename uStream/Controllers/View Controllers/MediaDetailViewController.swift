@@ -168,13 +168,13 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         
         if whereToWatchSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell", for: indexPath) as? WhereToWatchCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(provider: providers[indexPath.row])
+            cell.setup(provider: providers[indexPath.row], newIndexPath: indexPath)
             return cell
         }
         
         if similarSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: similar[indexPath.row])
+            cell.setup(media: similar[indexPath.row], newIndexPath: indexPath)
             return cell
         }
         
