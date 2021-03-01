@@ -53,7 +53,7 @@ class MediaDetailViewController: UIViewController {
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
-        fetchRecommendations()
+        fetchSimilar()
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
         
@@ -100,7 +100,7 @@ class MediaDetailViewController: UIViewController {
         }
     }//end func
     
-    func fetchRecommendations() {
+    func fetchSimilar() {
         guard let media = selectedMedia else {return}
         SimilarController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
@@ -162,6 +162,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         if selectedMediaSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaDetailCell", for: indexPath) as? MediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
+            cell.delegate = self
             cell.setup(media: media)
             return cell
         }
@@ -189,3 +190,11 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
     }
 }//end extension
+
+extension MediaDetailViewController: AddToListButtonDelegate {
+    func addToList() {
+        print("add button tapped")
+        guard let selectedMedia = self.selectedMedia else {return}
+        ListMediaController.shared.addToList(media: selectedMedia)
+    }
+}

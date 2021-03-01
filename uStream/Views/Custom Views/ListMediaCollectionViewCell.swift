@@ -1,14 +1,13 @@
 //
-//  SearchResultsCollectionViewCell.swift
+//  ListMediaCollectionViewCell.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/26/21.
+//  Created by stanley phillips on 2/28/21.
 //
-
 
 import UIKit
 
-public class SearchResultsCollectionViewCell: UICollectionViewCell {
+class ListMediaCollectionViewCell: UICollectionViewCell {
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -39,13 +38,13 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.posterImageView)
-//        self.container.addSubview(self.subtitleLabel)
-
+        //        self.container.addSubview(self.subtitleLabel)
+        
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.container.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
@@ -60,19 +59,19 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
             self.posterImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
         
-//        NSLayoutConstraint.activate([
-//            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
-//            self.subtitleLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
-//            self.subtitleLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-////            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
-//        ])
+        //        NSLayoutConstraint.activate([
+        //            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
+        //            self.subtitleLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
+        //            self.subtitleLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
+        ////            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
+        //        ])
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(media: Media) {
+    func setup(media: ListMedia) {
         SearchResultsController.fetchPosterFor(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -83,7 +82,7 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-        subtitleLabel.text = media.name ?? media.title
+        subtitleLabel.text = media.title
     }
 }//end class
 

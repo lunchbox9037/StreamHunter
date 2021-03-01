@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol AddToListButtonDelegate: AnyObject {
+    func addToList()
+}
+
 public class MediaDetailCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    var button: UIButton {return addToListButton}
+    weak var delegate: AddToListButtonDelegate?
+    
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -37,7 +45,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(addToList), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -69,6 +77,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         self.container.addSubview(self.addToListButton)
         self.container.addSubview(self.synopsisLabel)
         self.container.addSubview(self.overviewLabel)
+        activateButton()
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -102,7 +111,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
-
 //            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
     }
@@ -111,7 +119,13 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func activateButton() {
+        self.button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
+    }
+    
+    // MARK: - Methods
     func setup(media: Media) {
+
         TrendingMediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -124,5 +138,10 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             }
         }
         self.overviewLabel.text = media.overview
+    }
+    
+    @objc func addToListButtonTapped(sender: UIButton) {
+        addToListButton.setTitle("Added to List!", for: .normal)
+        delegate?.addToList()
     }
 }//end class

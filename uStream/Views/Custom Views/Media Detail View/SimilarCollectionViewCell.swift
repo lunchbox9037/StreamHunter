@@ -71,6 +71,11 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
+    }
+    
     func setup(media: Media, newIndexPath: IndexPath) {
         self.currentIndexPath = newIndexPath
         SimilarController.fetchPosterFor(media: media) { [weak self] (result) in

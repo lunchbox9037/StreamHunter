@@ -76,5 +76,23 @@ public class TrendingMediaCollectionViewCell: UICollectionViewCell {
         posterImageView.image = nil
     }
     
+    func setupCell(media: Media, indexPath: IndexPath) {
+        self.currentIndexPath = indexPath
+        TrendingMediaController.fetchPosterFor(media: media) { (result) in
+            switch result {
+            case .success(let image):
+                    DispatchQueue.main.async {
+                        if self.currentIndexPath == indexPath {
+                            self.posterImageView.image = image
+                            print("setImage")
+                        } else {
+                            print("threwout image")
+                        }
+                    }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }//end func
     
 }//end class
