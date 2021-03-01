@@ -34,6 +34,7 @@
 		F6A87FCE25EC2B5E00E7A1E0 /* ListMediaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */; };
 		F6A87FD125EC5D2A00E7A1E0 /* ListMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */; };
 		F6A87FD425EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */; };
+		F6A87FDF25ECB5F500E7A1E0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */; };
 		F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDC725E700E50089DEF1 /* Similar.swift */; };
 		F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */; };
 		F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */; };
@@ -75,6 +76,8 @@
 		F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaController.swift; sourceTree = "<group>"; };
 		F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaViewController.swift; sourceTree = "<group>"; };
 		F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaCollectionViewCell.swift; sourceTree = "<group>"; };
+		F6A87FDB25ECB5E900E7A1E0 /* uStream.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = uStream.entitlements; sourceTree = "<group>"; };
+		F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F6E2CDC725E700E50089DEF1 /* Similar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Similar.swift; sourceTree = "<group>"; };
 		F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarController.swift; sourceTree = "<group>"; };
 		F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -91,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A87FDF25ECB5F500E7A1E0 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +106,7 @@
 			children = (
 				F68AB91E25DF63FA002D56D2 /* uStream */,
 				F68AB91D25DF63FA002D56D2 /* Products */,
+				F6A87FDD25ECB5F500E7A1E0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,6 +121,7 @@
 		F68AB91E25DF63FA002D56D2 /* uStream */ = {
 			isa = PBXGroup;
 			children = (
+				F6A87FDB25ECB5E900E7A1E0 /* uStream.entitlements */,
 				F68AB93C25DF643E002D56D2 /* CoreData */,
 				F68AB94325DF6475002D56D2 /* Models */,
 				F68AB94225DF646F002D56D2 /* Views */,
@@ -232,6 +238,14 @@
 				F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */,
 			);
 			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		F6A87FDD25ECB5F500E7A1E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F6E2CDE025E89EF10089DEF1 /* Discover Views */ = {
@@ -502,6 +516,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = uStream/uStream.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
@@ -521,6 +536,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = uStream/uStream.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
