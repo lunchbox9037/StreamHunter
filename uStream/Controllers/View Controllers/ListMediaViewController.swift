@@ -33,15 +33,14 @@ class ListMediaViewController: UIViewController {
         selectSegmentIndex()
     }
     
+    // MARK: - Actions
     @IBAction func segmentControlChanged(_ sender: Any) {
         selectSegmentIndex()
     }
     
     // MARK: - Methods
-    
     @objc func doneEditing(_ gesture: UITapGestureRecognizer) {
         longPressedEnabled = false
-        
         self.listCollectionView.reloadData()
     }
     
@@ -56,7 +55,6 @@ class ListMediaViewController: UIViewController {
             listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             listCollectionView.endInteractiveMovement()
-//            doneBtn.isHidden = false
             longPressedEnabled = true
             self.listCollectionView.reloadData()
         default:
@@ -135,11 +133,11 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailVC = MediaDetailViewController()
-//        detailVC.selectedMedia = dataSource[indexPath.row]
-//        present(detailVC, animated: true, completion: nil)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = MediaDetailViewController()
+        detailVC.selectedListMedia = dataSource[indexPath.row]
+        present(detailVC, animated: true, completion: nil)
+    }
 }
 
 extension ListMediaViewController: RefreshDelegate {
