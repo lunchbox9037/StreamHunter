@@ -8,6 +8,9 @@
 import UIKit
 
 public class SimilarCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    var currentIndexPath: IndexPath? = nil
+    
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -68,15 +71,26 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(media: Media) {
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
+    }
+    
+    func setup(media: Media, newIndexPath: IndexPath) {
+        self.currentIndexPath = newIndexPath
         SimilarController.fetchPosterFor(media: media) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let image):
-                    self?.posterImageView.image = image
-                case .failure(let error):
-                    print(error.localizedDescription)
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    if self?.currentIndexPath == newIndexPath {
+                        self?.posterImageView.image = image
+                        print("setImage")
+                    } else {
+                        print("threwout image")
+                    }
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

@@ -25,6 +25,8 @@ class WhereToWatchController {
     static let providersComponent = "providers"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
 
+    // MARK: - Properties
+    static var imageCache = NSCache<NSURL, UIImage>()
     
     // MARK: - Methods
     static func fetchWhereToWatchBy(id: Int, mediaType: String, completion: @escaping (Result<Option, NetworkError>) -> Void) {
@@ -72,19 +74,26 @@ class WhereToWatchController {
         guard let logoPath = provider.logo else {return completion(.failure(.invalidURL))}
         let finalURL = imageBaseURL.appendingPathComponent(logoPath)
         
-        URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
-            if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
-                return completion(.failure(.thrownError(error)))
-            }
-            
-            guard let data = data else {return completion(.failure(.noData))}
-            guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
-            completion(.success(poster))
-        }.resume()
+        if let logo = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
+            completion(.success(logo))
+        } else {
+            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
+                if let error = error {
+                    print("======== ERROR ========")
+                    print("Function: \(#function)")
+                    print("Error: \(error)")
+                    print("Description: \(error.localizedDescription)")
+                    print("======== ERROR ========")
+                    return completion(.failure(.thrownError(error)))
+                }
+                
+                guard let data = data else {return completion(.failure(.noData))}
+                guard let logoImage = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
+                //save image to cache
+                imageCache.setObject(logoImage, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
+
+                completion(.success(logoImage))
+            }.resume()
+        }
     }//end of func
 }//end class

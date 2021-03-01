@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 public class WhereToWatchCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
+    var currentIndexPath: IndexPath? = nil
+
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -70,16 +73,21 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(provider: Provider) {
+    func setup(provider: Provider, newIndexPath: IndexPath) {
+        self.currentIndexPath = newIndexPath
         WhereToWatchController.fetchLogoFor(provider: provider) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let logo):
-                    self?.providerLogoImageView.image = logo
-                case .failure(let error):
-                    self?.providerLogoImageView.image = nil
-                    print(error.localizedDescription)
+            switch result {
+            case .success(let logo):
+                DispatchQueue.main.async {
+                    if self?.currentIndexPath == newIndexPath {
+                        self?.providerLogoImageView.image = logo
+                        print("setImage")
+                    } else {
+                        print("threwout image")
+                    }
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func

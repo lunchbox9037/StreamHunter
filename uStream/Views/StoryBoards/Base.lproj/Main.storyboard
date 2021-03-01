@@ -11,14 +11,61 @@
         <!--My List-->
         <scene sceneID="m8h-dl-aGS">
             <objects>
-                <viewController id="wES-rK-jCZ" sceneMemberID="viewController">
+                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCp-bv-yUD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxx-kb-TKf">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                <connections>
+                                    <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="it0-ZJ-DLx"/>
+                                </connections>
+                            </containerView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lFz-ee-Ieg">
+                                <rect key="frame" x="0.0" y="99" width="375" height="519"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cfR-kx-sEJ">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1uZ-gb-Ffe">
+                                <rect key="frame" x="0.0" y="62" width="375" height="32"/>
+                                <segments>
+                                    <segment title="All"/>
+                                    <segment title="Movies"/>
+                                    <segment title="TV"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentControlChanged:" destination="wES-rK-jCZ" eventType="valueChanged" id="kNk-hi-166"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="snY-GV-rhB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="2i8-vX-dyO"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Cca-iJ-qGv"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="6" id="Cqc-9F-9T1"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="nxx-kb-TKf" secondAttribute="trailing" id="aXB-Hi-ek0"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="bZf-35-Ldx"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="iqw-Z1-h3Y"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="s0D-TO-2uM"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="sRf-n2-z9R"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="My List" image="list.bullet" catalog="system" id="q1J-X0-Mg7"/>
+                    <connections>
+                        <outlet property="listCollectionView" destination="lFz-ee-Ieg" id="fDI-Gl-NmX"/>
+                        <outlet property="segmentControl" destination="1uZ-gb-Ffe" id="Vq6-Xo-j1s"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thn-9d-YLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -96,9 +143,12 @@
                 <viewControllerPlaceholder storyboardName="TopBar" id="6Cn-Oh-gfg" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di6-9H-Y9q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="722" y="-452"/>
+            <point key="canvasLocation" x="1041" y="-281"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="it0-ZJ-DLx"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="list.and.film" catalog="system" width="128" height="86"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
