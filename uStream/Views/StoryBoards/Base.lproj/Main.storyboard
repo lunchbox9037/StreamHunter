@@ -39,7 +39,6 @@
                                     <segment title="All"/>
                                     <segment title="Movies"/>
                                     <segment title="TV"/>
-                                    <segment title="Upcoming"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentControlChanged:" destination="wES-rK-jCZ" eventType="valueChanged" id="kNk-hi-166"/>

@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol RefreshDelegate: AnyObject {
+    func refresh()
+}
+
 class MediaDetailViewController: UIViewController {
     // MARK: - Properties
     var selectedMedia: Media?
+    
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -17,6 +22,8 @@ class MediaDetailViewController: UIViewController {
     
     var providers: [Provider] = []
     var similar: [Media] = []
+    
+    static weak var delegate: RefreshDelegate?
     
     // MARK: - Views
     lazy var dismissViewButton: UIButton = {
@@ -50,10 +57,18 @@ class MediaDetailViewController: UIViewController {
         setupViews()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        print("disappear")
+        MediaDetailViewController.delegate?.refresh()
+    }
+    
+    
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
         fetchSimilar()
+        
+
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
         
@@ -69,7 +84,7 @@ class MediaDetailViewController: UIViewController {
             self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
         ])
-    }
+    }//end func
     
     func makeLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -114,11 +129,11 @@ class MediaDetailViewController: UIViewController {
                 }
             }
         }
-    }
+    }//end func
     
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
-    }
+    }//end func
     
 }//end class
 
@@ -139,12 +154,12 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             return similar.count
         }
         return 0
-    }
+    }//end func
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
         if selectedMediaSection.contains(indexPath.section) {
-            header.setup(label: (self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix")
+            header.setup(label: ((self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix"))
         }
         
         if whereToWatchSection.contains(indexPath.section) {
@@ -180,7 +195,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         return UICollectionViewCell()
-    }
+    }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if similarSection.contains(indexPath.section) {
@@ -188,7 +203,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             setupViews()
 //            self.collectionView.reloadData()
         }
-    }
+    }//end func
 }//end extension
 
 extension MediaDetailViewController: AddToListButtonDelegate {

@@ -36,6 +36,11 @@ class ListMediaController {
         })
     }
     
+    func delete(item: ListMedia) {
+        CoreDataStack.context.delete(item)
+        CoreDataStack.saveContext()
+    }
+    
     func toggleIsInList(listMedia: ListMedia) {
         listMedia.isInList.toggle()
     }

@@ -119,13 +119,17 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func activateButton() {
-        self.button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
-    }
-    
     // MARK: - Methods
     func setup(media: Media) {
-
+        ListMediaController.shared.fetchListMedia()
+        if (ListMediaController.shared.listMedia.contains { (listmedia) -> Bool in
+            return listmedia.id == media.id ?? 0
+        }) {
+            disableButton()
+        } else {
+            enableButton()
+        }
+        
         TrendingMediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -140,8 +144,24 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         self.overviewLabel.text = media.overview
     }
     
+    func activateButton() {
+        self.button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
+    }
+    
     @objc func addToListButtonTapped(sender: UIButton) {
-        addToListButton.setTitle("Added to List!", for: .normal)
+        disableButton()
         delegate?.addToList()
+    }
+    
+    func enableButton() {
+        addToListButton.setTitle("Add to your List?", for: .normal)
+        addToListButton.backgroundColor = .systemBlue
+        addToListButton.isEnabled = true
+    }
+    
+    func disableButton() {
+        addToListButton.setTitle("Added to List!", for: .normal)
+        addToListButton.backgroundColor = .systemGray
+        addToListButton.isEnabled = false
     }
 }//end class

@@ -41,7 +41,7 @@ class DiscoverViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
 
-        collectionView.prefetchDataSource = self
+//        collectionView.prefetchDataSource = self
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
         collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
@@ -178,21 +178,21 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }
 }//end extension
 
-extension DiscoverViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if trendingMovieSection.contains(indexPath.section) {
-
-                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
-            }
-            if trendingTVSection.contains(indexPath.section) {
-
-                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
-            }
-//            if trendingPeopleSection.contains(indexPath.section) {
+//extension DiscoverViewController: UICollectionViewDataSourcePrefetching {
+//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+//        for indexPath in indexPaths {
+//            if trendingMovieSection.contains(indexPath.section) {
 //
-//                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
+//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
 //            }
-        }
-    }
-}
+//            if trendingTVSection.contains(indexPath.section) {
+//
+//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
+//            }
+////            if trendingPeopleSection.contains(indexPath.section) {
+////
+////                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
+////            }
+//        }
+//    }
+//}

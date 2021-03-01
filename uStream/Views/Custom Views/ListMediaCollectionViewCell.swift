@@ -8,6 +8,7 @@
 import UIKit
 
 class ListMediaCollectionViewCell: UICollectionViewCell {
+    var isAnimate: Bool! = true
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -29,6 +30,17 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    var removeBtn: UIButton = {
+        let button: UIButton = UIButton()
+        
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.tintColor = .systemRed
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+//        button.isHidden = true
+        return button
+    }()
+    
     var subtitleLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Some subtitle"
@@ -42,7 +54,10 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
+        
         self.container.addSubview(self.posterImageView)
+        self.container.addSubview(self.removeBtn)
+        
         //        self.container.addSubview(self.subtitleLabel)
         
         NSLayoutConstraint.activate([
@@ -57,6 +72,11 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
             self.posterImageView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: 0),
             self.posterImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.posterImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.removeBtn.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
+            self.removeBtn.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
         
         //        NSLayoutConstraint.activate([
@@ -83,6 +103,36 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
             }
         }
         subtitleLabel.text = media.title
+    }
+    
+    //Animation of image
+    func startAnimate() {
+        let shakeAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        shakeAnimation.duration = 0.05
+        shakeAnimation.repeatCount = 4
+        shakeAnimation.autoreverses = true
+        shakeAnimation.duration = 0.2
+        shakeAnimation.repeatCount = 99999
+        
+        let startAngle: Float = (-2) * 3.14159/180
+        let stopAngle = -startAngle
+        
+        shakeAnimation.fromValue = NSNumber(value: startAngle as Float)
+        shakeAnimation.toValue = NSNumber(value: 3 * stopAngle as Float)
+        shakeAnimation.autoreverses = true
+        shakeAnimation.timeOffset = 290 * drand48()
+        
+        let layer: CALayer = self.layer
+        layer.add(shakeAnimation, forKey:"animate")
+        removeBtn.isHidden = false
+        isAnimate = true
+    }
+    
+    func stopAnimate() {
+        let layer: CALayer = self.layer
+        layer.removeAnimation(forKey: "animate")
+        self.removeBtn.isHidden = true
+        isAnimate = false
     }
 }//end class
 
