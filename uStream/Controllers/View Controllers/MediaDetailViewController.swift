@@ -14,7 +14,7 @@ protocol RefreshDelegate: AnyObject {
 class MediaDetailViewController: UIViewController {
     // MARK: - Properties
     var selectedMedia: Media?
-    
+    var selectedListMedia: ListMedia?
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -62,12 +62,10 @@ class MediaDetailViewController: UIViewController {
         MediaDetailViewController.delegate?.refresh()
     }
     
-    
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
         fetchSimilar()
-        
 
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
@@ -134,7 +132,6 @@ class MediaDetailViewController: UIViewController {
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
     }//end func
-    
 }//end class
 
 // MARK: - Extensions
