@@ -63,7 +63,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     var overviewLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "overview..."
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(16)
+        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(12)
         label.numberOfLines = 0
         label.textAlignment = .justified
         label.translatesAutoresizingMaskIntoConstraints = false

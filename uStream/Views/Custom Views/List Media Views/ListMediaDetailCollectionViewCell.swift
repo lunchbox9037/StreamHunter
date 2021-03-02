@@ -14,9 +14,15 @@
 
 import UIKit
 
+protocol ListMediaDetailButtonDelegate: AnyObject {
+    func moreWatchOptions()
+}
+
 public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
+    var moreButton: UIButton {return moreWaysToWatchButton}
 
+    weak var delegate: ListMediaDetailButtonDelegate?
     
     // MARK: - Views
     var container: UIView = {
@@ -113,7 +119,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.buttonStackView.addArrangedSubview(self.moreWaysToWatchButton)
         self.container.addSubview(self.synopsisLabel)
         self.container.addSubview(self.overviewLabel)
-//        activateButton()
+        activateButton()
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -194,25 +200,24 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.overviewLabel.text = media.overview
     }
     
-//    func activateButton() {
-//        self.button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
+    func activateButton() {
+        self.moreButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
+    }
+
+    @objc func moreButtonTapped(sender: UIButton) {
+        delegate?.moreWatchOptions()
+    }
+    
+//    func enableButton() {
+//        moreWaysToWatchButton.setTitle("Add to your List?", for: .normal)
+//        moreWaysToWatchButton.backgroundColor = .systemBlue
+//        moreWaysToWatchButton.isEnabled = true
 //    }
 //
-//    @objc func addToListButtonTapped(sender: UIButton) {
-//        disableButton()
-//        delegate?.addToList()
+//    func disableButton() {
+//        moreWaysToWatchButton.setTitle("Added to List!", for: .normal)
+//        moreWaysToWatchButton.backgroundColor = .systemGray
+//        moreWaysToWatchButton.isEnabled = false
 //    }
-    
-    func enableButton() {
-        moreWaysToWatchButton.setTitle("Add to your List?", for: .normal)
-        moreWaysToWatchButton.backgroundColor = .systemBlue
-        moreWaysToWatchButton.isEnabled = true
-    }
-    
-    func disableButton() {
-        moreWaysToWatchButton.setTitle("Added to List!", for: .normal)
-        moreWaysToWatchButton.backgroundColor = .systemGray
-        moreWaysToWatchButton.isEnabled = false
-    }
 }//end class
 

@@ -14,9 +14,9 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 8
         view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 10
+        view.layer.shadowRadius = 8
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -25,7 +25,7 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
     var posterImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 20
+        imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
         return imageView
     }()

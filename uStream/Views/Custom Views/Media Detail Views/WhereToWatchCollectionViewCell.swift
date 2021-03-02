@@ -18,9 +18,9 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 12
         view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 15
+        view.layer.shadowRadius = 12
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -29,7 +29,7 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
     var providerLogoImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
         return imageView
     }()

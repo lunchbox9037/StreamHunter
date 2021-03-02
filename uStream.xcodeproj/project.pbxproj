@@ -37,6 +37,7 @@
 		F6A87FDF25ECB5F500E7A1E0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */; };
 		F6A87FF225ED663300E7A1E0 /* ListMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */; };
 		F6A87FF525ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */; };
+		F6A87FF925EDEC1700E7A1E0 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */; };
 		F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDC725E700E50089DEF1 /* Similar.swift */; };
 		F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */; };
 		F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */; };
@@ -82,6 +83,7 @@
 		F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailViewController.swift; sourceTree = "<group>"; };
 		F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		F6E2CDC725E700E50089DEF1 /* Similar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Similar.swift; sourceTree = "<group>"; };
 		F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarController.swift; sourceTree = "<group>"; };
 		F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				F68AB95925DF7935002D56D2 /* NetworkError.swift */,
+				F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 			files = (
 				F68AB94C25DF6A75002D56D2 /* TrendingMedia.swift in Sources */,
 				F63774EC25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift in Sources */,
+				F6A87FF925EDEC1700E7A1E0 /* Haptics.swift in Sources */,
 				F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */,
 				F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */,
 				F68AB95425DF743C002D56D2 /* TrendingMediaController.swift in Sources */,

@@ -171,7 +171,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         if selectedMediaSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
-//            cell.delegate = self
+            cell.delegate = self
             cell.setup(media: media)
             return cell
         }
@@ -200,10 +200,21 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     }//end func
 }//end extension
 
-//extension MediaDetailViewController: AddToListButtonDelegate {
-//    func addToList() {
-//        print("add button tapped")
-//        guard let selectedMedia = self.selectedMedia else {return}
-//        ListMediaController.shared.addToList(media: selectedMedia)
-//    }
-//}
+extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
+    func moreWatchOptions() {
+        print("morebuttontapped")
+        
+        guard let link = providerLink else {return}
+        if let appURL = URL(string: link) {
+            UIApplication.shared.open(appURL) { success in
+                if success {
+                    print("The URL was delivered successfully.")
+                } else {
+                    print("The URL failed to open.")
+                }
+            }
+        } else {
+            print("Invalid URL specified.")
+        }
+    }
+}

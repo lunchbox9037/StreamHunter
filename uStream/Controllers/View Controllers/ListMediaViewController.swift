@@ -48,6 +48,7 @@ class ListMediaViewController: UIViewController {
     }
     
     @objc func doneDeleting(_ gesture: UITapGestureRecognizer) {
+        Haptics.playRigidImpact()
         longPressedEnabled = false
         self.listCollectionView.reloadData()
         self.tap?.isEnabled = false
@@ -55,6 +56,7 @@ class ListMediaViewController: UIViewController {
     
     @objc func longTap(_ gesture: UIGestureRecognizer){
         self.tap?.isEnabled = true
+        Haptics.playSuccessNotification()
         print("ran")
         switch(gesture.state) {
         case .began:
@@ -74,6 +76,7 @@ class ListMediaViewController: UIViewController {
     }
     
     @objc func removeBtnClick(_ sender: UIButton) {
+        Haptics.playSelectionChanged()
         let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
         let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
         //remove the image and refresh the collection view
