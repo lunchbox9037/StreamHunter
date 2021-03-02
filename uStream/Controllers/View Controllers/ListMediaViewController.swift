@@ -16,14 +16,13 @@ class ListMediaViewController: UIViewController {
     var dataSource: [ListMedia] = []
     var longPressedEnabled: Bool = false
     
+    var tap: UITapGestureRecognizer?
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
-        let done = UITapGestureRecognizer(target: self, action: #selector(doneEditing(_:)))
-        listCollectionView.addGestureRecognizer(longPressGesture)
-        listCollectionView.addGestureRecognizer(done)
+        setupGestures()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,12 +38,24 @@ class ListMediaViewController: UIViewController {
     }
     
     // MARK: - Methods
-    @objc func doneEditing(_ gesture: UITapGestureRecognizer) {
+    func setupGestures() {
+        self.tap = UITapGestureRecognizer(target: self, action: #selector(doneDeleting(_:)))
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
+        listCollectionView.addGestureRecognizer(longPressGesture)
+        guard let tap = tap else {return}
+        listCollectionView.addGestureRecognizer(tap)
+        tap.isEnabled = false
+    }
+    
+    @objc func doneDeleting(_ gesture: UITapGestureRecognizer) {
         longPressedEnabled = false
         self.listCollectionView.reloadData()
+        self.tap?.isEnabled = false
     }
     
     @objc func longTap(_ gesture: UIGestureRecognizer){
+        self.tap?.isEnabled = true
+        print("ran")
         switch(gesture.state) {
         case .began:
             guard let selectedIndexPath = listCollectionView.indexPathForItem(at: gesture.location(in: listCollectionView)) else {
@@ -60,6 +71,15 @@ class ListMediaViewController: UIViewController {
         default:
             listCollectionView.cancelInteractiveMovement()
         }
+    }
+    
+    @objc func removeBtnClick(_ sender: UIButton) {
+        let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
+        let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
+        //remove the image and refresh the collection view
+        let itemToDelete = dataSource[hitIndex!.row]
+        ListMediaController.shared.delete(item: itemToDelete)
+        selectSegmentIndex()
     }
     
     func selectSegmentIndex() {
@@ -99,18 +119,6 @@ class ListMediaViewController: UIViewController {
             return LayoutBuilder.buildMediaVerticalScrollLayout()
         }
     }//end func
-    
-    @objc func removeBtnClick(_ sender: UIButton) {
-        let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
-        let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
-        
-        //remove the image and refresh the collection view
-        let itemToDelete = dataSource[hitIndex!.row]
-        ListMediaController.shared.delete(item: itemToDelete)
-        selectSegmentIndex()
-    }
-    
-    
 }//end class
 
 extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -134,11 +142,11 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailVC = MediaDetailViewController()
-        detailVC.selectedListMedia = dataSource[indexPath.row]
+        let detailVC = ListMediaDetailViewController()
+        detailVC.selectedMedia = dataSource[indexPath.row]
         present(detailVC, animated: true, completion: nil)
     }
-}
+}//end extension
 
 extension ListMediaViewController: RefreshDelegate {
     func refresh() {

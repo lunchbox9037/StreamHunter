@@ -22,7 +22,7 @@ class ListMediaController {
     
     // MARK: - CRUD
     func addToList(media: Media) {
-        ListMedia(title: (media.title ?? media.name) ?? "The Matrix", voteAverage: media.voteAverage ?? 0.0, overview: media.overview ?? "Synopsis Unavailable", posterPath: media.posterPath, backdropPath: media.backDropPath, id: media.id ?? 0, mediaType: media.mediaType ?? "movie", popularity: media.popularity ?? 0.0, releaseDate: (media.releaseDate ?? media.firstAirDate) ?? "unknown")
+        ListMedia(title: (media.title ?? media.name) ?? "The Matrix", voteAverage: media.voteAverage ?? 0.0, overview: media.overview ?? "Synopsis Unavailable", posterPath: media.posterPath, backdropPath: media.backdropPath, id: media.id ?? 0, mediaType: media.mediaType ?? "movie", popularity: media.popularity ?? 0.0, releaseDate: (media.releaseDate ?? media.firstAirDate) ?? "unknown")
         CoreDataStack.saveContext()
     }
     
@@ -43,5 +43,5 @@ class ListMediaController {
     
     func toggleIsInList(listMedia: ListMedia) {
         listMedia.isInList.toggle()
-    }
+    }    
 }//end class

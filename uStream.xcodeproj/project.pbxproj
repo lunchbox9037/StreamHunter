@@ -35,6 +35,8 @@
 		F6A87FD125EC5D2A00E7A1E0 /* ListMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */; };
 		F6A87FD425EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */; };
 		F6A87FDF25ECB5F500E7A1E0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */; };
+		F6A87FF225ED663300E7A1E0 /* ListMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */; };
+		F6A87FF525ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */; };
 		F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDC725E700E50089DEF1 /* Similar.swift */; };
 		F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */; };
 		F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */; };
@@ -78,6 +80,8 @@
 		F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6A87FDB25ECB5E900E7A1E0 /* uStream.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = uStream.entitlements; sourceTree = "<group>"; };
 		F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailViewController.swift; sourceTree = "<group>"; };
+		F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6E2CDC725E700E50089DEF1 /* Similar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Similar.swift; sourceTree = "<group>"; };
 		F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarController.swift; sourceTree = "<group>"; };
 		F6E2CDCD25E709390089DEF1 /* SimilarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 				F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */,
 				F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */,
 				F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */,
+				F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -235,7 +240,7 @@
 				F6E2CDE025E89EF10089DEF1 /* Discover Views */,
 				F6E2CDEC25E99DAD0089DEF1 /* Media Detail Views */,
 				F6A87FBE25E9F88600E7A1E0 /* SearchResultsCollectionViewCell.swift */,
-				F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */,
+				F6A87FEF25ED641300E7A1E0 /* List Media Views */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -246,6 +251,15 @@
 				F6A87FDE25ECB5F500E7A1E0 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F6A87FEF25ED641300E7A1E0 /* List Media Views */ = {
+			isa = PBXGroup;
+			children = (
+				F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */,
+				F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */,
+			);
+			path = "List Media Views";
 			sourceTree = "<group>";
 		};
 		F6E2CDE025E89EF10089DEF1 /* Discover Views */ = {
@@ -351,11 +365,13 @@
 				F63774EF25E5F7E800F4025E /* WhereToWatch.swift in Sources */,
 				F63774E725E5A79F00F4025E /* MediaDetailCollectionViewCell.swift in Sources */,
 				F6A87FD425EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift in Sources */,
+				F6A87FF225ED663300E7A1E0 /* ListMediaDetailViewController.swift in Sources */,
 				F6F6638425E413D900C4FC65 /* LayoutBuilder.swift in Sources */,
 				F63774F725E6093500F4025E /* uStream.xcdatamodeld in Sources */,
 				F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */,
 				F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */,
 				F6A87FBF25E9F88600E7A1E0 /* SearchResultsCollectionViewCell.swift in Sources */,
+				F6A87FF525ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift in Sources */,
 				F6A87FB825E9F2F100E7A1E0 /* SearchViewController.swift in Sources */,
 				F6A87FC925E9FF0600E7A1E0 /* SearchResults.swift in Sources */,
 				F68AB92225DF63FA002D56D2 /* SceneDelegate.swift in Sources */,

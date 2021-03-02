@@ -23,15 +23,18 @@ struct Locale: Codable {
 struct Option: Codable {
     let deepLink: String
     let streaming: [Provider]
+//    let rent: [Provider]
+//    let buy: [Provider]
     
     enum CodingKeys: String, CodingKey {
         case streaming = "flatrate"
         case deepLink = "link"
+//        case rent, buy
     }
 }
 
 struct Provider: Codable {
-    let providerName: String
+    let providerName: String?
     let logo: String?
     
     enum CodingKeys: String, CodingKey {

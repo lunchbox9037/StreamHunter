@@ -83,7 +83,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         //            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
         //            self.subtitleLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
         //            self.subtitleLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-        ////            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
+        //            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
         //        ])
     }
     

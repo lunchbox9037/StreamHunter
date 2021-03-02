@@ -21,14 +21,14 @@ struct Media: Codable {
     let voteAverage: Double?
     let popularity: Double?
     let posterPath: String?
-    let backDropPath: String?
+    let backdropPath: String?
     let id: Int?
  
     enum CodingKeys: String, CodingKey {
         case overview, id, title, popularity, name
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
-        case backDropPath = "backdrop_path"
+        case backdropPath = "backdrop_path"
         case mediaType = "media_type"
         case releaseDate = "release_date"
         case firstAirDate = "first_air_date"

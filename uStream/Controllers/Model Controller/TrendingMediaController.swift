@@ -102,7 +102,28 @@ class TrendingMediaController {
     
     static func fetchBackdropImageFor(media: Media, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
         guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
-        guard let posterPath = media.backDropPath else {return completion(.failure(.invalidURL))}
+        guard let posterPath = media.backdropPath else {return completion(.failure(.invalidURL))}
+        let finalURL = posterBaseURL.appendingPathComponent(posterPath)
+        
+        URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
+            if let error = error {
+                print("======== ERROR ========")
+                print("Function: \(#function)")
+                print("Error: \(error)")
+                print("Description: \(error.localizedDescription)")
+                print("======== ERROR ========")
+                return completion(.failure(.thrownError(error)))
+            }
+            
+            guard let data = data else {return completion(.failure(.noData))}
+            guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
+            completion(.success(poster))
+        }.resume()
+    }//end of func
+    
+    static func fetchBackdropImageForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
+        guard let posterPath = media.backdropPath else {return completion(.failure(.invalidURL))}
         let finalURL = posterBaseURL.appendingPathComponent(posterPath)
         
         URLSession.shared.dataTask(with: finalURL) { (data, _, error) in

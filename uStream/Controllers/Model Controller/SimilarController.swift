@@ -52,8 +52,9 @@ class SimilarController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let recommendations = try JSONDecoder().decode(Similar.self, from: data)
-                return completion(.success(recommendations))
+                let similar = try JSONDecoder().decode(Similar.self, from: data)
+                
+                return completion(.success(similar))
             } catch {
                 completion(.failure(.thrownError(error)))
             }
