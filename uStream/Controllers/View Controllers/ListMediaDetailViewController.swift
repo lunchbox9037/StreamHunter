@@ -95,7 +95,8 @@ class ListMediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-        WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: media.mediaType ?? "movie") { [weak self] (result) in
+        guard let mediaType = media.mediaType else {return}
+        WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
@@ -112,13 +113,14 @@ class ListMediaDetailViewController: UIViewController {
     
     func fetchSimilar() {
         guard let media = selectedMedia else {return}
-        SimilarController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: Int(media.id)) { [weak self] (result) in
+        guard let mediaType = media.mediaType else {return}
+        SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let similar):
                     self?.similar = similar.results
                     self?.collectionView.reloadData()
-                    print("got providers")
+                    print("got similar")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -193,9 +195,9 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if similarSection.contains(indexPath.section) {
-            let vc = MediaDetailViewController()
-            vc.selectedMedia = similar[indexPath.row]
-            present(vc, animated: false)
+            let detailVC = MediaDetailViewController()
+            detailVC.selectedMedia = similar[indexPath.row]
+            present(detailVC, animated: false)
         }
     }//end func
 }//end extension
@@ -217,4 +219,4 @@ extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
             print("Invalid URL specified.")
         }
     }
-}
+}//end extension

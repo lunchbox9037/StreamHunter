@@ -14,7 +14,6 @@ protocol RefreshDelegate: AnyObject {
 class MediaDetailViewController: UIViewController {
     // MARK: - Properties
     var selectedMedia: Media?
-    var selectedListMedia: ListMedia?
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -54,6 +53,7 @@ class MediaDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemGray
+       
         setupViews()
     }
     
@@ -99,7 +99,11 @@ class MediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: media.mediaType ?? "movie") { [weak self] (result) in
+        var mediaType: String = "movie"
+        if media.title == nil {
+            mediaType = "tv"
+        }
+        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
@@ -115,8 +119,12 @@ class MediaDetailViewController: UIViewController {
     
     func fetchSimilar() {
         guard let media = selectedMedia else {return}
-        //defauly mediatype causing problems
-        SimilarController.fetchRecommendationsFor(mediaType: media.mediaType ?? "movie", id: media.id ?? 603 ) { [weak self] (result) in
+        //make sure the media is the correct type based on the name(tv) or title(movie)
+        var mediaType: String = "movie"
+        if media.title == nil {
+            mediaType = "tv"
+        }
+        SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let similar):
