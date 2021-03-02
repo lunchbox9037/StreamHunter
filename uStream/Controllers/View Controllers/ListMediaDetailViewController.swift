@@ -53,11 +53,6 @@ class ListMediaDetailViewController: UIViewController {
         setupViews()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        print("disappear")
-        MediaDetailViewController.delegate?.refresh()
-    }
-    
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()

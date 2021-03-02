@@ -42,6 +42,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add to your list?", for: .normal)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
+
+
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10

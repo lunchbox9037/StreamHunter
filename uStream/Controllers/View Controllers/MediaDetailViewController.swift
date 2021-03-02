@@ -57,11 +57,6 @@ class MediaDetailViewController: UIViewController {
         setupViews()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        print("disappear")
-        MediaDetailViewController.delegate?.refresh()
-    }
-    
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
@@ -220,7 +215,9 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
 extension MediaDetailViewController: AddToListButtonDelegate {
     func addToList() {
         print("add button tapped")
+        Haptics.playSuccessNotification()
         guard let selectedMedia = self.selectedMedia else {return}
         ListMediaController.shared.addToList(media: selectedMedia)
+        MediaDetailViewController.delegate?.refresh()
     }
 }

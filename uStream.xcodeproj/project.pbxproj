@@ -203,11 +203,11 @@
 		F68AB94E25DF70D9002D56D2 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */,
-				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
 				F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */,
 				F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */,
+				F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */,
 				F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */,
+				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
 				F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */,
 			);
 			path = "View Controllers";
@@ -242,8 +242,8 @@
 				F6F6638325E413D900C4FC65 /* LayoutBuilder.swift */,
 				F6E2CDE025E89EF10089DEF1 /* Discover Views */,
 				F6E2CDEC25E99DAD0089DEF1 /* Media Detail Views */,
-				F6A87FBE25E9F88600E7A1E0 /* SearchResultsCollectionViewCell.swift */,
 				F6A87FEF25ED641300E7A1E0 /* List Media Views */,
+				F6A87FBE25E9F88600E7A1E0 /* SearchResultsCollectionViewCell.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";

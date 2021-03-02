@@ -16,19 +16,20 @@ class ListMediaViewController: UIViewController {
     var dataSource: [ListMedia] = []
     var longPressedEnabled: Bool = false
     
-    var tap: UITapGestureRecognizer?
+    var tap: UITapGestureRecognizer = UITapGestureRecognizer()
+    var refresher: UIRefreshControl = UIRefreshControl()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         setupGestures()
+        setupRefresher()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         MediaDetailViewController.delegate = self
-        ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }
     
@@ -42,20 +43,30 @@ class ListMediaViewController: UIViewController {
         self.tap = UITapGestureRecognizer(target: self, action: #selector(doneDeleting(_:)))
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.longTap(_:)))
         listCollectionView.addGestureRecognizer(longPressGesture)
-        guard let tap = tap else {return}
         listCollectionView.addGestureRecognizer(tap)
         tap.isEnabled = false
+    }
+    
+    func setupRefresher() {
+        refresher.attributedTitle = NSAttributedString(string: "Pull to refresh list...")
+        refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        listCollectionView.addSubview(refresher)
+    }
+    
+    @objc func loadData() {
+        selectSegmentIndex()
+        self.refresher.endRefreshing()
     }
     
     @objc func doneDeleting(_ gesture: UITapGestureRecognizer) {
         Haptics.playRigidImpact()
         longPressedEnabled = false
         self.listCollectionView.reloadData()
-        self.tap?.isEnabled = false
+        self.tap.isEnabled = false
     }
     
     @objc func longTap(_ gesture: UIGestureRecognizer){
-        self.tap?.isEnabled = true
+        self.tap.isEnabled = true
         Haptics.playSuccessNotification()
         print("ran")
         switch(gesture.state) {
@@ -86,18 +97,16 @@ class ListMediaViewController: UIViewController {
     }
     
     func selectSegmentIndex() {
+        ListMediaController.shared.fetchListMedia()
         switch segmentControl.selectedSegmentIndex {
         case 0:
             //all
-            ListMediaController.shared.fetchListMedia()
             dataSource = ListMediaController.shared.listMedia
         case 1:
             //movie
-            ListMediaController.shared.fetchListMedia()
             dataSource = ListMediaController.shared.listMediaMovie
         case 2:
             //tv
-            ListMediaController.shared.fetchListMedia()
             dataSource = ListMediaController.shared.listMediaTV
         default:
             break
