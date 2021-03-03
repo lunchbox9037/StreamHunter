@@ -19,7 +19,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
-//        view.backgroundColor = UIColor.systemFi
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 20
         view.layer.shadowOpacity = 0.3
@@ -43,12 +42,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add to your list?", for: .normal)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
-
-
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -106,7 +102,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.synopsisLabel.topAnchor.constraint(equalTo: self.addToListButton.bottomAnchor, constant: 10),
             self.synopsisLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.synopsisLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
         
         NSLayoutConstraint.activate([
@@ -114,7 +109,6 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
     }
 

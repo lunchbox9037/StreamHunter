@@ -74,6 +74,7 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(provider: Provider, newIndexPath: IndexPath) {
+        print(provider.providerName as Any)
         self.currentIndexPath = newIndexPath
         WhereToWatchController.fetchLogoFor(provider: provider) { [weak self] (result) in
             switch result {

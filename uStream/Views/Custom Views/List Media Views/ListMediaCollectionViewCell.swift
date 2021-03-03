@@ -9,6 +9,7 @@ import UIKit
 
 class ListMediaCollectionViewCell: UICollectionViewCell {
     var isAnimate: Bool! = true
+    
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
@@ -32,12 +33,11 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     
     var removeBtn: UIButton = {
         let button: UIButton = UIButton()
-        
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .systemRed
         button.translatesAutoresizingMaskIntoConstraints = false
-
-//        button.isHidden = true
+        button.contentMode = .scaleToFill
+        button.setPreferredSymbolConfiguration(.init(pointSize: 21), forImageIn: .normal)
         return button
     }()
     
@@ -54,12 +54,9 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
-        
         self.container.addSubview(self.posterImageView)
         self.container.addSubview(self.removeBtn)
-        
-        //        self.container.addSubview(self.subtitleLabel)
-        
+                
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.container.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
@@ -76,15 +73,8 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             self.removeBtn.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
-            self.removeBtn.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
+            self.removeBtn.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
-        
-        //        NSLayoutConstraint.activate([
-        //            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
-        //            self.subtitleLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
-        //            self.subtitleLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-        //            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
-        //        ])
     }
     
     required init?(coder: NSCoder) {

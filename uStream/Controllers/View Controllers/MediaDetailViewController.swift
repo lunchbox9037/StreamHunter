@@ -204,10 +204,15 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.section)
+        if whereToWatchSection.contains(indexPath.section) {
+            print("tapped")
+            AppLinks.launchApp(provider: providers[indexPath.row])
+        }
+        
         if similarSection.contains(indexPath.section) {
             self.selectedMedia = similar[indexPath.row]
             setupViews()
-//            self.collectionView.reloadData()
         }
     }//end func
 }//end extension

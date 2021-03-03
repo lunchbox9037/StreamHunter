@@ -20,8 +20,9 @@ protocol ListMediaDetailButtonDelegate: AnyObject {
 
 public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    var moreButton: UIButton {return moreWaysToWatchButton}
-
+//    var moreOptionsLink: String?
+    var moreOptionsButton: UIButton {return moreWaysToWatchButton}
+    
     weak var delegate: ListMediaDetailButtonDelegate?
     
     // MARK: - Views
@@ -60,7 +61,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("More Watch Options...", for: .normal)
-//        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .callout).withSize(12)
         button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         button.titleLabel?.numberOfLines = 1
         button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -69,7 +69,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -85,7 +84,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -141,24 +139,10 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.buttonStackView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
         
-        
-//        NSLayoutConstraint.activate([
-//            self.addToCurrentlyWatchingButton.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
-//            self.addToCurrentlyWatchingButton.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
-//            self.addToCurrentlyWatchingButton.trailingAnchor.constraint(equalTo: self.moreWaysToWatchButton.trailingAnchor, constant: 5),
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            self.moreWaysToWatchButton.topAnchor.constraint(equalTo: self.backdropImageView.bottomAnchor, constant: 10),
-////            self.moreWaysToWatchButton.leadingAnchor.constraint(equalTo: self.addToCurrentlyWatchingButton.leadingAnchor, constant: 5),
-//            self.moreWaysToWatchButton.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-//        ])
-        
         NSLayoutConstraint.activate([
             self.synopsisLabel.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
             self.synopsisLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.synopsisLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
         
         NSLayoutConstraint.activate([
@@ -166,7 +150,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.backdropImageView.centerXAnchor, constant: 0)
         ])
     }
 
@@ -175,16 +158,10 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func setup(media: ListMedia) {
-//        ListMediaController.shared.fetchListMedia()
-//        if (ListMediaController.shared.listMedia.contains { (listmedia) -> Bool in
-//            return listmedia.id == media.id ?? 0
-//        }) {
+    func setup(media: ListMedia, link: String?) {
+//        if link == nil {
 //            disableButton()
-//        } else {
-//            enableButton()
 //        }
-        
         
         TrendingMediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
@@ -201,7 +178,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     func activateButton() {
-        self.moreButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
+        self.moreOptionsButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
     }
 
     @objc func moreButtonTapped(sender: UIButton) {
@@ -213,11 +190,11 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
 //        moreWaysToWatchButton.backgroundColor = .systemBlue
 //        moreWaysToWatchButton.isEnabled = true
 //    }
-//
-//    func disableButton() {
-//        moreWaysToWatchButton.setTitle("Added to List!", for: .normal)
-//        moreWaysToWatchButton.backgroundColor = .systemGray
-//        moreWaysToWatchButton.isEnabled = false
-//    }
+
+    func disableButton() {
+        moreOptionsButton.setTitle("No watch options...", for: .normal)
+        moreOptionsButton.backgroundColor = .systemGray
+        moreOptionsButton.isEnabled = false
+    }
 }//end class
 

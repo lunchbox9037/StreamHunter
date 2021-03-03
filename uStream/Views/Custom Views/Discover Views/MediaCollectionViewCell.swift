@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class TrendingMediaCollectionViewCell: UICollectionViewCell {
+public class MediaCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     var currentIndexPath: IndexPath? = nil
     

@@ -154,7 +154,11 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         }
         
         if whereToWatchSection.contains(indexPath.section) {
-            header.setup(label: "Stream")
+            if providers.count == 0 {
+                header.setup(label: "No Streaming Providers")
+            } else {
+                header.setup(label: "Stream")
+            }
         }
         
         if similarSection.contains(indexPath.section) {
@@ -169,7 +173,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
             cell.delegate = self
-            cell.setup(media: media)
+            cell.setup(media: media, link: self.providerLink)
             return cell
         }
         
@@ -189,6 +193,11 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if whereToWatchSection.contains(indexPath.section) {
+            print("tapped")
+            AppLinks.launchApp(provider: providers[indexPath.row])
+        }
+        
         if similarSection.contains(indexPath.section) {
             let detailVC = MediaDetailViewController()
             detailVC.selectedMedia = similar[indexPath.row]
@@ -201,7 +210,7 @@ extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
     func moreWatchOptions() {
         print("morebuttontapped")
         
-        guard let link = providerLink else {return}
+        guard let link = providerLink else {return presentErrorAlert() }
         if let appURL = URL(string: link) {
             UIApplication.shared.open(appURL) { success in
                 if success {
@@ -214,4 +223,11 @@ extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
             print("Invalid URL specified.")
         }
     }
+    
+//    func presentErrorAlert() {
+//        let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for this title...", preferredStyle: .alert)
+//        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
+//        alertController.addAction(dismissAction)
+//        present(alertController, animated: true)
+//    }
 }//end extension

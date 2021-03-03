@@ -42,8 +42,8 @@ class DiscoverViewController: UIViewController {
         collectionView.isPrefetchingEnabled = true
 
 //        collectionView.prefetchDataSource = self
-        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
-        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,14 +147,14 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if trendingMovieSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
