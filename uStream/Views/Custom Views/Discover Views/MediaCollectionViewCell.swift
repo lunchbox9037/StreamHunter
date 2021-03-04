@@ -78,7 +78,7 @@ public class MediaCollectionViewCell: UICollectionViewCell {
     
     func setupCell(media: Media, indexPath: IndexPath) {
         self.currentIndexPath = indexPath
-        TrendingMediaController.fetchPosterFor(media: media) { (result) in
+        MediaController.fetchPosterFor(media: media) { (result) in
             switch result {
             case .success(let image):
                     DispatchQueue.main.async {
@@ -94,5 +94,4 @@ public class MediaCollectionViewCell: UICollectionViewCell {
             }
         }
     }//end func
-    
 }//end class

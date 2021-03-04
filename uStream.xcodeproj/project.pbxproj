@@ -17,6 +17,9 @@
 		F650773925F04EDF0040C171 /* AlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650773825F04EDF0040C171 /* AlertControllerExtension.swift */; };
 		F650773C25F05DD40040C171 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F650773B25F05DD40040C171 /* Settings.storyboard */; };
 		F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650773E25F05E270040C171 /* SettingsViewController.swift */; };
+		F650774825F0B9B40040C171 /* Popular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650774725F0B9B40040C171 /* Popular.swift */; };
+		F650774E25F0DF460040C171 /* Location+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650774D25F0DF460040C171 /* Location+Convenience.swift */; };
+		F650775125F0E05F0040C171 /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650775025F0E05F0040C171 /* LocationController.swift */; };
 		F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */; };
 		F68AB92225DF63FA002D56D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */; };
 		F68AB92725DF63FA002D56D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F68AB92525DF63FA002D56D2 /* Main.storyboard */; };
@@ -25,7 +28,7 @@
 		F68AB93E25DF6450002D56D2 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB93D25DF6450002D56D2 /* CoreDataStack.swift */; };
 		F68AB94825DF66A6002D56D2 /* ListMedia+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB94725DF66A6002D56D2 /* ListMedia+Convenience.swift */; };
 		F68AB94C25DF6A75002D56D2 /* TrendingMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB94B25DF6A75002D56D2 /* TrendingMedia.swift */; };
-		F68AB95425DF743C002D56D2 /* TrendingMediaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95325DF743C002D56D2 /* TrendingMediaController.swift */; };
+		F68AB95425DF743C002D56D2 /* MediaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95325DF743C002D56D2 /* MediaController.swift */; };
 		F68AB95A25DF7935002D56D2 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95925DF7935002D56D2 /* NetworkError.swift */; };
 		F68AB95F25DF7C1C002D56D2 /* MediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */; };
 		F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */; };
@@ -65,6 +68,9 @@
 		F650773825F04EDF0040C171 /* AlertControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerExtension.swift; sourceTree = "<group>"; };
 		F650773B25F05DD40040C171 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		F650773E25F05E270040C171 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F650774725F0B9B40040C171 /* Popular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popular.swift; sourceTree = "<group>"; };
+		F650774D25F0DF460040C171 /* Location+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Convenience.swift"; sourceTree = "<group>"; };
+		F650775025F0E05F0040C171 /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
 		F68AB91C25DF63FA002D56D2 /* uStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,7 +81,7 @@
 		F68AB93D25DF6450002D56D2 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		F68AB94725DF66A6002D56D2 /* ListMedia+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListMedia+Convenience.swift"; sourceTree = "<group>"; };
 		F68AB94B25DF6A75002D56D2 /* TrendingMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingMedia.swift; sourceTree = "<group>"; };
-		F68AB95325DF743C002D56D2 /* TrendingMediaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingMediaController.swift; sourceTree = "<group>"; };
+		F68AB95325DF743C002D56D2 /* MediaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaController.swift; sourceTree = "<group>"; };
 		F68AB95925DF7935002D56D2 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +172,7 @@
 				F63774F525E6093500F4025E /* uStream.xcdatamodeld */,
 				F68AB93D25DF6450002D56D2 /* CoreDataStack.swift */,
 				F68AB94725DF66A6002D56D2 /* ListMedia+Convenience.swift */,
+				F650774D25F0DF460040C171 /* Location+Convenience.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -199,6 +206,7 @@
 				F6E2CDC725E700E50089DEF1 /* Similar.swift */,
 				F6A87FC825E9FF0600E7A1E0 /* SearchResults.swift */,
 				F650772E25EF24F10040C171 /* Media.swift */,
+				F650774725F0B9B40040C171 /* Popular.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -229,12 +237,13 @@
 		F68AB95625DF744B002D56D2 /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F68AB95325DF743C002D56D2 /* TrendingMediaController.swift */,
+				F68AB95325DF743C002D56D2 /* MediaController.swift */,
 				F6F6639725E4508200C4FC65 /* TrendingPeopleController.swift */,
 				F63774F125E5F80100F4025E /* WhereToWatchController.swift */,
 				F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */,
 				F6A87FC525E9FEDB00E7A1E0 /* SearchResultsController.swift */,
 				F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */,
+				F650775025F0E05F0040C171 /* LocationController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -378,7 +387,7 @@
 				F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */,
 				F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */,
 				F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */,
-				F68AB95425DF743C002D56D2 /* TrendingMediaController.swift in Sources */,
+				F68AB95425DF743C002D56D2 /* MediaController.swift in Sources */,
 				F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */,
 				F6A87FB025E9EF0700E7A1E0 /* TopBarViewController.swift in Sources */,
 				F63774F225E5F80100F4025E /* WhereToWatchController.swift in Sources */,
@@ -389,6 +398,7 @@
 				F6A87FD425EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift in Sources */,
 				F6A87FF225ED663300E7A1E0 /* ListMediaDetailViewController.swift in Sources */,
 				F6F6638425E413D900C4FC65 /* LayoutBuilder.swift in Sources */,
+				F650774825F0B9B40040C171 /* Popular.swift in Sources */,
 				F63774F725E6093500F4025E /* uStream.xcdatamodeld in Sources */,
 				F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */,
 				F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */,
@@ -396,11 +406,13 @@
 				F6A87FBF25E9F88600E7A1E0 /* SearchResultsCollectionViewCell.swift in Sources */,
 				F6A87FF525ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift in Sources */,
 				F650773925F04EDF0040C171 /* AlertControllerExtension.swift in Sources */,
+				F650775125F0E05F0040C171 /* LocationController.swift in Sources */,
 				F6A87FB825E9F2F100E7A1E0 /* SearchViewController.swift in Sources */,
 				F6A87FC925E9FF0600E7A1E0 /* SearchResults.swift in Sources */,
 				F68AB92225DF63FA002D56D2 /* SceneDelegate.swift in Sources */,
 				F6A87FD125EC5D2A00E7A1E0 /* ListMediaViewController.swift in Sources */,
 				F68AB95F25DF7C1C002D56D2 /* MediaCollectionViewCell.swift in Sources */,
+				F650774E25F0DF460040C171 /* Location+Convenience.swift in Sources */,
 				F6F6638725E4146600C4FC65 /* SectionHeader.swift in Sources */,
 				F6F6639225E44ABD00C4FC65 /* TrendingPeopleCollectionViewCell.swift in Sources */,
 				F68AB95A25DF7935002D56D2 /* NetworkError.swift in Sources */,
@@ -560,6 +572,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -580,6 +593,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

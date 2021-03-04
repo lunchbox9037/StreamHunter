@@ -21,7 +21,7 @@ class SimilarController {
     // MARK: - Properties
     static var imageCache = NSCache<NSURL, UIImage>()
 
-    static func fetchSimilarFor(mediaType: String, id: Int, completion: @escaping (Result<Similar, NetworkError>) -> Void) {
+    static func fetchSimilarFor(mediaType: String, id: Int, completion: @escaping (Result<[Media], NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let mediaTypeURL = versionURL.appendingPathComponent(mediaType)
@@ -53,7 +53,10 @@ class SimilarController {
             guard let data = data else {return completion(.failure(.noData))}
             do {
                 let similar = try JSONDecoder().decode(Similar.self, from: data)
-                return completion(.success(similar))
+                let similarWithPoster = similar.results.filter { (result) -> Bool in
+                    return result.backdropPath != nil
+                }
+                return completion(.success(similarWithPoster))
             } catch {
                 completion(.failure(.thrownError(error)))
             }

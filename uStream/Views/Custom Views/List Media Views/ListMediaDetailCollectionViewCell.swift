@@ -20,8 +20,8 @@ protocol ListMediaDetailButtonDelegate: AnyObject {
 
 public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-//    var moreOptionsLink: String?
     var moreOptionsButton: UIButton {return moreWaysToWatchButton}
+    var homeButton: UIButton {return launchHomeButton}
     
     weak var delegate: ListMediaDetailButtonDelegate?
     
@@ -60,11 +60,13 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     var moreWaysToWatchButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("More Watch Options...", for: .normal)
+        button.setTitle(" More Watch Options...", for: .normal)
+        button.setImage(UIImage(systemName: "link"), for: .normal)
+        button.tintColor = .white
         button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        button.titleLabel?.numberOfLines = 1
+        button.titleLabel?.numberOfLines = 0
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(12)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline).withSize(12)
         button.titleLabel?.lineBreakMode = NSLineBreakMode.byClipping
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
@@ -72,14 +74,16 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    var addToCurrentlyWatchingButton: UIButton = {
+    var launchHomeButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Currently Watching?", for: .normal)
+        button.setTitle(" Open Home?", for: .normal)
+        button.setImage(UIImage(systemName: "homekit"), for: .normal)
+        button.tintColor = .systemYellow
         button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
-        button.titleLabel?.numberOfLines = 1
+        button.titleLabel?.numberOfLines = 0
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(12)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline).withSize(12)
         button.titleLabel?.lineBreakMode = NSLineBreakMode.byClipping
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
@@ -113,7 +117,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.backdropImageView)
         self.container.addSubview(self.buttonStackView)
-        self.buttonStackView.addArrangedSubview(self.addToCurrentlyWatchingButton)
+        self.buttonStackView.addArrangedSubview(self.launchHomeButton)
         self.buttonStackView.addArrangedSubview(self.moreWaysToWatchButton)
         self.container.addSubview(self.synopsisLabel)
         self.container.addSubview(self.overviewLabel)
@@ -137,6 +141,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.buttonStackView.topAnchor.constraint(equalTo: self.backdropImageView.bottomAnchor, constant: 10),
             self.buttonStackView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.buttonStackView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
+            self.buttonStackView.heightAnchor.constraint(equalToConstant: 34)
         ])
         
         NSLayoutConstraint.activate([
@@ -163,7 +168,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
 //            disableButton()
 //        }
         
-        TrendingMediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
+        MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -179,10 +184,19 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     
     func activateButton() {
         self.moreOptionsButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
+        self.homeButton.addTarget(self, action: #selector(launchHomeApp), for: .touchUpInside)
     }
 
     @objc func moreButtonTapped(sender: UIButton) {
         delegate?.moreWatchOptions()
+    }
+    
+    @objc func launchHomeApp() {
+        if let url = URL(string: "com.apple.home://") {
+            UIApplication.shared.open(url)
+        } else {
+            print("error with Home App URL")
+        }
     }
     
 //    func enableButton() {

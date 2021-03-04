@@ -1,5 +1,5 @@
 //
-//  TrendingController.swift
+//  MediaController.swift
 //  uStream
 //
 //  Created by stanley phillips on 2/18/21.
@@ -9,9 +9,11 @@ import UIKit
 
 //base urlhttps://api.themoviedb.org/
 //image urlhttp://image.tmdb.org/t/p/w500/(imageEndpoint)
-//https://api.themoviedb.org/3/trending/all/day?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74
 
-class TrendingMediaController {
+//trending urlhttps://api.themoviedb.org/3/trending/all/day?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74
+//popularhttps://api.themoviedb.org/3/movie/popular?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1
+
+class MediaController {
     // MARK: - String Constants
     static let posterBaseURL = URL(string: "https://image.tmdb.org/t/p/w500/")
     static let baseURL = URL(string: "https://api.themoviedb.org/")
@@ -21,12 +23,11 @@ class TrendingMediaController {
     static let tvComponent = "tv"
     static let personComponent = "person"
     static let dayComponent = "day"
+    static let popularComponent = "popular"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
     
     // MARK: - Properties
     static var imageCache = NSCache<NSURL, UIImage>()
-    
-    
 
     // MARK: - API Methods
     static func fetchTrendingResultsFor(mediaType: String, completion: @escaping (Result<TrendingMedia, NetworkError>) -> Void) {
@@ -62,6 +63,47 @@ class TrendingMediaController {
             do {
                 let trending = try JSONDecoder().decode(TrendingMedia.self, from: data)
                 return completion(.success(trending))
+            } catch {
+                completion(.failure(.thrownError(error)))
+            }
+        }.resume()
+    }//end func
+    
+    //popularhttps://api.themoviedb.org/3/movie/popular?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1
+
+    static func fetchPopularResultsFor(mediaType: String, completion: @escaping (Result<Popular, NetworkError>) -> Void) {
+        guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
+        let versionURL = baseURL.appendingPathComponent(versionComponent)
+        let mediaTypeURL = versionURL.appendingPathComponent(mediaType)
+        let popularURL = mediaTypeURL.appendingPathComponent(popularComponent)
+        
+        var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
+        let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+//        let pageQuery = URLQueryItem(name: "page", value: "2")
+        
+        components?.queryItems = [apiQuery]
+        
+        guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
+        print(finalURL)
+        
+        URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
+            if let error = error {
+                print("======== ERROR ========")
+                print("Function: \(#function)")
+                print("Error: \(error)")
+                print("Description: \(error.localizedDescription)")
+                print("======== ERROR ========")
+                return completion(.failure(.thrownError(error)))
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print("POPULAR MEDIA STATUS CODE: \(response.statusCode)")
+            }
+            
+            guard let data = data else {return completion(.failure(.noData))}
+            do {
+                let popular = try JSONDecoder().decode(Popular.self, from: data)
+                return completion(.success(popular))
             } catch {
                 completion(.failure(.thrownError(error)))
             }

@@ -40,7 +40,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     var addToListButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add to your list?", for: .normal)
+        button.setTitle("  Add to your list?", for: .normal)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
@@ -96,6 +96,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.addToListButton.topAnchor.constraint(equalTo: self.backdropImageView.bottomAnchor, constant: 10),
             self.addToListButton.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.addToListButton.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
+            self.addToListButton.heightAnchor.constraint(equalToConstant: 34)
         ])
         
         NSLayoutConstraint.activate([
@@ -127,7 +128,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             enableButton()
         }
         
-        TrendingMediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
+        MediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):

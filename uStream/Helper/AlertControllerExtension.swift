@@ -14,4 +14,11 @@ extension UIViewController {
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
     }
+    
+    func presentLocationUpdatedAlert() {
+        let alertController = UIAlertController(title: "Location Updated!", message: "Your streaming providers will now be based on your current location.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true)
+    }
 }
