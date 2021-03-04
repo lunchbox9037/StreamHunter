@@ -123,7 +123,7 @@ class MediaDetailViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let similar):
-                    self?.similar = similar.results
+                    self?.similar = similar
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):

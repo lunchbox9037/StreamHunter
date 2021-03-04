@@ -14,11 +14,13 @@ class DiscoverViewController: UIViewController {
     // MARK: - Properties
     let trendingMovieSection: [Int] = [0]
     let trendingTVSection: [Int] = [1]
-    let trendingPeopleSection: [Int] = [2]
+    let popularMovieSection: [Int] = [2]
+    let popularTVSection: [Int] = [3]
     
     var trendingMovies: [Media] = []
     var trendingTV: [Media] = []
-    var trendingPeople: [Person] = []
+    var popularMovies: [Media] = []
+    var popularTV: [Media] = []
     let mediaTypes: [String] = ["movie", "tv"]
 
     
@@ -27,6 +29,7 @@ class DiscoverViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         fetchTrendingMedia()
+        fetchPopularMedia()
     }
     
     // MARK: - Methods(
@@ -39,16 +42,17 @@ class DiscoverViewController: UIViewController {
         collectionView.isPrefetchingEnabled = true
 
 //        collectionView.prefetchDataSource = self
-        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
-        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
-        collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingMovieCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingTVCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "popularMovieCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "popularTVCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func fetchTrendingMedia() {
         for mediaType in mediaTypes {
-            TrendingMediaController.fetchTrendingResultsFor(mediaType: mediaType) { (result) in
+            MediaController.fetchTrendingResultsFor(mediaType: mediaType) { (result) in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let trending):
@@ -68,19 +72,29 @@ class DiscoverViewController: UIViewController {
         }
     }//end func
     
-    func fetchTrendingPeople() {
-        TrendingPeopleController.fetchTrendingPeople() { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let trending):
-                    self.trendingPeople = trending
-                    self.collectionView.reloadSections(IndexSet(integer: 2))
-                case .failure(let error):
-                    print(error.localizedDescription)
+    func fetchPopularMedia() {
+        for mediaType in mediaTypes {
+            MediaController.fetchPopularResultsFor(mediaType: mediaType) { (result) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let popular):
+                        if mediaType == self.mediaTypes[0] {
+                            self.popularMovies = popular.results
+                            self.collectionView.reloadSections(IndexSet(integer: 2))
+                        }
+                        if mediaType == self.mediaTypes[1] {
+                            self.popularTV = popular.results
+                            self.collectionView.reloadSections(IndexSet(integer: 3))
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
                 }
             }
         }
     }//end func
+    
+    
     
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
@@ -89,8 +103,12 @@ class DiscoverViewController: UIViewController {
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
             case 1:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            case 2:
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            case 3:
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
             default:
-                return LayoutBuilder.buildPeopleIconLayout()
+                return LayoutBuilder.buildMediaVerticalScrollLayout()
             }
         }
     }//end func
@@ -105,7 +123,7 @@ class DiscoverViewController: UIViewController {
 // MARK: - Extensions
 extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -119,9 +137,13 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             header.setup(label: "#TrendingShows")
         }
         
-//        if trendingPeopleSection.contains(indexPath.section) {
-//            header.setup(label: "#TrendingPeople")
-//        }
+        if popularMovieSection.contains(indexPath.section) {
+            header.setup(label: "Popular Movies")
+        }
+        
+        if popularTVSection.contains(indexPath.section) {
+            header.setup(label: "Popular Shows")
+        }
         
         return header
     }//end func
@@ -135,33 +157,46 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             return trendingTV.count
         }
         
-//        if trendingPeopleSection.contains(section) {
-//            return trendingPeople.count
-//        }
+        if popularMovieSection.contains(section) {
+            return popularMovies.count
+        }
+        
+        if popularTVSection.contains(section) {
+            return popularTV.count
+        }
         return 0
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if trendingMovieSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? MediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingMovieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? MediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingTVCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
         }
         
-//        if trendingPeopleSection.contains(indexPath.section) {
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "peopleCell", for: indexPath) as? TrendingPeopleCollectionViewCell else {return UICollectionViewCell()}
-//            cell.setupCell(person: trendingPeople[indexPath.row])
-//            return cell
-//        }
+        if popularMovieSection.contains(indexPath.section) {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularMovieCell", for: indexPath) as? MediaCollectionViewCell
+            else {return UICollectionViewCell()}
+            print("popular movie")
+            cell.setupCell(media: popularMovies[indexPath.row], indexPath: indexPath)
+            return cell
+        }
+        
+        if popularTVSection.contains(indexPath.section) {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularTVCell", for: indexPath) as? MediaCollectionViewCell
+            else {return UICollectionViewCell()}
+            cell.setupCell(media: popularTV[indexPath.row], indexPath: indexPath)
+            return cell
+        }
         return UICollectionViewCell()
     }//end func
     
@@ -169,8 +204,17 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if trendingMovieSection.contains(indexPath.section) {
             presentDetailVC(media: trendingMovies[indexPath.row])
         }
+        
         if trendingTVSection.contains(indexPath.section) {
             presentDetailVC(media: trendingTV[indexPath.row])
+        }
+        
+        if popularMovieSection.contains(indexPath.section) {
+            presentDetailVC(media: popularMovies[indexPath.row])
+        }
+        
+        if popularTVSection.contains(indexPath.section) {
+            presentDetailVC(media: popularTV[indexPath.row])
         }
     }
 }//end extension
