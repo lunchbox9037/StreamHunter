@@ -17,6 +17,14 @@ class TopBarViewController: UIViewController {
     }
     
     // MARK: - Actions
+    @IBAction func settingButtonTapped(_ sender: Any) {
+        guard let settingsVC = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(identifier: "settings") as? SettingsTableViewController else {return}
+        let nav = UINavigationController(rootViewController: settingsVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func searchButtonTapped(_ sender: Any) {
         guard let searchVC = UIStoryboard(name: "Search", bundle: nil).instantiateViewController(identifier: "search") as? SearchViewController else {return}
         searchVC.modalPresentationStyle = .overCurrentContext

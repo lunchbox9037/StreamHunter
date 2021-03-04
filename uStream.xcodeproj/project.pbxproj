@@ -15,6 +15,8 @@
 		F650772F25EF24F10040C171 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650772E25EF24F10040C171 /* Media.swift */; };
 		F650773625F008030040C171 /* AppLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650773525F008030040C171 /* AppLinks.swift */; };
 		F650773925F04EDF0040C171 /* AlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650773825F04EDF0040C171 /* AlertControllerExtension.swift */; };
+		F650773C25F05DD40040C171 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F650773B25F05DD40040C171 /* Settings.storyboard */; };
+		F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650773E25F05E270040C171 /* SettingsViewController.swift */; };
 		F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */; };
 		F68AB92225DF63FA002D56D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */; };
 		F68AB92725DF63FA002D56D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F68AB92525DF63FA002D56D2 /* Main.storyboard */; };
@@ -61,6 +63,8 @@
 		F650772E25EF24F10040C171 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F650773525F008030040C171 /* AppLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLinks.swift; sourceTree = "<group>"; };
 		F650773825F04EDF0040C171 /* AlertControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerExtension.swift; sourceTree = "<group>"; };
+		F650773B25F05DD40040C171 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		F650773E25F05E270040C171 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		F68AB91C25DF63FA002D56D2 /* uStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 			children = (
 				F68AB92525DF63FA002D56D2 /* Main.storyboard */,
 				F6A87FAC25E9ED9600E7A1E0 /* TopBar.storyboard */,
+				F650773B25F05DD40040C171 /* Settings.storyboard */,
 				F6A87FB425E9F2BF00E7A1E0 /* Search.storyboard */,
 			);
 			path = StoryBoards;
@@ -211,11 +216,12 @@
 			isa = PBXGroup;
 			children = (
 				F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */,
+				F650773E25F05E270040C171 /* SettingsViewController.swift */,
 				F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */,
 				F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */,
 				F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */,
-				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
 				F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */,
+				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -353,6 +359,7 @@
 				F6A87FAD25E9ED9600E7A1E0 /* TopBar.storyboard in Resources */,
 				F68AB92F25DF63FB002D56D2 /* LaunchScreen.storyboard in Resources */,
 				F68AB92C25DF63FB002D56D2 /* Assets.xcassets in Resources */,
+				F650773C25F05DD40040C171 /* Settings.storyboard in Resources */,
 				F68AB92725DF63FA002D56D2 /* Main.storyboard in Resources */,
 				F6A87FB525E9F2BF00E7A1E0 /* Search.storyboard in Resources */,
 			);
@@ -370,6 +377,7 @@
 				F6A87FF925EDEC1700E7A1E0 /* Haptics.swift in Sources */,
 				F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */,
 				F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */,
+				F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */,
 				F68AB95425DF743C002D56D2 /* TrendingMediaController.swift in Sources */,
 				F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */,
 				F6A87FB025E9EF0700E7A1E0 /* TopBarViewController.swift in Sources */,

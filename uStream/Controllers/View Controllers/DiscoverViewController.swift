@@ -25,11 +25,8 @@ class DiscoverViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        fetchTrendingPeople()
-        
         setupCollectionView()
         fetchTrendingMedia()
-
     }
     
     // MARK: - Methods(
@@ -119,7 +116,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            header.setup(label: "#TrendingTV")
+            header.setup(label: "#TrendingShows")
         }
         
 //        if trendingPeopleSection.contains(indexPath.section) {
@@ -178,21 +175,3 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }
 }//end extension
 
-//extension DiscoverViewController: UICollectionViewDataSourcePrefetching {
-//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        for indexPath in indexPaths {
-//            if trendingMovieSection.contains(indexPath.section) {
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
-//            }
-//            if trendingTVSection.contains(indexPath.section) {
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
-//            }
-////            if trendingPeopleSection.contains(indexPath.section) {
-////
-////                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
-////            }
-//        }
-//    }
-//}

@@ -8,6 +8,7 @@
 import UIKit
 
 class AppLinks {
+    //need to test more when app is not installed
     static let netflixURL = "nflx://www.netflix.com/browse" //working ✅
     static let huluURL = "hulu://hulu.com" //working ✅
     static let hboMaxURL = "hbomax://www.hbomax.com/" //working ✅
