@@ -1,25 +1,22 @@
 //
-//  MedaiDetailViewController.swift
+//  ListMediaDetailViewController.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/22/21.
+//  Created by stanley phillips on 3/1/21.
 //
 
 import UIKit
 
-protocol RefreshDelegate: AnyObject {
-    func refresh()
-}
-
-class MediaDetailViewController: UIViewController {
+class ListMediaDetailViewController: UIViewController {
     // MARK: - Properties
-    var selectedMedia: Media?
+    var selectedMedia: ListMedia?
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
     let similarSection: [Int] = [2]
     
     var providers: [Provider] = []
+    var providerLink: String?
     var similar: [Media] = []
     
     static weak var delegate: RefreshDelegate?
@@ -41,7 +38,7 @@ class MediaDetailViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         //register new cells
-        collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
+        collectionView.register(ListMediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "listMediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
         collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
@@ -53,7 +50,6 @@ class MediaDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemGray
-       
         setupViews()
     }
     
@@ -94,15 +90,13 @@ class MediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-        var mediaType: String = "movie"
-        if media.title == nil {
-            mediaType = "tv"
-        }
-        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
+        guard let mediaType = media.mediaType else {return}
+        WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
                     self?.providers = location.streaming
+                    self?.providerLink = location.deepLink
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):
@@ -114,18 +108,14 @@ class MediaDetailViewController: UIViewController {
     
     func fetchSimilar() {
         guard let media = selectedMedia else {return}
-        //make sure the media is the correct type based on the name(tv) or title(movie)
-        var mediaType: String = "movie"
-        if media.title == nil {
-            mediaType = "tv"
-        }
-        SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
+        guard let mediaType = media.mediaType else {return}
+        SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let similar):
                     self?.similar = similar.results
                     self?.collectionView.reloadData()
-                    print("got providers")
+                    print("got similar")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -139,7 +129,7 @@ class MediaDetailViewController: UIViewController {
 }//end class
 
 // MARK: - Extensions
-extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         3
     }
@@ -159,9 +149,8 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
-        
         if selectedMediaSection.contains(indexPath.section) {
-            header.setup(label: ((self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix"))
+            header.setup(label: ((self.selectedMedia?.title) ?? "The Matrix"))
         }
         
         if whereToWatchSection.contains(indexPath.section) {
@@ -181,10 +170,10 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if selectedMediaSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaDetailCell", for: indexPath) as? MediaDetailCollectionViewCell else {return UICollectionViewCell()}
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
             cell.delegate = self
-            cell.setup(media: media)
+            cell.setup(media: media, link: self.providerLink)
             return cell
         }
         
@@ -204,25 +193,41 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.section)
         if whereToWatchSection.contains(indexPath.section) {
             print("tapped")
             AppLinks.launchApp(provider: providers[indexPath.row])
         }
         
         if similarSection.contains(indexPath.section) {
-            self.selectedMedia = similar[indexPath.row]
-            setupViews()
+            let detailVC = MediaDetailViewController()
+            detailVC.selectedMedia = similar[indexPath.row]
+            present(detailVC, animated: false)
         }
     }//end func
 }//end extension
 
-extension MediaDetailViewController: AddToListButtonDelegate {
-    func addToList() {
-        print("add button tapped")
-        Haptics.playSuccessNotification()
-        guard let selectedMedia = self.selectedMedia else {return}
-        ListMediaController.shared.addToList(media: selectedMedia)
-        MediaDetailViewController.delegate?.refresh()
+extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
+    func moreWatchOptions() {
+        print("morebuttontapped")
+        
+        guard let link = providerLink else {return presentErrorAlert() }
+        if let appURL = URL(string: link) {
+            UIApplication.shared.open(appURL) { success in
+                if success {
+                    print("The URL was delivered successfully.")
+                } else {
+                    print("The URL failed to open.")
+                }
+            }
+        } else {
+            print("Invalid URL specified.")
+        }
     }
-}
+    
+//    func presentErrorAlert() {
+//        let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for this title...", preferredStyle: .alert)
+//        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
+//        alertController.addAction(dismissAction)
+//        present(alertController, animated: true)
+//    }
+}//end extension

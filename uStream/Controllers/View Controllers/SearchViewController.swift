@@ -37,15 +37,11 @@ class SearchViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             return LayoutBuilder.buildMediaVerticalScrollLayout()
         }
     }//end func
-    
-    
-    
 }//end class
 
 // MARK: - Extensions
@@ -76,7 +72,6 @@ extension SearchViewController: UISearchBarDelegate {
                 case .success(let results):
                     self?.searchResults = results
                     self?.searchbar.text = ""
-//                    self?.searchbar.resignFirstResponder()
                     self?.collectionView.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)

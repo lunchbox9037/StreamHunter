@@ -21,7 +21,7 @@ class SimilarController {
     // MARK: - Properties
     static var imageCache = NSCache<NSURL, UIImage>()
 
-    static func fetchRecommendationsFor(mediaType: String, id: Int, completion: @escaping (Result<Similar, NetworkError>) -> Void) {
+    static func fetchSimilarFor(mediaType: String, id: Int, completion: @escaping (Result<Similar, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let mediaTypeURL = versionURL.appendingPathComponent(mediaType)
@@ -47,13 +47,13 @@ class SimilarController {
             }
             
             if let response = response as? HTTPURLResponse {
-                print("RECOMMENDATIONS STATUS CODE: \(response.statusCode)")
+                print("SIMILAR STATUS CODE: \(response.statusCode)")
             }
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let recommendations = try JSONDecoder().decode(Similar.self, from: data)
-                return completion(.success(recommendations))
+                let similar = try JSONDecoder().decode(Similar.self, from: data)
+                return completion(.success(similar))
             } catch {
                 completion(.failure(.thrownError(error)))
             }

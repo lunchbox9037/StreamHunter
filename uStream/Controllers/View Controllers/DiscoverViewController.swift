@@ -25,11 +25,8 @@ class DiscoverViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        fetchTrendingPeople()
-        
         setupCollectionView()
         fetchTrendingMedia()
-
     }
     
     // MARK: - Methods(
@@ -42,8 +39,8 @@ class DiscoverViewController: UIViewController {
         collectionView.isPrefetchingEnabled = true
 
 //        collectionView.prefetchDataSource = self
-        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
-        collectionView.register(TrendingMediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "tvCell")
         collectionView.register(TrendingPeopleCollectionViewCell.self, forCellWithReuseIdentifier: "peopleCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -119,7 +116,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            header.setup(label: "#TrendingTV")
+            header.setup(label: "#TrendingShows")
         }
         
 //        if trendingPeopleSection.contains(indexPath.section) {
@@ -147,14 +144,14 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if trendingMovieSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingTVSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? TrendingMediaCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tvCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
             cell.setupCell(media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
@@ -178,21 +175,3 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }
 }//end extension
 
-//extension DiscoverViewController: UICollectionViewDataSourcePrefetching {
-//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        for indexPath in indexPaths {
-//            if trendingMovieSection.contains(indexPath.section) {
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
-//            }
-//            if trendingTVSection.contains(indexPath.section) {
-//
-//                TrendingMediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
-//            }
-////            if trendingPeopleSection.contains(indexPath.section) {
-////
-////                TrendingPeopleController.fetchPosterFor(person: trendingPeople[indexPath.row]) { (_) in }
-////            }
-//        }
-//    }
-//}
