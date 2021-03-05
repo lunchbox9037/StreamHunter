@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class ListMediaDetailViewController: UIViewController {
+class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDelegate {
     // MARK: - Properties
     var selectedMedia: ListMedia?
     
@@ -26,7 +27,7 @@ class ListMediaDetailViewController: UIViewController {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .opaqueSeparator
+        button.tintColor = .systemGray2
         button.contentMode = .scaleAspectFill
         button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -35,7 +36,7 @@ class ListMediaDetailViewController: UIViewController {
 
     lazy var collectionView: UICollectionView = {
         let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.makeLayout())
-        collectionView.backgroundColor = UIColor.systemGray
+        collectionView.backgroundColor = UIColor.systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         //register new cells
@@ -50,7 +51,7 @@ class ListMediaDetailViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.systemGray
+        self.view.backgroundColor = UIColor.systemBackground
         setupViews()
     }
     
@@ -208,18 +209,25 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
 
 extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
     func moreWatchOptions() {
-        print("morebuttontapped")
-        guard let link = providerLink else {return presentErrorAlert()}
-        if let appURL = URL(string: link) {
-            UIApplication.shared.open(appURL) { success in
-                if success {
-                    print("The URL was delivered successfully.")
-                } else {
-                    print("The URL failed to open.")
-                }
-            }
-        } else {
-            print("Invalid URL specified.")
+        guard let urlString = providerLink else {return presentErrorAlert()}
+        if let url = URL(string: urlString) {
+            let vc = SFSafariViewController(url: url)
+            vc.delegate = self
+            
+            present(vc, animated: true)
         }
+//        print("morebuttontapped")
+//        guard let link = providerLink else {return presentErrorAlert()}
+//        if let appURL = URL(string: link) {
+//            UIApplication.shared.open(appURL) { success in
+//                if success {
+//                    print("The URL was delivered successfully.")
+//                } else {
+//                    print("The URL failed to open.")
+//                }
+//            }
+//        } else {
+//            print("Invalid URL specified.")
+//        }
     }
 }//end extension

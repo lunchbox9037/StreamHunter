@@ -23,11 +23,13 @@ class DiscoverViewController: UIViewController {
     var popularTV: [Media] = []
     let mediaTypes: [String] = ["movie", "tv"]
 
+    var refresher: UIRefreshControl = UIRefreshControl()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupRefresher()
         fetchTrendingMedia()
         fetchPopularMedia()
     }
@@ -49,6 +51,18 @@ class DiscoverViewController: UIViewController {
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    func setupRefresher() {
+        refresher.attributedTitle = NSAttributedString(string: "Pull to refresh...")
+        refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        collectionView.addSubview(refresher)
+    }//end func
+    
+    @objc func loadData() {
+        fetchTrendingMedia()
+        fetchPopularMedia()
+        self.refresher.endRefreshing()
+    }//end func
     
     func fetchTrendingMedia() {
         for mediaType in mediaTypes {

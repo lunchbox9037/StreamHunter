@@ -20,7 +20,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     var container: UIView = {
         let view = UIView()
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 10
         view.layer.shadowOpacity = 0.3
         view.layer.shadowRadius = 10
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -31,7 +31,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     var backdropImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 20
+        imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleToFill
         return imageView
@@ -52,7 +52,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         let label: UILabel = UILabel()
         label.text = "Synopsis"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.textColor = .opaqueSeparator
+        label.textColor = .systemGray2
         label.numberOfLines = 0
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -160,6 +160,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     func disableButton() {
         addToListButton.setTitle("Added to List!", for: .normal)
         addToListButton.backgroundColor = .systemGray
+        addToListButton.titleLabel?.textColor = .separator
         addToListButton.isEnabled = false
     }
 }//end class

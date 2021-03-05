@@ -108,13 +108,14 @@ class ListMediaViewController: UIViewController {
             guard let selectedIndexPath = listCollectionView.indexPathForItem(at: gesture.location(in: listCollectionView)) else {
                 return
             }
+            longPressedEnabled = true
+            Haptics.playSuccessNotification()
             listCollectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
         case .changed:
             listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             listCollectionView.endInteractiveMovement()
-            longPressedEnabled = true
-            Haptics.playSuccessNotification()
+            
             self.listCollectionView.reloadData()
         default:
             listCollectionView.cancelInteractiveMovement()

@@ -29,7 +29,7 @@ class MediaDetailViewController: UIViewController {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .opaqueSeparator
+        button.tintColor = .systemGray2
         button.contentMode = .scaleAspectFill
         button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
@@ -38,7 +38,7 @@ class MediaDetailViewController: UIViewController {
 
     lazy var collectionView: UICollectionView = {
         let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.makeLayout())
-        collectionView.backgroundColor = UIColor.systemGray
+        collectionView.backgroundColor = UIColor.systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
@@ -52,7 +52,7 @@ class MediaDetailViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.systemGray
+        self.view.backgroundColor = UIColor.systemBackground
        
         setupViews()
     }
@@ -93,10 +93,11 @@ class MediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-        var mediaType: String = "movie"
-        if media.title == nil {
-            mediaType = "tv"
-        }
+//        var mediaType: String = "movie"
+//        if media.title == nil {
+//            mediaType = "tv"
+//        }
+        let mediaType = media.getMediaTypeFor(media)
         WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -114,10 +115,11 @@ class MediaDetailViewController: UIViewController {
     func fetchSimilar() {
         guard let media = selectedMedia else {return}
         //make sure the media is the correct type based on the name(tv) or title(movie)
-        var mediaType: String = "movie"
-        if media.title == nil {
-            mediaType = "tv"
-        }
+//        var mediaType: String = "movie"
+//        if media.title == nil {
+//            mediaType = "tv"
+//        }
+        let mediaType = media.getMediaTypeFor(media)
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
