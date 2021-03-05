@@ -29,7 +29,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .systemGray2
         button.contentMode = .scaleAspectFill
-        button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -39,7 +39,8 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         collectionView.backgroundColor = UIColor.systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
-        //register new cells
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
         collectionView.register(ListMediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "listMediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
         collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
@@ -130,7 +131,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
 }//end class
 
 // MARK: - Extensions
-extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         3
     }
@@ -156,7 +157,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         
         if whereToWatchSection.contains(indexPath.section) {
             if providers.count == 0 {
-                header.setup(label: "No Streaming Providers")
+                header.setup(label: "Streaming Providers Unavailable")
             } else {
                 header.setup(label: "Stream")
             }
@@ -169,12 +170,21 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         return header
     }//end func
     
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print(indexPaths.count)
+        for indexPath in indexPaths {
+            if similarSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
+            }
+        }
+    }//end func
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if selectedMediaSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
             cell.delegate = self
-            cell.setup(media: media, link: self.providerLink)
+            cell.setup(media: media)
             return cell
         }
         
@@ -209,25 +219,21 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
 
 extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
     func moreWatchOptions() {
-        guard let urlString = providerLink else {return presentErrorAlert()}
-        if let url = URL(string: urlString) {
-            let vc = SFSafariViewController(url: url)
-            vc.delegate = self
-            
-            present(vc, animated: true)
+        guard let media = selectedMedia else {return}
+        if let urlString = providerLink {
+            if let url = URL(string: urlString) {
+                let vc = SFSafariViewController(url: url)
+                vc.delegate = self
+                present(vc, animated: true)
+            }
+        } else {
+            if let date = media.releaseDate {
+                if date > Date() {
+                    presentNotificationAlert(media: media)
+                } else {
+                    presentErrorAlert()
+                }
+            }
         }
-//        print("morebuttontapped")
-//        guard let link = providerLink else {return presentErrorAlert()}
-//        if let appURL = URL(string: link) {
-//            UIApplication.shared.open(appURL) { success in
-//                if success {
-//                    print("The URL was delivered successfully.")
-//                } else {
-//                    print("The URL failed to open.")
-//                }
-//            }
-//        } else {
-//            print("Invalid URL specified.")
-//        }
-    }
+    }//end func
 }//end extension

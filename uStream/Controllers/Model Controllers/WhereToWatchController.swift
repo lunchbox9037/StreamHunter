@@ -31,7 +31,6 @@ class WhereToWatchController {
     // MARK: - Methods
     static func fetchWhereToWatchBy(id: Int, mediaType: String, completion: @escaping (Result<Option, NetworkError>) -> Void) {
         let countryCode = UserDefaults.standard.string(forKey: "countryCode")
-        print("I have the cc here: \(countryCode ?? "whoops")")
         
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -75,8 +74,9 @@ class WhereToWatchController {
                     print("returned pe results")
                     return completion(.success(results))
                 default:
-                    print("returned nothing")
-                    return
+                    guard let results = whereToWatch.results.unitedStates else {return print("noresults")}
+                    print("returned us results")
+                    return completion(.success(results))
                 }
             } catch {
                 completion(.failure(.thrownError(error)))

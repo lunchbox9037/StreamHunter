@@ -159,8 +159,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     
     func disableButton() {
         addToListButton.setTitle("Added to List!", for: .normal)
-        addToListButton.backgroundColor = .systemGray
-        addToListButton.titleLabel?.textColor = .separator
+        addToListButton.backgroundColor = .systemGray2
         addToListButton.isEnabled = false
     }
 }//end class

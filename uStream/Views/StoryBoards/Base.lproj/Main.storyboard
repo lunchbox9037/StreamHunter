@@ -23,7 +23,7 @@
                                 </connections>
                             </containerView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lFz-ee-Ieg">
-                                <rect key="frame" x="0.0" y="99" width="375" height="519"/>
+                                <rect key="frame" x="0.0" y="97" width="375" height="521"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cfR-kx-sEJ">
                                     <size key="itemSize" width="128" height="128"/>
@@ -39,6 +39,7 @@
                                     <segment title="All"/>
                                     <segment title="Movies"/>
                                     <segment title="Shows"/>
+                                    <segment title="Upcoming"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentControlChanged:" destination="wES-rK-jCZ" eventType="valueChanged" id="kNk-hi-166"/>
@@ -52,7 +53,7 @@
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Cca-iJ-qGv"/>
-                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="6" id="Cqc-9F-9T1"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="4" id="Cqc-9F-9T1"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="nxx-kb-TKf" secondAttribute="trailing" id="aXB-Hi-ek0"/>
                             <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="bZf-35-Ldx"/>

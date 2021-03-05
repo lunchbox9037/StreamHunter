@@ -37,4 +37,14 @@ struct Media: Codable {
             return "movie"
         }
     }
-}
+    
+    func convertToDate(_ media: Media) -> Date {
+        if media.firstAirDate != nil {
+            guard let dateString = media.firstAirDate else {return Date()}
+            return dateString.toDate()
+        } else {
+            guard let dateString = media.releaseDate else {return Date()}
+            return dateString.toDate()
+        }
+    }
+}//end struct

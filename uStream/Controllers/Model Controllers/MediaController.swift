@@ -78,8 +78,9 @@ class MediaController {
         
         var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+        let pageQuery = URLQueryItem(name: "page", value: "2")
         
-        components?.queryItems = [apiQuery]
+        components?.queryItems = [apiQuery, pageQuery]
         
         guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
         print(finalURL)

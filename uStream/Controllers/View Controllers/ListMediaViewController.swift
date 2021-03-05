@@ -83,6 +83,8 @@ class ListMediaViewController: UIViewController {
         case 2:
             //tv
             dataSource = ListMediaController.shared.listMediaTV
+        case 3:
+            dataSource = ListMediaController.shared.upcoming
         default:
             break
         }
@@ -127,8 +129,8 @@ class ListMediaViewController: UIViewController {
         let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
         let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
         //remove the image and refresh the collection view
-        let itemToDelete = dataSource[hitIndex!.row]
-        ListMediaController.shared.delete(item: itemToDelete)
+        let mediaToDelete = dataSource[hitIndex!.row]
+        ListMediaController.shared.delete(media: mediaToDelete)
         ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }//end func
@@ -142,7 +144,8 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listCell", for: indexPath) as? ListMediaCollectionViewCell else {return UICollectionViewCell()}
         cell.setup(media: dataSource[indexPath.row])
-        
+        print(dataSource[indexPath.row].releaseDate as Any)
+        print(Date())
         cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
         
         if longPressedEnabled {
@@ -159,27 +162,10 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
         detailVC.selectedMedia = dataSource[indexPath.row]
         present(detailVC, animated: true, completion: nil)
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-//            return true
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//            print("Start index :- \(sourceIndexPath.item)")
-//            print("End index :- \(destinationIndexPath.item)")
-//
-//            let tmp = dataSource[sourceIndexPath.item]
-//            dataSource[sourceIndexPath.item] = dataSource[destinationIndexPath.item]
-//            dataSource[destinationIndexPath.item] = tmp
-//            listCollectionView.reloadData()
-////            CoreDataStack.saveContext()
-//
-//     }
 }//end extension
 
 extension ListMediaViewController: RefreshDelegate {
     func refresh() {
-        print("reload")
         ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }    

@@ -31,7 +31,7 @@ class MediaDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .systemGray2
         button.contentMode = .scaleAspectFill
-        button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -41,6 +41,8 @@ class MediaDetailViewController: UIViewController {
         collectionView.backgroundColor = UIColor.systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
         collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
@@ -93,10 +95,6 @@ class MediaDetailViewController: UIViewController {
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
-//        var mediaType: String = "movie"
-//        if media.title == nil {
-//            mediaType = "tv"
-//        }
         let mediaType = media.getMediaTypeFor(media)
         WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
@@ -114,11 +112,6 @@ class MediaDetailViewController: UIViewController {
     
     func fetchSimilar() {
         guard let media = selectedMedia else {return}
-        //make sure the media is the correct type based on the name(tv) or title(movie)
-//        var mediaType: String = "movie"
-//        if media.title == nil {
-//            mediaType = "tv"
-//        }
         let mediaType = media.getMediaTypeFor(media)
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
             DispatchQueue.main.async {
@@ -140,7 +133,7 @@ class MediaDetailViewController: UIViewController {
 }//end class
 
 // MARK: - Extensions
-extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         3
     }
@@ -167,7 +160,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         
         if whereToWatchSection.contains(indexPath.section) {
             if providers.count == 0 {
-                header.setup(label: "No Streaming Providers")
+                header.setup(label: "Streaming Providers Unavailable")
             } else {
                 header.setup(label: "Stream")
             }
@@ -178,6 +171,15 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         return header
+    }//end func
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print(indexPaths.count)
+        for indexPath in indexPaths {
+            if similarSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
+            }
+        }
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -207,7 +209,6 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.section)
         if whereToWatchSection.contains(indexPath.section) {
-            print("tapped")
             AppLinks.launchApp(provider: providers[indexPath.row])
         }
         
@@ -220,7 +221,6 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
 
 extension MediaDetailViewController: AddToListButtonDelegate {
     func addToList() {
-        print("add button tapped")
         Haptics.playSuccessNotification()
         guard let selectedMedia = self.selectedMedia else {return}
         ListMediaController.shared.addToList(media: selectedMedia)

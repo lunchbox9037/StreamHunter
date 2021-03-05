@@ -163,7 +163,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func setup(media: ListMedia, link: String?) {
+    func setup(media: ListMedia) {
         MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -193,18 +193,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         } else {
             print("error with Home App URL")
         }
-    }
-    
-//    func enableButton() {
-//        moreWaysToWatchButton.setTitle("Add to your List?", for: .normal)
-//        moreWaysToWatchButton.backgroundColor = .systemBlue
-//        moreWaysToWatchButton.isEnabled = true
-//    }
-
-    func disableButton() {
-        moreOptionsButton.setTitle("No watch options...", for: .normal)
-        moreOptionsButton.backgroundColor = .systemGray
-        moreOptionsButton.isEnabled = false
     }
 }//end class
 

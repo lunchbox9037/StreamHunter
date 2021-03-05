@@ -31,21 +31,11 @@ public class MediaCollectionViewCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-    
-//    var subtitleLabel: UILabel = {
-//        let label: UILabel = UILabel()
-//        label.text = "Some subtitle"
-//        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-//        label.numberOfLines = 0
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.posterImageView)
-//        self.container.addSubview(self.subtitleLabel)
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -60,11 +50,6 @@ public class MediaCollectionViewCell: UICollectionViewCell {
             self.posterImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.posterImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
-//        ])
     }
 
     required init?(coder: NSCoder) {
@@ -84,9 +69,6 @@ public class MediaCollectionViewCell: UICollectionViewCell {
                     DispatchQueue.main.async {
                         if self.currentIndexPath == indexPath {
                             self.posterImageView.image = image
-                            print("setImage")
-                        } else {
-                            print("threwout image")
                         }
                     }
             case .failure(let error):

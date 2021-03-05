@@ -32,7 +32,6 @@ class SearchViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
 
-//        collectionView.prefetchDataSource = self
         collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -65,6 +64,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
         guard let searchTerm = searchBar.text?.capitalized else {return}
         SearchResultsController.fetchSearchResultsFor(searchTerm: searchTerm) { [weak self] (result) in
             DispatchQueue.main.async {

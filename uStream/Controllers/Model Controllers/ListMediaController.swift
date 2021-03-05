@@ -13,6 +13,7 @@ class ListMediaController {
     var listMedia: [ListMedia] = []
     var listMediaTV: [ListMedia] = []
     var listMediaMovie: [ListMedia] = []
+    var upcoming: [ListMedia] = []
     
     private lazy var fetchRequest: NSFetchRequest<ListMedia> = {
         let request = NSFetchRequest<ListMedia>(entityName: "ListMedia")
@@ -22,13 +23,10 @@ class ListMediaController {
     
     // MARK: - CRUD
     func addToList(media: Media) {
-//        var mediaType: String = "movie"
-//        if media.title == nil {
-//            mediaType = "tv"
-//        }
         let mediaType = media.getMediaTypeFor(media)
+        let releaseDate = media.convertToDate(media)
         print(mediaType)
-        ListMedia(title: (media.title ?? media.name) ?? "The Matrix", voteAverage: media.voteAverage ?? 0.0, overview: media.overview ?? "Synopsis Unavailable", posterPath: media.posterPath, backdropPath: media.backdropPath, id: media.id ?? 0, mediaType: mediaType, popularity: media.popularity ?? 0.0, releaseDate: (media.releaseDate ?? media.firstAirDate) ?? "Unknown")
+        ListMedia(title: (media.title ?? media.name) ?? "The Matrix", voteAverage: media.voteAverage ?? 0.0, overview: media.overview ?? "Synopsis Unavailable", posterPath: media.posterPath, backdropPath: media.backdropPath, id: media.id ?? 0, mediaType: mediaType, popularity: media.popularity ?? 0.0, releaseDate: releaseDate)
         CoreDataStack.saveContext()
     }
     
@@ -40,10 +38,18 @@ class ListMediaController {
         listMediaMovie = listMedia.filter({ (media) -> Bool in
             return media.mediaType == "movie"
         })
+        upcoming = listMedia.filter({ (media) -> Bool in
+            if let releaseDate = media.releaseDate {
+                return releaseDate > Date()
+            } else {
+                return false
+            }
+        })
     }
     
-    func delete(item: ListMedia) {
-        CoreDataStack.context.delete(item)
+    func delete(media: ListMedia) {
+        CoreDataStack.context.delete(media)
         CoreDataStack.saveContext()
+        NotificationScheduler.shared.cancelNotification(media: media )
     }
 }//end class

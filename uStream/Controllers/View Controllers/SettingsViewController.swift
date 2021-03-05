@@ -105,8 +105,9 @@ extension SettingsTableViewController: CLLocationManagerDelegate {
             self.locationManager.stopUpdatingLocation()
             geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
                 guard let currentLocPlacemark = placemarks?.first else {return}
-                UserDefaults.standard.setValue(currentLocPlacemark.isoCountryCode, forKey: "countryCode")
-                self.presentLocationUpdatedAlert()
+                guard let countryCode = currentLocPlacemark.isoCountryCode else {return}
+                UserDefaults.standard.setValue(countryCode, forKey: "countryCode")
+                self.presentLocationUpdatedAlert(cc: countryCode)
             }
         }
     }
