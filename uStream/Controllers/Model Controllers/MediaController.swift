@@ -70,7 +70,6 @@ class MediaController {
     }//end func
     
     //popularhttps://api.themoviedb.org/3/movie/popular?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1
-
     static func fetchPopularResultsFor(mediaType: String, completion: @escaping (Result<Popular, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -79,7 +78,6 @@ class MediaController {
         
         var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
-//        let pageQuery = URLQueryItem(name: "page", value: "2")
         
         components?.queryItems = [apiQuery]
         
@@ -111,7 +109,7 @@ class MediaController {
     }//end func
     
     /// Function that attempts to get image from cache if not there fetch with api call
-    /// - Parameters:
+    ///   - Parameters:
     ///   - media: movie or tv object from the api
     ///   - completion: will contain UIImage or error
     static func fetchPosterFor(media: Media, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {

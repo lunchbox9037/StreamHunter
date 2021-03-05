@@ -37,18 +37,8 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         button.tintColor = .systemRed
         button.translatesAutoresizingMaskIntoConstraints = false
         button.contentMode = .scaleToFill
-        button.setPreferredSymbolConfiguration(.init(pointSize: 21), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 30), forImageIn: .normal)
         return button
-    }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(8)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     override init(frame: CGRect) {
@@ -92,7 +82,6 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-        subtitleLabel.text = media.title
     }
     
     //Animation of image
@@ -104,7 +93,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         shakeAnimation.duration = 0.2
         shakeAnimation.repeatCount = 99999
         
-        let startAngle: Float = (-2) * 3.14159/180
+        let startAngle: Float = (-1) * 3.14159/180
         let stopAngle = -startAngle
         
         shakeAnimation.fromValue = NSNumber(value: startAngle as Float)

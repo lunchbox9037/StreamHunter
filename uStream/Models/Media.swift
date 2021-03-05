@@ -29,4 +29,12 @@ struct Media: Codable {
         case releaseDate = "release_date"
         case firstAirDate = "first_air_date"
     }
+    
+    func getMediaTypeFor(_ media: Media) -> String {
+        if media.title == nil {
+            return "tv"
+        } else {
+            return "movie"
+        }
+    }
 }

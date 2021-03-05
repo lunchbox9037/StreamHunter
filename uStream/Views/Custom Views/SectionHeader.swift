@@ -9,11 +9,14 @@ import UIKit
 
 public class SectionHeader: UICollectionReusableView {
     
+    
     var titleLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Default"
         label.font = UIFont.preferredFont(forTextStyle: .headline).withSize(20)
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
+        label.lineBreakStrategy = .standard
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -26,7 +29,7 @@ public class SectionHeader: UICollectionReusableView {
             self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
             self.titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12),
             self.titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12),
-            self.titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
+            self.titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
         ])
     }
     

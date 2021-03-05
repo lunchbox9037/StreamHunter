@@ -41,7 +41,7 @@ class DiscoverViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
 
-//        collectionView.prefetchDataSource = self
+        collectionView.prefetchDataSource = self
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingMovieCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingTVCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "popularMovieCell")
@@ -94,8 +94,6 @@ class DiscoverViewController: UIViewController {
         }
     }//end func
     
-    
-    
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             switch section {
@@ -121,10 +119,10 @@ class DiscoverViewController: UIViewController {
 }//end class
 
 // MARK: - Extensions
-extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 4
-    }
+    }//end func
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
@@ -165,6 +163,24 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             return popularTV.count
         }
         return 0
+    }//end func
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print(indexPaths.count)
+        for indexPath in indexPaths {
+            if trendingMovieSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
+            }
+            if trendingTVSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: trendingTV[indexPath.row]) { (_) in }
+            }
+            if popularMovieSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: popularMovies[indexPath.row]) { (_) in }
+            }
+            if popularTVSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: popularTV[indexPath.row]) { (_) in }
+            }
+        }
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

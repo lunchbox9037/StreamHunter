@@ -28,6 +28,7 @@ class ListMediaDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .opaqueSeparator
         button.contentMode = .scaleAspectFill
+        button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -62,9 +63,8 @@ class ListMediaDetailViewController: UIViewController {
         self.view.addSubview(self.collectionView)
         
         NSLayoutConstraint.activate([
-            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12),
-            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-            self.dismissViewButton.heightAnchor.constraint(equalToConstant: 20)
+            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8),
         ])
         
         NSLayoutConstraint.activate([
@@ -89,13 +89,13 @@ class ListMediaDetailViewController: UIViewController {
     }//end func
     
     func fetchWhereToWatch() {
-        guard let media = selectedMedia else {return}
-        guard let mediaType = media.mediaType else {return}
+        guard let media = selectedMedia,
+              let mediaType = media.mediaType else {return}
         WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
-                    self?.providers = location.streaming
+                    self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
                     self?.collectionView.reloadData()
                     print("got providers")
@@ -107,8 +107,8 @@ class ListMediaDetailViewController: UIViewController {
     }//end func
     
     func fetchSimilar() {
-        guard let media = selectedMedia else {return}
-        guard let mediaType = media.mediaType else {return}
+        guard let media = selectedMedia,
+              let mediaType = media.mediaType else {return}
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -209,8 +209,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
 extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
     func moreWatchOptions() {
         print("morebuttontapped")
-        
-        guard let link = providerLink else {return presentErrorAlert() }
+        guard let link = providerLink else {return presentErrorAlert()}
         if let appURL = URL(string: link) {
             UIApplication.shared.open(appURL) { success in
                 if success {
@@ -223,11 +222,4 @@ extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
             print("Invalid URL specified.")
         }
     }
-    
-//    func presentErrorAlert() {
-//        let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for this title...", preferredStyle: .alert)
-//        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
-//        alertController.addAction(dismissAction)
-//        present(alertController, animated: true)
-//    }
 }//end extension

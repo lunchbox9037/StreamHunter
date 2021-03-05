@@ -1,5 +1,5 @@
 //
-//  MedaiDetailViewController.swift
+//  MediaDetailViewController.swift
 //  uStream
 //
 //  Created by stanley phillips on 2/22/21.
@@ -31,6 +31,7 @@ class MediaDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .opaqueSeparator
         button.contentMode = .scaleAspectFill
+        button.setPreferredSymbolConfiguration(.init(pointSize: 16), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -40,7 +41,6 @@ class MediaDetailViewController: UIViewController {
         collectionView.backgroundColor = UIColor.systemGray
         collectionView.delegate = self
         collectionView.dataSource = self
-        //register new cells
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
         collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
@@ -66,9 +66,8 @@ class MediaDetailViewController: UIViewController {
         self.view.addSubview(self.collectionView)
         
         NSLayoutConstraint.activate([
-            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12),
-            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-            self.dismissViewButton.heightAnchor.constraint(equalToConstant: 20)
+            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8),
         ])
         
         NSLayoutConstraint.activate([
@@ -102,7 +101,7 @@ class MediaDetailViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
-                    self?.providers = location.streaming
+                    self?.providers = location.streaming ?? []
                     self?.collectionView.reloadData()
                     print("got providers")
                 case .failure(let error):

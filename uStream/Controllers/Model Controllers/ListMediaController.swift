@@ -22,10 +22,12 @@ class ListMediaController {
     
     // MARK: - CRUD
     func addToList(media: Media) {
-        var mediaType: String = "movie"
-        if media.title == nil {
-            mediaType = "tv"
-        }
+//        var mediaType: String = "movie"
+//        if media.title == nil {
+//            mediaType = "tv"
+//        }
+        let mediaType = media.getMediaTypeFor(media)
+        print(mediaType)
         ListMedia(title: (media.title ?? media.name) ?? "The Matrix", voteAverage: media.voteAverage ?? 0.0, overview: media.overview ?? "Synopsis Unavailable", posterPath: media.posterPath, backdropPath: media.backdropPath, id: media.id ?? 0, mediaType: mediaType, popularity: media.popularity ?? 0.0, releaseDate: (media.releaseDate ?? media.firstAirDate) ?? "Unknown")
         CoreDataStack.saveContext()
     }

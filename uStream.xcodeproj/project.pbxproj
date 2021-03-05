@@ -20,6 +20,7 @@
 		F650774825F0B9B40040C171 /* Popular.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650774725F0B9B40040C171 /* Popular.swift */; };
 		F650774E25F0DF460040C171 /* Location+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650774D25F0DF460040C171 /* Location+Convenience.swift */; };
 		F650775125F0E05F0040C171 /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650775025F0E05F0040C171 /* LocationController.swift */; };
+		F650775725F1E70B0040C171 /* StringToDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F650775625F1E70B0040C171 /* StringToDateExtension.swift */; };
 		F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */; };
 		F68AB92225DF63FA002D56D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */; };
 		F68AB92725DF63FA002D56D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F68AB92525DF63FA002D56D2 /* Main.storyboard */; };
@@ -71,6 +72,7 @@
 		F650774725F0B9B40040C171 /* Popular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popular.swift; sourceTree = "<group>"; };
 		F650774D25F0DF460040C171 /* Location+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Convenience.swift"; sourceTree = "<group>"; };
 		F650775025F0E05F0040C171 /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
+		F650775625F1E70B0040C171 /* StringToDateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringToDateExtension.swift; sourceTree = "<group>"; };
 		F68AB91C25DF63FA002D56D2 /* uStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,8 +161,8 @@
 			children = (
 				F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */,
 				F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */,
-				F68AB92B25DF63FB002D56D2 /* Assets.xcassets */,
 				F68AB92D25DF63FB002D56D2 /* LaunchScreen.storyboard */,
+				F68AB92B25DF63FB002D56D2 /* Assets.xcassets */,
 				F68AB93025DF63FB002D56D2 /* Info.plist */,
 			);
 			path = Resources;
@@ -255,6 +257,7 @@
 				F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */,
 				F650773525F008030040C171 /* AppLinks.swift */,
 				F650773825F04EDF0040C171 /* AlertControllerExtension.swift */,
+				F650775625F1E70B0040C171 /* StringToDateExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */,
 				F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */,
 				F68AB95425DF743C002D56D2 /* MediaController.swift in Sources */,
+				F650775725F1E70B0040C171 /* StringToDateExtension.swift in Sources */,
 				F6E2CDC825E700E50089DEF1 /* Similar.swift in Sources */,
 				F6A87FB025E9EF0700E7A1E0 /* TopBarViewController.swift in Sources */,
 				F63774F225E5F80100F4025E /* WhereToWatchController.swift in Sources */,

@@ -37,7 +37,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            locationManager.desiredAccuracy = kCLLocationAccuracyReduced
             locationManager.requestLocation()
         } else {
             print("error")
@@ -106,7 +106,8 @@ extension SettingsTableViewController: CLLocationManagerDelegate {
                 guard let currentLocPlacemark = placemarks?.first else { return }
                 print(currentLocPlacemark.isoCountryCode ?? "No country code found")
                 self.locationManager.stopUpdatingLocation()
-                LocationController.shared.updateLocation(countryCode: currentLocPlacemark.isoCountryCode ?? "US")
+//                LocationController.shared.updateLocation(countryCode: currentLocPlacemark.isoCountryCode ?? "US")
+                print(Locale.current.regionCode ?? "US")
                 self.presentLocationUpdatedAlert()
             }
         }

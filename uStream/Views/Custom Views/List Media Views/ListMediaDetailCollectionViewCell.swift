@@ -52,7 +52,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = 6
         
         return stackView
     }()
@@ -164,10 +164,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func setup(media: ListMedia, link: String?) {
-//        if link == nil {
-//            disableButton()
-//        }
-        
         MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {

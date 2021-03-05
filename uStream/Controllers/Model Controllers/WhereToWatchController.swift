@@ -30,6 +30,7 @@ class WhereToWatchController {
     
     // MARK: - Methods
     static func fetchWhereToWatchBy(id: Int, mediaType: String, completion: @escaping (Result<Option, NetworkError>) -> Void) {
+        
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let mediaURL = versionURL.appendingPathComponent(mediaType)
@@ -62,7 +63,7 @@ class WhereToWatchController {
             guard let data = data else {return completion(.failure(.noData))}
             do {
                 let whereToWatch = try JSONDecoder().decode(WhereToWatch.self, from: data)
-                completion(.success(whereToWatch.results.location))
+                completion(.success(whereToWatch.results.unitedStates))
             } catch {
                 completion(.failure(.thrownError(error)))
             }
