@@ -16,8 +16,8 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 8 * 4
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -72,7 +72,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(media: ListMedia) {
-        SearchResultsController.fetchPosterFor(media: media) { [weak self] (result) in
+        MediaController.fetchPosterForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):

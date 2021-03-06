@@ -14,7 +14,12 @@ protocol RefreshDelegate: AnyObject {
 
 class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegate  {
     // MARK: - Properties
-    var selectedMedia: Media?
+    var selectedMedia: Media? {
+        didSet {
+            collectionView.reloadSections(IndexSet(integer: 0))
+            collectionView.scrollToItem(at: [0,0], at: .top, animated: false)
+        }
+    }
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -22,7 +27,6 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     
     var providers: [Provider] = []
     var providerLink: String?
-    
     var similar: [Media] = []
     
     static weak var delegate: RefreshDelegate?
@@ -83,31 +87,33 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     }//end func
     
     func makeLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            if self.selectedMediaSection.contains(section) {
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            switch section {
+            case 0:
                 return LayoutBuilder.buildMediaDetailSection()
-            } else if self.whereToWatchSection.contains(section) {
+            case 1:
                 return LayoutBuilder.buildWhereToWatchIconSection()
-            } else {
+            case 2:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            default:
+                return LayoutBuilder.buildMediaVerticalScrollLayout()
             }
         }
-        return layout
     }//end func
     
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
         let mediaType = media.getMediaTypeFor(media)
         WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let location):
-                    self?.providers = location.streaming ?? []
-                    self?.providerLink = location.deepLink
-                    self?.collectionView.reloadData()
-                case .failure(let error):
-                    print(error.localizedDescription)
+            switch result {
+            case .success(let location):
+                self?.providers = location.streaming ?? []
+                self?.providerLink = location.deepLink
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadSections(IndexSet(integer: 1))
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func
@@ -116,15 +122,14 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
         guard let media = selectedMedia else {return}
         let mediaType = media.getMediaTypeFor(media)
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let similar):
-                    self?.similar = similar
-                    self?.collectionView.reloadData()
-                    print("got providers")
-                case .failure(let error):
-                    print(error.localizedDescription)
+            switch result {
+            case .success(let similar):
+                self?.similar = similar
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadSections(IndexSet(integer: 2))
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func
@@ -137,7 +142,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
 // MARK: - Extensions
 extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -157,7 +162,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
         
         if selectedMediaSection.contains(indexPath.section) {
-            header.setup(label: ((self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix"))
+            header.setup(label: ((self.selectedMedia?.name ?? self.selectedMedia?.title) ?? "The Matrix") )
         }
         
         if whereToWatchSection.contains(indexPath.section) {
@@ -176,7 +181,6 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        print(indexPaths.count)
         for indexPath in indexPaths {
             if similarSection.contains(indexPath.section) {
                 MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
@@ -209,11 +213,9 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.section)
         if whereToWatchSection.contains(indexPath.section) {
             AppLinks.launchApp(provider: providers[indexPath.row])
         }
-        
         if similarSection.contains(indexPath.section) {
             self.selectedMedia = similar[indexPath.row]
             setupViews()

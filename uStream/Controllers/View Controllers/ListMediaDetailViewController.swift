@@ -10,7 +10,11 @@ import SafariServices
 
 class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDelegate {
     // MARK: - Properties
-    var selectedMedia: ListMedia?
+    var selectedMedia: ListMedia? {
+        didSet {
+            collectionView.reloadSections(IndexSet(integer: 0))
+        }
+    }
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -76,16 +80,18 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     }//end func
     
     func makeLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            if self.selectedMediaSection.contains(section) {
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            switch section {
+            case 0:
                 return LayoutBuilder.buildMediaDetailSection()
-            } else if self.whereToWatchSection.contains(section) {
+            case 1:
                 return LayoutBuilder.buildWhereToWatchIconSection()
-            } else {
+            case 2:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            default:
+                return nil
             }
         }
-        return layout
     }//end func
     
     func fetchWhereToWatch() {
@@ -97,8 +103,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                 case .success(let location):
                     self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
-                    self?.collectionView.reloadData()
-                    print("got providers")
+                    self?.collectionView.reloadSections(IndexSet(integer: 1))
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -114,7 +119,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                 switch result {
                 case .success(let similar):
                     self?.similar = similar
-                    self?.collectionView.reloadData()
+                    self?.collectionView.reloadSections(IndexSet(integer: 2))
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

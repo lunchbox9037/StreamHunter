@@ -17,8 +17,8 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.6
+        view.layer.shadowRadius = 32
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,21 +31,11 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.posterImageView)
-//        self.container.addSubview(self.subtitleLabel)
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -60,11 +50,6 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
             self.posterImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.posterImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            self.subtitleLabel.topAnchor.constraint(equalTo: self.posterImageView.bottomAnchor, constant: 10),
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.posterImageView.centerXAnchor, constant: 0)
-//        ])
     }
 
     required init?(coder: NSCoder) {
@@ -76,17 +61,15 @@ public class SimilarCollectionViewCell: UICollectionViewCell {
         posterImageView.image = nil
     }
     
+    // MARK: - Methods
     func setup(media: Media, newIndexPath: IndexPath) {
         self.currentIndexPath = newIndexPath
-        SimilarController.fetchPosterFor(media: media) { [weak self] (result) in
+        MediaController.fetchPosterFor(media: media) { [weak self] (result) in
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {
                     if self?.currentIndexPath == newIndexPath {
                         self?.posterImageView.image = image
-                        print("setImage")
-                    } else {
-                        print("threwout image")
                     }
                 }
             case .failure(let error):

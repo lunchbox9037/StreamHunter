@@ -8,13 +8,14 @@
 import UIKit
 
 class AppLinks {
-    //need to test more when app is not installed
+    //need to test more when requested app is not installed
     static let netflixURL = "https://www.netflix.com/browse" //working ✅
+    static let appleTVPlusURL = "https://tv.apple.com" //working ✅
+    
     static let huluURL = "hulu://hulu.com/watch" //working ✅
     static let hboMaxURL = "hbomax://www.hbomax.com/" //working ✅
     static let amazonPrimeVideoURL = "primevideo://www.primevideo.com/" //working ✅
     static let disneyPlusURL = "disneyplus://disneyplus.com/" //working ✅
-    static let appleTVPlusURL = "https://tv.apple.com" //working ✅
     static let crunchyRollURL = "crunchyroll://www.crunchyroll.com" // working ✅
 
     static func getURLFor(providerName: String) -> String {
@@ -39,7 +40,6 @@ class AppLinks {
     }
     
     static func launchApp(provider: Provider) {
-        print("made it")
         guard let providerName = provider.providerName else {return}
         print(providerName)
         let url = AppLinks.getURLFor(providerName: providerName)

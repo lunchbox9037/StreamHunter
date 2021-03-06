@@ -5,13 +5,6 @@
 //  Created by stanley phillips on 3/1/21.
 //
 
-//
-//  MediaDetailCollectionViewCell.swift
-//  uStream
-//
-//  Created by stanley phillips on 2/23/21.
-//
-
 import UIKit
 
 protocol MoreWatchOptionsDelegate: AnyObject {
@@ -58,6 +51,17 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    var labelStackView : UIStackView = {
+        let stackView: UIStackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        
+        return stackView
+    }()
+    
     var moreWaysToWatchButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -92,13 +96,30 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    var releaseDateLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "release date"
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = .systemFill
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.minimumScaleFactor = CGFloat(0.5)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     var synopsisLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Synopsis"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = .systemGray2
-        label.numberOfLines = 0
-        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        
+
+        label.minimumScaleFactor = CGFloat(0.5)
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -118,9 +139,11 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.backdropImageView)
         self.container.addSubview(self.buttonStackView)
+        self.container.addSubview(self.labelStackView)
         self.buttonStackView.addArrangedSubview(self.launchHomeButton)
         self.buttonStackView.addArrangedSubview(self.moreWaysToWatchButton)
-        self.container.addSubview(self.synopsisLabel)
+        self.labelStackView.addArrangedSubview(self.synopsisLabel)
+        self.labelStackView.addArrangedSubview(self.releaseDateLabel)
         self.container.addSubview(self.overviewLabel)
         activateButton()
 
@@ -146,13 +169,13 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            self.synopsisLabel.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
-            self.synopsisLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
-            self.synopsisLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
+            self.labelStackView.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
+            self.labelStackView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
+            self.labelStackView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
         
         NSLayoutConstraint.activate([
-            self.overviewLabel.topAnchor.constraint(equalTo: self.synopsisLabel.bottomAnchor, constant: 10),
+            self.overviewLabel.topAnchor.constraint(equalTo: self.labelStackView.bottomAnchor, constant: 10),
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
@@ -193,6 +216,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             }
         }
         self.overviewLabel.text = media.overview
+        self.releaseDateLabel.text = "\(media.releaseDate?.dateToString(format: .monthDayYear) ?? "tbd")"
     }
     
     func activateButton() {
@@ -211,7 +235,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     func makeRemindMeButton() {
         moreOptionsButton.setTitle(" Remind Me", for: .normal)
         moreOptionsButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
-//        moreOptionsButton.addTarget(self, action: #selector(disableButton), for: .touchUpInside)
     }
 
     @objc func moreButtonTapped(sender: UIButton) {

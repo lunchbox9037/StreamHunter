@@ -51,7 +51,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "resultsCell", for: indexPath) as? SearchResultsCollectionViewCell else {return UICollectionViewCell()}
-        cell.setup(media: searchResults[indexPath.row])
+        cell.setup(media: searchResults[indexPath.row], indexPath: indexPath)
         return cell
     }
     
@@ -63,6 +63,21 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 }
 
 extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        collectionView.keyboardDismissMode = .onDrag
+        SearchResultsController.fetchSearchResultsFor(searchTerm: searchText) { [weak self] (result) in
+            switch result {
+            case .success(let results):
+                DispatchQueue.main.async {
+                    self?.searchResults = results
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(true)
         guard let searchTerm = searchBar.text?.capitalized else {return}
@@ -79,9 +94,7 @@ extension SearchViewController: UISearchBarDelegate {
             }
         }
     }
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
     
-    }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.dismiss(animated: true, completion: nil)
     }

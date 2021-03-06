@@ -23,7 +23,7 @@
                                 </connections>
                             </containerView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lFz-ee-Ieg">
-                                <rect key="frame" x="0.0" y="97" width="375" height="521"/>
+                                <rect key="frame" x="0.0" y="62" width="375" height="525"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cfR-kx-sEJ">
                                     <size key="itemSize" width="128" height="128"/>
@@ -34,7 +34,7 @@
                                 <cells/>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1uZ-gb-Ffe">
-                                <rect key="frame" x="0.0" y="62" width="375" height="32"/>
+                                <rect key="frame" x="0.0" y="587" width="375" height="32"/>
                                 <segments>
                                     <segment title="All"/>
                                     <segment title="Movies"/>
@@ -49,16 +49,16 @@
                         <viewLayoutGuide key="safeArea" id="snY-GV-rhB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="2i8-vX-dyO"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="3tI-UA-jq4"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
-                            <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Cca-iJ-qGv"/>
-                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="4" id="Cqc-9F-9T1"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="FUM-Ty-REh"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="Nd4-00-NZZ"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="Qrt-pb-onh"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="nxx-kb-TKf" secondAttribute="trailing" id="aXB-Hi-ek0"/>
-                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="bZf-35-Ldx"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="iqw-Z1-h3Y"/>
-                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="s0D-TO-2uM"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="bottom" secondItem="snY-GV-rhB" secondAttribute="bottom" id="qN7-51-LiS"/>
                             <constraint firstItem="lFz-ee-Ieg" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="sRf-n2-z9R"/>
                         </constraints>
                     </view>
@@ -70,7 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thn-9d-YLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="252" y="212"/>
+            <point key="canvasLocation" x="252" y="211.84407796101951"/>
         </scene>
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
@@ -148,7 +148,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="yug-5b-bT5"/>
+        <segue reference="it0-ZJ-DLx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="list.bullet" catalog="system" width="128" height="88"/>

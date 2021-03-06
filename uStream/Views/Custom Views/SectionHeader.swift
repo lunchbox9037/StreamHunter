@@ -8,8 +8,6 @@
 import UIKit
 
 public class SectionHeader: UICollectionReusableView {
-    
-    
     var titleLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Default"

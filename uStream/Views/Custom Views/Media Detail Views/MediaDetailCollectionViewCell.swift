@@ -22,7 +22,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 10
-        view.layer.shadowOpacity = 0.3
+        view.layer.shadowOpacity = 0.6
         view.layer.shadowRadius = 10
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -53,13 +53,37 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    var labelStackView : UIStackView = {
+        let stackView: UIStackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        
+        return stackView
+    }()
+    
     var synopsisLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Synopsis"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.textColor = .systemGray2
         label.numberOfLines = 0
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    var releaseDateLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "release date"
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = .systemFill
+        label.numberOfLines = 0
         label.textAlignment = .left
+        label.minimumScaleFactor = CGFloat(0.5)
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -79,7 +103,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.backdropImageView)
         self.container.addSubview(self.addToListButton)
-        self.container.addSubview(self.synopsisLabel)
+        self.container.addSubview(self.labelStackView)
+        self.labelStackView.addArrangedSubview(self.synopsisLabel)
+        self.labelStackView.addArrangedSubview(self.releaseDateLabel)
         self.container.addSubview(self.overviewLabel)
         activateButton()
 
@@ -105,9 +131,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            self.synopsisLabel.topAnchor.constraint(equalTo: self.addToListButton.bottomAnchor, constant: 10),
-            self.synopsisLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
-            self.synopsisLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
+            self.labelStackView.topAnchor.constraint(equalTo: self.addToListButton.bottomAnchor, constant: 10),
+            self.labelStackView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
+            self.labelStackView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
         
         NSLayoutConstraint.activate([
@@ -145,6 +171,8 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             }
         }
         self.overviewLabel.text = media.overview
+        let date = media.convertToDate(media)
+        self.releaseDateLabel.text = "\(date.dateToString(format: .monthDayYear))"
     }
     
     func activateButton() {

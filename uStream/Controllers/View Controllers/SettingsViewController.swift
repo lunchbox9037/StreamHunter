@@ -68,7 +68,6 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func presentTMDBLink() {
         let urlString = "https://www.themoviedb.org"
-        
         if let url = URL(string: urlString) {
             let vc = SFSafariViewController(url: url)
             vc.delegate = self

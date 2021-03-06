@@ -16,11 +16,14 @@ class DiscoverViewController: UIViewController {
     let trendingTVSection: [Int] = [1]
     let popularMovieSection: [Int] = [2]
     let popularTVSection: [Int] = [3]
+    let upcomingMoviesSection: [Int] = [4]
     
     var trendingMovies: [Media] = []
     var trendingTV: [Media] = []
     var popularMovies: [Media] = []
     var popularTV: [Media] = []
+    var upcomingMovies: [Media] = []
+    
     let mediaTypes: [String] = ["movie", "tv"]
 
     var refresher: UIRefreshControl = UIRefreshControl()
@@ -32,6 +35,7 @@ class DiscoverViewController: UIViewController {
         setupRefresher()
         fetchTrendingMedia()
         fetchPopularMedia()
+        fetchUpcomingMedia()
     }
     
     // MARK: - Methods(
@@ -41,13 +45,16 @@ class DiscoverViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        
         collectionView.isPrefetchingEnabled = true
-
         collectionView.prefetchDataSource = self
+        
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingMovieCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingTVCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "popularMovieCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "popularTVCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "upcomingCell")
+
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -108,6 +115,20 @@ class DiscoverViewController: UIViewController {
         }
     }//end func
     
+    func fetchUpcomingMedia() {
+        MediaController.fetchUpcomingMovies() { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let upcoming):
+                    self.upcomingMovies = upcoming.results
+                    self.collectionView.reloadSections(IndexSet(integer: 4))
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             switch section {
@@ -119,8 +140,10 @@ class DiscoverViewController: UIViewController {
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
             case 3:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            case 4:
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
             default:
-                return LayoutBuilder.buildMediaVerticalScrollLayout()
+                return LayoutBuilder.buildMediaHorizontalScrollLayout()
             }
         }
     }//end func
@@ -135,7 +158,7 @@ class DiscoverViewController: UIViewController {
 // MARK: - Extensions
 extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 5
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -157,6 +180,10 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             header.setup(label: "Popular Shows")
         }
         
+        if upcomingMoviesSection.contains(indexPath.section) {
+            header.setup(label: "Upcoming Movies")
+        }
+        
         return header
     }//end func
     
@@ -176,6 +203,10 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if popularTVSection.contains(section) {
             return popularTV.count
         }
+        
+        if upcomingMoviesSection.contains(section) {
+            return upcomingMovies.count
+        }
         return 0
     }//end func
     
@@ -192,6 +223,9 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             }
             if popularTVSection.contains(indexPath.section) {
                 MediaController.fetchPosterFor(media: popularTV[indexPath.row]) { (_) in }
+            }
+            if upcomingMoviesSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: upcomingMovies[indexPath.row]) { (_) in }
             }
         }
     }//end func
@@ -225,6 +259,13 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             cell.setupCell(media: popularTV[indexPath.row], indexPath: indexPath)
             return cell
         }
+        
+        if upcomingMoviesSection.contains(indexPath.section) {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "upcomingCell", for: indexPath) as? MediaCollectionViewCell
+            else {return UICollectionViewCell()}
+            cell.setupCell(media: upcomingMovies[indexPath.row], indexPath: indexPath)
+            return cell
+        }
         return UICollectionViewCell()
     }//end func
     
@@ -243,6 +284,10 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         
         if popularTVSection.contains(indexPath.section) {
             presentDetailVC(media: popularTV[indexPath.row])
+        }
+        
+        if upcomingMoviesSection.contains(indexPath.section) {
+            presentDetailVC(media: upcomingMovies[indexPath.row])
         }
     }
 }//end extension
