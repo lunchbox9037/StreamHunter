@@ -13,8 +13,9 @@ protocol AddToListButtonDelegate: AnyObject {
 
 public class MediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
-    var button: UIButton {return addToListButton}
-    weak var delegate: AddToListButtonDelegate?
+    var addButton: UIButton {return addToListButton}
+    
+    weak var addDelegate: AddToListButtonDelegate?
     
     // MARK: - Views
     var container: UIView = {
@@ -41,7 +42,11 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("  Add to your list?", for: .normal)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        button.titleLabel?.lineBreakMode = NSLineBreakMode.byClipping
         button.backgroundColor = .systemBlue
         button.contentMode = .scaleAspectFill
         button.layer.cornerRadius = 10
@@ -143,22 +148,26 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     func activateButton() {
-        self.button.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
+        self.addButton.addTarget(self, action: #selector(addToListButtonTapped(sender:)), for: .touchUpInside)
     }
     
     @objc func addToListButtonTapped(sender: UIButton) {
         disableButton()
-        delegate?.addToList()
+        addDelegate?.addToList()
     }
     
     func enableButton() {
-        addToListButton.setTitle("Add to your List?", for: .normal)
+        addToListButton.setTitle(" Add to your List?", for: .normal)
         addToListButton.backgroundColor = .systemBlue
+        addToListButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        addToListButton.tintColor = .white
         addToListButton.isEnabled = true
     }
     
     func disableButton() {
-        addToListButton.setTitle("Added to List!", for: .normal)
+        addToListButton.setTitle(" Added to List!", for: .normal)
+        addToListButton.setImage(UIImage(systemName: "checkmark"), for: .disabled)
+        addToListButton.tintColor = .systemGreen
         addToListButton.backgroundColor = .systemGray2
         addToListButton.isEnabled = false
     }

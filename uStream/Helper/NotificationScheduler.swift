@@ -21,7 +21,7 @@ class NotificationScheduler {
         content.sound = .default
         
         let dateComponents = Calendar.current.dateComponents([.month, .day, .year], from: date)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         
         let request = UNNotificationRequest(identifier: "\(id)", content: content, trigger: trigger)
         
@@ -36,6 +36,7 @@ class NotificationScheduler {
     
     func cancelNotification(media: ListMedia) {
         let id = String(media.id)
+        print(id)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
         print("notification canceled")
     }

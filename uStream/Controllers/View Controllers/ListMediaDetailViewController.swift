@@ -19,9 +19,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     var providers: [Provider] = []
     var providerLink: String?
     var similar: [Media] = []
-    
-    static weak var delegate: RefreshDelegate?
-    
+        
     // MARK: - Views
     lazy var dismissViewButton: UIButton = {
         let button: UIButton = UIButton()
@@ -117,7 +115,6 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                 case .success(let similar):
                     self?.similar = similar
                     self?.collectionView.reloadData()
-                    print("got similar")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -171,7 +168,6 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        print(indexPaths.count)
         for indexPath in indexPaths {
             if similarSection.contains(indexPath.section) {
                 MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
@@ -205,7 +201,6 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if whereToWatchSection.contains(indexPath.section) {
-            print("tapped")
             AppLinks.launchApp(provider: providers[indexPath.row])
         }
         
@@ -217,8 +212,8 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     }//end func
 }//end extension
 
-extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
-    func moreWatchOptions() {
+extension ListMediaDetailViewController: MoreWatchOptionsDelegate {
+    func moreWatchOptions(_ sender: ListMediaDetailCollectionViewCell) {
         guard let media = selectedMedia else {return}
         if let urlString = providerLink {
             if let url = URL(string: urlString) {
@@ -229,7 +224,7 @@ extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
         } else {
             if let date = media.releaseDate {
                 if date > Date() {
-                    presentNotificationAlert(media: media)
+                    presentNotificationAlert(media: media, sender: sender)
                 } else {
                     presentErrorAlert()
                 }

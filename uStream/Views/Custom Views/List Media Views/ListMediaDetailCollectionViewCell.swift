@@ -14,16 +14,17 @@
 
 import UIKit
 
-protocol ListMediaDetailButtonDelegate: AnyObject {
-    func moreWatchOptions()
+protocol MoreWatchOptionsDelegate: AnyObject {
+    func moreWatchOptions(_ sender: ListMediaDetailCollectionViewCell)
 }
 
 public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     var moreOptionsButton: UIButton {return moreWaysToWatchButton}
     var homeButton: UIButton {return launchHomeButton}
+    var isReminder: Bool = false
     
-    weak var delegate: ListMediaDetailButtonDelegate?
+    weak var delegate: MoreWatchOptionsDelegate?
     
     // MARK: - Views
     var container: UIView = {
@@ -164,6 +165,22 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func setup(media: ListMedia) {
+        if let releaseDate = media.releaseDate {
+            if releaseDate > Date() {
+                makeRemindMeButton()
+            }
+        }
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
+            for request in requests {
+                if request.identifier == String(media.id) {
+                    DispatchQueue.main.async {
+                        self.disableButton()
+                    }
+                }
+            }
+        })
+        
         MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
@@ -182,9 +199,23 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.moreOptionsButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
         self.homeButton.addTarget(self, action: #selector(launchHomeApp), for: .touchUpInside)
     }
+    
+    @objc func disableButton() {
+        moreOptionsButton.isEnabled = false
+        moreOptionsButton.setImage(UIImage(systemName: "checkmark"), for: .disabled)
+        moreOptionsButton.setTitle(" Reminder Set!", for: .disabled)
+        moreOptionsButton.tintColor = .systemGreen
+        moreOptionsButton.backgroundColor = .systemGray2
+    }
+    
+    func makeRemindMeButton() {
+        moreOptionsButton.setTitle(" Remind Me", for: .normal)
+        moreOptionsButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
+//        moreOptionsButton.addTarget(self, action: #selector(disableButton), for: .touchUpInside)
+    }
 
     @objc func moreButtonTapped(sender: UIButton) {
-        delegate?.moreWatchOptions()
+        delegate?.moreWatchOptions(self)
     }
     
     @objc func launchHomeApp() {

@@ -22,11 +22,12 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
-    func presentNotificationAlert(media: ListMedia) {
-        let alertController = UIAlertController(title: "This title has not been released!", message: "Would you like to be reminded when it is released?", preferredStyle: .alert)
+    func presentNotificationAlert(media: ListMedia, sender: ListMediaDetailCollectionViewCell) {
+        let alertController = UIAlertController(title: "This title is unreleased!", message: "Set reminder for release date?", preferredStyle: .alert)
         let noAction = UIAlertAction(title: "No", style: .cancel)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
             NotificationScheduler.shared.scheduleNotifications(media: media)
+            sender.disableButton()
         }
         alertController.addAction(noAction)
         alertController.addAction(yesAction)

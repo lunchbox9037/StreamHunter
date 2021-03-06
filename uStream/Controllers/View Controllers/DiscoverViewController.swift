@@ -180,7 +180,6 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        print(indexPaths.count)
         for indexPath in indexPaths {
             if trendingMovieSection.contains(indexPath.section) {
                 MediaController.fetchPosterFor(media: trendingMovies[indexPath.row]) { (_) in }
@@ -216,7 +215,6 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if popularMovieSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularMovieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            print("popular movie")
             cell.setupCell(media: popularMovies[indexPath.row], indexPath: indexPath)
             return cell
         }

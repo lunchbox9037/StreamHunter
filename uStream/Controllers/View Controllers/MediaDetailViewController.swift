@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import SafariServices
 
 protocol RefreshDelegate: AnyObject {
     func refresh()
 }
 
-class MediaDetailViewController: UIViewController {
+class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegate  {
     // MARK: - Properties
     var selectedMedia: Media?
     
@@ -20,6 +21,8 @@ class MediaDetailViewController: UIViewController {
     let similarSection: [Int] = [2]
     
     var providers: [Provider] = []
+    var providerLink: String?
+    
     var similar: [Media] = []
     
     static weak var delegate: RefreshDelegate?
@@ -55,7 +58,6 @@ class MediaDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemBackground
-       
         setupViews()
     }
     
@@ -101,8 +103,8 @@ class MediaDetailViewController: UIViewController {
                 switch result {
                 case .success(let location):
                     self?.providers = location.streaming ?? []
+                    self?.providerLink = location.deepLink
                     self?.collectionView.reloadData()
-                    print("got providers")
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -186,7 +188,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         if selectedMediaSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "mediaDetailCell", for: indexPath) as? MediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
-            cell.delegate = self
+            cell.addDelegate = self
             cell.setup(media: media)
             return cell
         }

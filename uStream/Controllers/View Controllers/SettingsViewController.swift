@@ -46,7 +46,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func promptRating() {
         //replace with my app url!!!
-        if let url = URL(string: "itms-apps://apple.com/app/id1523772947") {
+        if let url = URL(string: "") {
             UIApplication.shared.open(url)
         } else {
             print("error with app store URL")
@@ -55,7 +55,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func launchShareSheet() {
         //replace url with my app url once launched!!!
-        if let appURL = NSURL(string: "https://apps.apple.com/us/app/id1523772947") {
+        if let appURL = NSURL(string: "") {
             let objectsToShare: [Any] = [appURL]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
@@ -103,11 +103,11 @@ extension SettingsTableViewController: CLLocationManagerDelegate {
         if let currentLocation = locations.first {
             print("got location!")
             self.locationManager.stopUpdatingLocation()
-            geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
+            geoCoder.reverseGeocodeLocation(currentLocation) { [weak self] (placemarks, error) in
                 guard let currentLocPlacemark = placemarks?.first else {return}
                 guard let countryCode = currentLocPlacemark.isoCountryCode else {return}
                 UserDefaults.standard.setValue(countryCode, forKey: "countryCode")
-                self.presentLocationUpdatedAlert(cc: countryCode)
+                self?.presentLocationUpdatedAlert(cc: countryCode)
             }
         }
     }

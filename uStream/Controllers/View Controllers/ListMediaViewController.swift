@@ -84,6 +84,7 @@ class ListMediaViewController: UIViewController {
             //tv
             dataSource = ListMediaController.shared.listMediaTV
         case 3:
+            //upcoming
             dataSource = ListMediaController.shared.upcoming
         default:
             break
@@ -117,7 +118,6 @@ class ListMediaViewController: UIViewController {
             listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             listCollectionView.endInteractiveMovement()
-            
             self.listCollectionView.reloadData()
         default:
             listCollectionView.cancelInteractiveMovement()
@@ -144,8 +144,6 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listCell", for: indexPath) as? ListMediaCollectionViewCell else {return UICollectionViewCell()}
         cell.setup(media: dataSource[indexPath.row])
-        print(dataSource[indexPath.row].releaseDate as Any)
-        print(Date())
         cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
         
         if longPressedEnabled {
@@ -166,6 +164,7 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
 
 extension ListMediaViewController: RefreshDelegate {
     func refresh() {
+        print("reloaded")
         ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }    

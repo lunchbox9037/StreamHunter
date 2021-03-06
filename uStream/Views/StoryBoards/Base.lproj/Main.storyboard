@@ -111,7 +111,7 @@
                             <constraint firstItem="F6W-PP-f33" firstAttribute="leading" secondItem="17P-6S-lBI" secondAttribute="leading" id="ys3-Wn-Xzy"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Discover" image="list.and.film" catalog="system" id="KgV-mK-QLb"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="tv" catalog="system" id="KgV-mK-QLb"/>
                     <connections>
                         <outlet property="collectionView" destination="F6W-PP-f33" id="rLL-c5-BqP"/>
                     </connections>
@@ -148,11 +148,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="it0-ZJ-DLx"/>
+        <segue reference="yug-5b-bT5"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="list.and.film" catalog="system" width="128" height="86"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
+        <image name="tv" catalog="system" width="128" height="97"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
