@@ -68,8 +68,11 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     // MARK: - Methods
     func setupViews() {
         fetchWhereToWatch()
+        providers = []
         fetchSimilar()
-
+        similar = []
+        ///changed this ^^
+        
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
         
@@ -96,7 +99,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
             case 2:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
             default:
-                return LayoutBuilder.buildMediaVerticalScrollLayout()
+                return nil
             }
         }
     }//end func
@@ -107,9 +110,9 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
         WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
             switch result {
             case .success(let location):
-                self?.providers = location.streaming ?? []
-                self?.providerLink = location.deepLink
                 DispatchQueue.main.async {
+                    self?.providers = location.streaming ?? []
+                    self?.providerLink = location.deepLink
                     self?.collectionView.reloadSections(IndexSet(integer: 1))
                 }
             case .failure(let error):
@@ -124,8 +127,8 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: media.id ?? 603 ) { [weak self] (result) in
             switch result {
             case .success(let similar):
-                self?.similar = similar
                 DispatchQueue.main.async {
+                    self?.similar = similar
                     self?.collectionView.reloadSections(IndexSet(integer: 2))
                 }
             case .failure(let error):
@@ -133,6 +136,25 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
             }
         }
     }//end func
+    
+    func launchApp(provider: Provider) {
+        guard let providerName = provider.providerName else {return}
+        print(providerName)
+        let url = AppLinks.getURLFor(providerName: providerName)
+        if let appURL = URL(string: url) {
+            UIApplication.shared.open(appURL) { success in
+                if success {
+                    print("The URL was delivered successfully.")
+                } else {
+                    print("The URL failed to open.")
+                    let appID = AppLinks.getIDfor(providerName: providerName)
+                    self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                }
+            }
+        } else {
+            print("Invalid URL specified.")
+        }
+    }
     
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
@@ -214,7 +236,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if whereToWatchSection.contains(indexPath.section) {
-            AppLinks.launchApp(provider: providers[indexPath.row])
+            self.launchApp(provider: providers[indexPath.row])
         }
         if similarSection.contains(indexPath.section) {
             self.selectedMedia = similar[indexPath.row]
@@ -230,4 +252,4 @@ extension MediaDetailViewController: AddToListButtonDelegate {
         ListMediaController.shared.addToList(media: selectedMedia)
         MediaDetailViewController.delegate?.refresh()
     }
-}
+}//end extension

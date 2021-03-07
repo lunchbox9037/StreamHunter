@@ -22,6 +22,7 @@ class ListMediaViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        MediaDetailViewController.delegate = self
         setupCollectionView()
         setupGestures()
         setupRefresher()
@@ -29,7 +30,6 @@ class ListMediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        MediaDetailViewController.delegate = self
         ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }
@@ -59,8 +59,6 @@ class ListMediaViewController: UIViewController {
         listCollectionView.backgroundColor = UIColor.systemFill
         listCollectionView.delegate = self
         listCollectionView.dataSource = self
-        listCollectionView.isPrefetchingEnabled = true
-//        listCollectionView.prefetchDataSource = self
         listCollectionView.register(ListMediaCollectionViewCell.self, forCellWithReuseIdentifier: "listCell")
         listCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         listCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +116,7 @@ class ListMediaViewController: UIViewController {
             listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
         case .ended:
             listCollectionView.endInteractiveMovement()
-            self.listCollectionView.reloadData()
+            listCollectionView.reloadData()
         default:
             listCollectionView.cancelInteractiveMovement()
         }
@@ -164,7 +162,6 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
 
 extension ListMediaViewController: RefreshDelegate {
     func refresh() {
-        print("reloaded")
         ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }    

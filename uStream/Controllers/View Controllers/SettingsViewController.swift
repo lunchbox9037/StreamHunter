@@ -100,7 +100,6 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
 extension SettingsTableViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let currentLocation = locations.first {
-            print("got location!")
             self.locationManager.stopUpdatingLocation()
             geoCoder.reverseGeocodeLocation(currentLocation) { [weak self] (placemarks, error) in
                 guard let currentLocPlacemark = placemarks?.first else {return}

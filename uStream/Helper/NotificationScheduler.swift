@@ -16,7 +16,7 @@ class NotificationScheduler {
         let id = media.id
         
         let content = UNMutableNotificationContent()
-        content.title = "New Relese!"
+        content.title = "New Release!"
         content.body = "\(title) is now available to stream!"
         content.sound = .default
         

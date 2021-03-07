@@ -43,7 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - Extensions
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("Notification will present...")
         completionHandler([.sound,.banner])
     }
 }

@@ -11,7 +11,7 @@ public class SectionHeader: UICollectionReusableView {
     var titleLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Default"
-        label.font = UIFont.preferredFont(forTextStyle: .headline).withSize(20)
+        label.font = UIFont.preferredFont(forTextStyle: .title1).withSize(20)
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
         label.lineBreakStrategy = .standard

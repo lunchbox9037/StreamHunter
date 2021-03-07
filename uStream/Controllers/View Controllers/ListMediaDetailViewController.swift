@@ -127,6 +127,25 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         }
     }//end func
     
+    func launchApp(provider: Provider) {
+        guard let providerName = provider.providerName else {return}
+        print(providerName)
+        let url = AppLinks.getURLFor(providerName: providerName)
+        if let appURL = URL(string: url) {
+            UIApplication.shared.open(appURL) { success in
+                if success {
+                    print("The URL was delivered successfully.")
+                } else {
+                    print("The URL failed to open.")
+                    let appID = AppLinks.getIDfor(providerName: providerName)
+                    self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                }
+            }
+        } else {
+            print("Invalid URL specified.")
+        }
+    }
+    
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
     }//end func
@@ -206,7 +225,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if whereToWatchSection.contains(indexPath.section) {
-            AppLinks.launchApp(provider: providers[indexPath.row])
+            self.launchApp(provider: providers[indexPath.row])
         }
         
         if similarSection.contains(indexPath.section) {

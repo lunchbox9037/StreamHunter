@@ -33,4 +33,23 @@ extension UIViewController {
         alertController.addAction(yesAction)
         present(alertController, animated: true)
     }
+    
+    func presentAppNotInstalledAlert(appName: String, appID: String) {
+        let alertController = UIAlertController(title: "\(appName) isn't installed!", message: "Would you like to go to the app store to download it?", preferredStyle: .alert)
+        let noAction = UIAlertAction(title: "No", style: .cancel)
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
+            if appID == "error" {
+                if let url = URL(string: "itms-apps://apple.com/apps") {
+                    UIApplication.shared.open(url)
+                }
+            } else {
+                if let url = URL(string: "itms-apps://apple.com/app/\(appID)") {
+                    UIApplication.shared.open(url)
+                }
+            }
+        }
+        alertController.addAction(noAction)
+        alertController.addAction(yesAction)
+        present(alertController, animated: true)
+    }
 }

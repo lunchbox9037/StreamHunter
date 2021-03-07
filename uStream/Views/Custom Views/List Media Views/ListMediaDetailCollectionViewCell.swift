@@ -24,8 +24,8 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 10
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 10
+        view.layer.shadowOpacity = 0.6
+        view.layer.shadowRadius = 32
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view

@@ -127,7 +127,7 @@ class DiscoverViewController: UIViewController {
                 }
             }
         }
-    }
+    }//end func
     
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
