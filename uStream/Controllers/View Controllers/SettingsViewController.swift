@@ -14,6 +14,8 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     
+    let child = SpinnerViewController()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     func getLocation() {
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
+            createSpinnerView()
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyReduced
             locationManager.requestLocation()
@@ -76,6 +79,19 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
         }
     }
     
+    private func createSpinnerView() {
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    private func stopSpinner() {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+    }
+    
     // MARK: - Tableview Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath {
@@ -105,6 +121,8 @@ extension SettingsTableViewController: CLLocationManagerDelegate {
                 guard let currentLocPlacemark = placemarks?.first else {return}
                 guard let countryCode = currentLocPlacemark.isoCountryCode else {return}
                 UserDefaults.standard.setValue(countryCode, forKey: "countryCode")
+                print("got location")
+                self?.stopSpinner()
                 self?.presentLocationUpdatedAlert(cc: countryCode)
             }
         }

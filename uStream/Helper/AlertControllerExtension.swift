@@ -10,14 +10,14 @@ import UIKit
 extension UIViewController {
     func presentErrorAlert() {
         let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for your region...", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
     }
     
     func presentLocationUpdatedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \(cc)!", message: "Your streaming providers will now be based on your current region.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
+        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current region.", preferredStyle: .actionSheet)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
     }
@@ -35,7 +35,7 @@ extension UIViewController {
     }
     
     func presentAppNotInstalledAlert(appName: String, appID: String) {
-        let alertController = UIAlertController(title: "\(appName) isn't installed!", message: "Would you like to go to the app store to download it?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "\(appName) isn't installed!", message: "Would you like to go to the App Store to download it?", preferredStyle: .alert)
         let noAction = UIAlertAction(title: "No", style: .cancel)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
             if appID == "error" {

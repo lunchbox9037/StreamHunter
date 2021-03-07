@@ -31,7 +31,7 @@ class SearchViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
-
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -64,7 +64,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        collectionView.keyboardDismissMode = .onDrag
         SearchResultsController.fetchSearchResultsFor(searchTerm: searchText) { [weak self] (result) in
             switch result {
             case .success(let results):

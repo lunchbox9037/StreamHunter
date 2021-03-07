@@ -16,7 +16,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.6
+        view.layer.shadowOpacity = 0.5
         view.layer.shadowRadius = 32
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false

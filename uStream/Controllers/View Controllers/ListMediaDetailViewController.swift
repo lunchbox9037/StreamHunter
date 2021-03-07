@@ -85,7 +85,11 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
             case 0:
                 return LayoutBuilder.buildMediaDetailSection()
             case 1:
-                return LayoutBuilder.buildWhereToWatchIconSection()
+                if self.providers.count == 0 {
+                    return LayoutBuilder.buildEmptySection()
+                } else {
+                    return LayoutBuilder.buildWhereToWatchIconSection()
+                }
             case 2:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
             default:

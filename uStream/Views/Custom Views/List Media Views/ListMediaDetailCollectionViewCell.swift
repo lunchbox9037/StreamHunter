@@ -24,8 +24,8 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 10
-        view.layer.shadowOpacity = 0.6
-        view.layer.shadowRadius = 32
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 10
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -100,7 +100,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         let label: UILabel = UILabel()
         label.text = "release date"
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.textColor = .systemFill
+        label.textColor = .tertiaryLabel
         label.numberOfLines = 0
         label.textAlignment = .left
         label.minimumScaleFactor = CGFloat(0.5)
@@ -158,7 +158,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.heightAnchor.constraint(equalToConstant: 200)
+            self.backdropImageView.heightAnchor.constraint(equalToConstant: 241)
         ])
         
         NSLayoutConstraint.activate([
@@ -210,7 +210,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
                 case .success(let image):
                     self?.backdropImageView.image = image
                 case .failure(let error):
-                    self?.backdropImageView.image = UIImage(systemName: "image")
+                    self?.backdropImageView.image = UIImage(systemName: "imageNotAvailable")
                     print(error.localizedDescription)
                 }
             }

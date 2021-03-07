@@ -120,8 +120,11 @@ class MediaController {
         
         var components = URLComponents(url: upcomingURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+        let languageQuery = URLQueryItem(name: "language", value: "en-US")
+        let pageQuery = URLQueryItem(name: "page", value: "1")
+        let regionQuery = URLQueryItem(name: "region", value: "US")
         
-        components?.queryItems = [apiQuery]
+        components?.queryItems = [apiQuery, languageQuery, pageQuery, regionQuery]
         
         guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
         print(finalURL)

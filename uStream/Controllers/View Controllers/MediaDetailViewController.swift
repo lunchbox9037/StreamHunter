@@ -16,7 +16,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     // MARK: - Properties
     var selectedMedia: Media? {
         didSet {
-            collectionView.reloadSections(IndexSet(integer: 0))
+            collectionView.reloadSections([0])
             collectionView.scrollToItem(at: [0,0], at: .top, animated: false)
         }
     }
@@ -67,11 +67,10 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     
     // MARK: - Methods
     func setupViews() {
-        fetchWhereToWatch()
         providers = []
-        fetchSimilar()
         similar = []
-        ///changed this ^^
+        fetchWhereToWatch()
+        fetchSimilar()
         
         self.view.addSubview(self.dismissViewButton)
         self.view.addSubview(self.collectionView)
@@ -95,7 +94,13 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
             case 0:
                 return LayoutBuilder.buildMediaDetailSection()
             case 1:
-                return LayoutBuilder.buildWhereToWatchIconSection()
+                print(self.providers.count)
+                if self.providers.count == 0 {
+                    return LayoutBuilder.buildEmptySection()
+                } else {
+                    return LayoutBuilder.buildWhereToWatchIconSection()
+
+                }
             case 2:
                 return LayoutBuilder.buildMediaHorizontalScrollLayout()
             default:
@@ -113,7 +118,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
                 DispatchQueue.main.async {
                     self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
-                    self?.collectionView.reloadSections(IndexSet(integer: 1))
+                    self?.collectionView.reloadSections([1])
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -129,7 +134,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
             case .success(let similar):
                 DispatchQueue.main.async {
                     self?.similar = similar
-                    self?.collectionView.reloadSections(IndexSet(integer: 2))
+                    self?.collectionView.reloadSections([2])
                 }
             case .failure(let error):
                 print(error.localizedDescription)
