@@ -12,11 +12,21 @@ extension UIViewController {
         let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for your region...", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
+        alertController.popoverPresentationController?.barButtonItem = editButtonItem
+        
         present(alertController, animated: true)
     }
     
     func presentLocationUpdatedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current region.", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current region.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentAppInfoAlert() {
+        let alertController = UIAlertController(title: "Version \(UIApplication.appVersion ?? "1.0")", message: "All streaming service info is provided by JustWatch. The release date info is provided by The Movie DB.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)

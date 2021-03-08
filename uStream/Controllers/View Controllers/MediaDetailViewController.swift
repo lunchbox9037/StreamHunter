@@ -67,8 +67,8 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     
     // MARK: - Methods
     func setupViews() {
-        providers = []
-        similar = []
+//        providers = []
+//        similar = []
         fetchWhereToWatch()
         fetchSimilar()
         
@@ -94,15 +94,17 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
             case 0:
                 return LayoutBuilder.buildMediaDetailSection()
             case 1:
-                print(self.providers.count)
-                if self.providers.count == 0 {
-                    return LayoutBuilder.buildEmptySection()
-                } else {
+                if self.providers.count != 0 {
                     return LayoutBuilder.buildWhereToWatchIconSection()
-
+                } else {
+                    return nil
                 }
             case 2:
-                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+                if self.similar.count != 0 {
+                    return LayoutBuilder.buildMediaHorizontalScrollLayout()
+                } else {
+                    return nil
+                }
             default:
                 return nil
             }

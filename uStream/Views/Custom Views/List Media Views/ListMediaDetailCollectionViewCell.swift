@@ -36,7 +36,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -158,7 +158,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.heightAnchor.constraint(equalToConstant: 241)
+            self.backdropImageView.heightAnchor.constraint(equalTo: self.backdropImageView.widthAnchor, multiplier: 0.25, constant: 125)
         ])
         
         NSLayoutConstraint.activate([
@@ -217,6 +217,10 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         }
         self.overviewLabel.text = media.overview
         self.releaseDateLabel.text = "\(media.releaseDate?.dateToString(format: .monthDayYear) ?? "tbd")"
+        guard let date = media.releaseDate else {return}
+        if date > Date() {
+            releaseDateLabel.textColor = .systemGreen
+        }
     }
     
     func activateButton() {

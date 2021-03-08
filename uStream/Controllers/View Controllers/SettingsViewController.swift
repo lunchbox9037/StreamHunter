@@ -101,8 +101,14 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
         case [1,0]:
             getLocation()
             tableView.deselectRow(at: indexPath, animated: true)
+        case [2,0]:
+            promptRating()
+            tableView.deselectRow(at: indexPath, animated: true)
         case [2,1]:
             launchShareSheet()
+            tableView.deselectRow(at: indexPath, animated: true)
+        case [2,2]:
+            presentAppInfoAlert()
             tableView.deselectRow(at: indexPath, animated: true)
         case [3,0]:
             presentTMDBLink()

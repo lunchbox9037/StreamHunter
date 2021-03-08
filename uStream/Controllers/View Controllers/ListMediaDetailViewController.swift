@@ -12,7 +12,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     // MARK: - Properties
     var selectedMedia: ListMedia? {
         didSet {
-            collectionView.reloadSections(IndexSet(integer: 0))
+            collectionView.reloadSections([0])
         }
     }
     
@@ -85,13 +85,17 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
             case 0:
                 return LayoutBuilder.buildMediaDetailSection()
             case 1:
-                if self.providers.count == 0 {
-                    return LayoutBuilder.buildEmptySection()
-                } else {
+                if self.providers.count != 0 {
                     return LayoutBuilder.buildWhereToWatchIconSection()
+                } else {
+                    return nil
                 }
             case 2:
-                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+                if self.similar.count != 0 {
+                    return LayoutBuilder.buildMediaHorizontalScrollLayout()
+                } else {
+                    return nil
+                }
             default:
                 return nil
             }
@@ -107,7 +111,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                 case .success(let location):
                     self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
-                    self?.collectionView.reloadSections(IndexSet(integer: 1))
+                    self?.collectionView.reloadSections([1])
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -123,7 +127,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                 switch result {
                 case .success(let similar):
                     self?.similar = similar
-                    self?.collectionView.reloadSections(IndexSet(integer: 2))
+                    self?.collectionView.reloadSections([2])
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

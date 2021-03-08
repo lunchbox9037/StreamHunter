@@ -72,7 +72,7 @@ public class LayoutBuilder {
             elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 12)
         section.boundarySupplementaryItems = [sectionHeader]
-        section.orthogonalScrollingBehavior = .groupPaging
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         
         return section
     }

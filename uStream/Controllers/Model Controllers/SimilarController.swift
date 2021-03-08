@@ -30,6 +30,8 @@ class SimilarController {
         
         var components = URLComponents(url: recommendationsURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+//        let pageQuery = URLQueryItem(name: "page", value: "\(id)")
+        
         
         components?.queryItems = [apiQuery]
         

@@ -34,7 +34,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -113,14 +113,14 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.container.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
             self.container.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            self.container.rightAnchor.constraint(equalTo: self.contentView.rightAnchor)
+            self.container.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
         ])
         
         NSLayoutConstraint.activate([
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.heightAnchor.constraint(equalToConstant: 241)
+            self.backdropImageView.heightAnchor.constraint(equalTo: self.backdropImageView.widthAnchor, multiplier: 0.25, constant: 125)
         ])
         
         NSLayoutConstraint.activate([
@@ -173,6 +173,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         self.overviewLabel.text = media.overview
         let date = media.convertToDate(media)
         self.releaseDateLabel.text = "\(date.dateToString(format: .monthDayYear))"
+        if date > Date() {
+            releaseDateLabel.textColor = .systemGreen
+        }
     }
     
     func activateButton() {

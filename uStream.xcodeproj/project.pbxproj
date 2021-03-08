@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F6195A8125F43B8B002127AD /* Upcoming.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6195A8025F43B8B002127AD /* Upcoming.swift */; };
 		F6195A8625F5552E002127AD /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6195A8525F5552E002127AD /* SpinnerViewController.swift */; };
+		F6195A9125F5B6B4002127AD /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6195A9025F5B6B4002127AD /* UIApplicationExtension.swift */; };
 		F63774E725E5A79F00F4025E /* MediaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63774E625E5A79F00F4025E /* MediaDetailCollectionViewCell.swift */; };
 		F63774EC25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63774EB25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift */; };
 		F63774EF25E5F7E800F4025E /* WhereToWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63774EE25E5F7E800F4025E /* WhereToWatch.swift */; };
@@ -59,6 +60,7 @@
 /* Begin PBXFileReference section */
 		F6195A8025F43B8B002127AD /* Upcoming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upcoming.swift; sourceTree = "<group>"; };
 		F6195A8525F5552E002127AD /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		F6195A9025F5B6B4002127AD /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		F63774E625E5A79F00F4025E /* MediaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		F63774EB25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereToWatchCollectionViewCell.swift; sourceTree = "<group>"; };
 		F63774EE25E5F7E800F4025E /* WhereToWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereToWatch.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				F650773825F04EDF0040C171 /* AlertControllerExtension.swift */,
 				F650775625F1E70B0040C171 /* DateExtension.swift */,
 				F650776225F2E9400040C171 /* NotificationScheduler.swift */,
+				F6195A9025F5B6B4002127AD /* UIApplicationExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				F6F6638425E413D900C4FC65 /* LayoutBuilder.swift in Sources */,
 				F650774825F0B9B40040C171 /* Popular.swift in Sources */,
 				F63774F725E6093500F4025E /* uStream.xcdatamodeld in Sources */,
+				F6195A9125F5B6B4002127AD /* UIApplicationExtension.swift in Sources */,
 				F6E2CDCE25E709390089DEF1 /* SimilarCollectionViewCell.swift in Sources */,
 				F68AB92025DF63FA002D56D2 /* AppDelegate.swift in Sources */,
 				F650773625F008030040C171 /* AppLinks.swift in Sources */,
