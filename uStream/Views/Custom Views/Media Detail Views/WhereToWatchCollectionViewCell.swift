@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import UIKit
 
 public class WhereToWatchCollectionViewCell: UICollectionViewCell {
@@ -33,21 +32,11 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "error fetching"
-        label.font = UIFont.preferredFont(forTextStyle: .subheadline).withSize(8)
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.providerLogoImageView)
-//        self.container.addSubview(self.subtitleLabel)
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -62,19 +51,19 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
             self.providerLogoImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.providerLogoImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            self.subtitleLabel.topAnchor.constraint(equalTo: self.providerLogoImageView.bottomAnchor, constant: 10),
-//            self.subtitleLabel.centerXAnchor.constraint(equalTo: self.providerLogoImageView.centerXAnchor, constant: 0)
-//        ])
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        self.providerLogoImageView.image = nil
+    }
+    
+    // MARK: - Methods
     func setup(provider: Provider, newIndexPath: IndexPath) {
-        print(provider.providerName as Any)
         self.currentIndexPath = newIndexPath
         WhereToWatchController.fetchLogoFor(provider: provider) { [weak self] (result) in
             switch result {
@@ -82,9 +71,6 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     if self?.currentIndexPath == newIndexPath {
                         self?.providerLogoImageView.image = logo
-                        print("setImage")
-                    } else {
-                        print("threwout image")
                     }
                 }
             case .failure(let error):

@@ -29,4 +29,22 @@ struct Media: Codable {
         case releaseDate = "release_date"
         case firstAirDate = "first_air_date"
     }
-}
+    
+    func getMediaTypeFor(_ media: Media) -> String {
+        if media.title == nil {
+            return "tv"
+        } else {
+            return "movie"
+        }
+    }
+    
+    func convertToDate(_ media: Media) -> Date {
+        if media.firstAirDate != nil {
+            guard let dateString = media.firstAirDate else {return Date()}
+            return dateString.toDate()
+        } else {
+            guard let dateString = media.releaseDate else {return Date()}
+            return dateString.toDate()
+        }
+    }
+}//end struct

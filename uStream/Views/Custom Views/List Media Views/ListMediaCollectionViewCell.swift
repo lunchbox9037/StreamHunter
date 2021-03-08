@@ -16,8 +16,8 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 8
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 32
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -37,18 +37,8 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         button.tintColor = .systemRed
         button.translatesAutoresizingMaskIntoConstraints = false
         button.contentMode = .scaleToFill
-        button.setPreferredSymbolConfiguration(.init(pointSize: 21), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(pointSize: 30), forImageIn: .normal)
         return button
-    }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(8)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     override init(frame: CGRect) {
@@ -82,7 +72,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(media: ListMedia) {
-        SearchResultsController.fetchPosterFor(media: media) { [weak self] (result) in
+        MediaController.fetchPosterForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -92,7 +82,6 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-        subtitleLabel.text = media.title
     }
     
     //Animation of image
@@ -104,7 +93,7 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
         shakeAnimation.duration = 0.2
         shakeAnimation.repeatCount = 99999
         
-        let startAngle: Float = (-2) * 3.14159/180
+        let startAngle: Float = (-1) * 3.14159/180
         let stopAngle = -startAngle
         
         shakeAnimation.fromValue = NSNumber(value: startAngle as Float)

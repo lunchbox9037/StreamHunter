@@ -39,6 +39,7 @@
                                     <segment title="All"/>
                                     <segment title="Movies"/>
                                     <segment title="Shows"/>
+                                    <segment title="Upcoming"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentControlChanged:" destination="wES-rK-jCZ" eventType="valueChanged" id="kNk-hi-166"/>
@@ -48,16 +49,16 @@
                         <viewLayoutGuide key="safeArea" id="snY-GV-rhB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="2i8-vX-dyO"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
-                            <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Cca-iJ-qGv"/>
-                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="6" id="Cqc-9F-9T1"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="AzT-WI-XDL"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="C9h-VJ-ATf"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Vd9-JU-LMP"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="WL3-ya-ebp"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="nxx-kb-TKf" secondAttribute="trailing" id="aXB-Hi-ek0"/>
-                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="bZf-35-Ldx"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="iqw-Z1-h3Y"/>
-                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="s0D-TO-2uM"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="6" id="prD-ES-b4c"/>
                             <constraint firstItem="lFz-ee-Ieg" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="sRf-n2-z9R"/>
                         </constraints>
                     </view>
@@ -69,7 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thn-9d-YLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="252" y="212"/>
+            <point key="canvasLocation" x="252" y="211.84407796101951"/>
         </scene>
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
@@ -110,7 +111,7 @@
                             <constraint firstItem="F6W-PP-f33" firstAttribute="leading" secondItem="17P-6S-lBI" secondAttribute="leading" id="ys3-Wn-Xzy"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Discover" image="list.and.film" catalog="system" id="KgV-mK-QLb"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="tv" catalog="system" id="KgV-mK-QLb"/>
                     <connections>
                         <outlet property="collectionView" destination="F6W-PP-f33" id="rLL-c5-BqP"/>
                     </connections>
@@ -150,8 +151,8 @@
         <segue reference="it0-ZJ-DLx"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="list.and.film" catalog="system" width="128" height="86"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
+        <image name="tv" catalog="system" width="128" height="97"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -9,27 +9,26 @@ import Foundation
 
 struct WhereToWatch: Codable {
     let id: Int
-    let results: Locale
+    let results: Country
 }
 
-struct Locale: Codable {
-    let location: Option
+struct Country: Codable {
+    let unitedStates: Option?
+    let peru: Option?
     
     enum CodingKeys: String, CodingKey {
-        case location = "US"
+        case unitedStates = "US"
+        case peru = "PE"
     }
 }
 
 struct Option: Codable {
     let deepLink: String
-    let streaming: [Provider]
-//    let rent: [Provider]
-//    let buy: [Provider]
+    let streaming: [Provider]?
     
     enum CodingKeys: String, CodingKey {
         case streaming = "flatrate"
         case deepLink = "link"
-//        case rent, buy
     }
 }
 

@@ -22,6 +22,7 @@ class ListMediaViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        MediaDetailViewController.delegate = self
         setupCollectionView()
         setupGestures()
         setupRefresher()
@@ -29,7 +30,7 @@ class ListMediaViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        MediaDetailViewController.delegate = self
+        ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }
     
@@ -45,59 +46,31 @@ class ListMediaViewController: UIViewController {
         listCollectionView.addGestureRecognizer(longPressGesture)
         listCollectionView.addGestureRecognizer(tap)
         tap.isEnabled = false
-    }
+    }//end func
     
     func setupRefresher() {
         refresher.attributedTitle = NSAttributedString(string: "Pull to refresh list...")
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
         listCollectionView.addSubview(refresher)
-    }
+    }//end func
     
-    @objc func loadData() {
-        selectSegmentIndex()
-        self.refresher.endRefreshing()
-    }
+    func setupCollectionView() {
+        listCollectionView.collectionViewLayout = makeLayout()
+        listCollectionView.backgroundColor = UIColor.systemFill
+        listCollectionView.delegate = self
+        listCollectionView.dataSource = self
+        listCollectionView.register(ListMediaCollectionViewCell.self, forCellWithReuseIdentifier: "listCell")
+        listCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        listCollectionView.translatesAutoresizingMaskIntoConstraints = false
+    }//end func
     
-    @objc func doneDeleting(_ gesture: UITapGestureRecognizer) {
-        Haptics.playRigidImpact()
-        longPressedEnabled = false
-        self.listCollectionView.reloadData()
-        self.tap.isEnabled = false
-    }
-    
-    @objc func longTap(_ gesture: UIGestureRecognizer){
-        self.tap.isEnabled = true
-        Haptics.playSuccessNotification()
-        print("ran")
-        switch(gesture.state) {
-        case .began:
-            guard let selectedIndexPath = listCollectionView.indexPathForItem(at: gesture.location(in: listCollectionView)) else {
-                return
-            }
-            listCollectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
-        case .changed:
-            listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
-        case .ended:
-            listCollectionView.endInteractiveMovement()
-            longPressedEnabled = true
-            self.listCollectionView.reloadData()
-        default:
-            listCollectionView.cancelInteractiveMovement()
+    func makeLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            return LayoutBuilder.buildMediaVerticalScrollLayout()
         }
-    }
-    
-    @objc func removeBtnClick(_ sender: UIButton) {
-        Haptics.playSelectionChanged()
-        let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
-        let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
-        //remove the image and refresh the collection view
-        let itemToDelete = dataSource[hitIndex!.row]
-        ListMediaController.shared.delete(item: itemToDelete)
-        selectSegmentIndex()
-    }
+    }//end func
     
     func selectSegmentIndex() {
-        ListMediaController.shared.fetchListMedia()
         switch segmentControl.selectedSegmentIndex {
         case 0:
             //all
@@ -108,28 +81,56 @@ class ListMediaViewController: UIViewController {
         case 2:
             //tv
             dataSource = ListMediaController.shared.listMediaTV
+        case 3:
+            //upcoming
+            dataSource = ListMediaController.shared.upcoming
         default:
             break
         }
         listCollectionView.reloadData()
-    }
+    }//end func
     
-    func setupCollectionView() {
-        listCollectionView.collectionViewLayout = makeLayout()
-        listCollectionView.backgroundColor = UIColor.systemFill
-        listCollectionView.delegate = self
-        listCollectionView.dataSource = self
-        listCollectionView.isPrefetchingEnabled = true
-//        listCollectionView.prefetchDataSource = self
-        listCollectionView.register(ListMediaCollectionViewCell.self, forCellWithReuseIdentifier: "listCell")
-        listCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        listCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    }
+    @objc func loadData() {
+        selectSegmentIndex()
+        self.refresher.endRefreshing()
+    }//end func
     
-    func makeLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
-            return LayoutBuilder.buildMediaVerticalScrollLayout()
+    @objc func doneDeleting(_ gesture: UITapGestureRecognizer) {
+        Haptics.playRigidImpact()
+        longPressedEnabled = false
+        self.listCollectionView.reloadData()
+        self.tap.isEnabled = false
+    }//end func
+    
+    @objc func longTap(_ gesture: UIGestureRecognizer){
+        self.tap.isEnabled = true
+        switch(gesture.state) {
+        case .began:
+            guard let selectedIndexPath = listCollectionView.indexPathForItem(at: gesture.location(in: listCollectionView)) else {
+                return
+            }
+            longPressedEnabled = true
+            Haptics.playSuccessNotification()
+            listCollectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+        case .changed:
+            listCollectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
+        case .ended:
+            listCollectionView.endInteractiveMovement()
+            listCollectionView.reloadData()
+        default:
+            listCollectionView.cancelInteractiveMovement()
         }
+    }//end func
+    
+    @objc func removeBtnClick(_ sender: UIButton) {
+        Haptics.playSelectionChanged()
+        let hitPoint = sender.convert(CGPoint.zero, to: self.listCollectionView)
+        let hitIndex = self.listCollectionView.indexPathForItem(at: hitPoint)
+        //remove the image and refresh the collection view
+        let mediaToDelete = dataSource[hitIndex!.row]
+        ListMediaController.shared.delete(media: mediaToDelete)
+        ListMediaController.shared.fetchListMedia()
+        selectSegmentIndex()
     }//end func
 }//end class
 
@@ -141,7 +142,6 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listCell", for: indexPath) as? ListMediaCollectionViewCell else {return UICollectionViewCell()}
         cell.setup(media: dataSource[indexPath.row])
-        
         cell.removeBtn.addTarget(self, action: #selector(removeBtnClick(_:)), for: .touchUpInside)
         
         if longPressedEnabled {
@@ -162,7 +162,7 @@ extension ListMediaViewController: UICollectionViewDelegate, UICollectionViewDat
 
 extension ListMediaViewController: RefreshDelegate {
     func refresh() {
-        print("reload")
+        ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
     }    
-}
+}//end extension

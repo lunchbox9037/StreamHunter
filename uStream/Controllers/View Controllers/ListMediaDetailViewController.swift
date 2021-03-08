@@ -6,10 +6,15 @@
 //
 
 import UIKit
+import SafariServices
 
-class ListMediaDetailViewController: UIViewController {
+class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDelegate {
     // MARK: - Properties
-    var selectedMedia: ListMedia?
+    var selectedMedia: ListMedia? {
+        didSet {
+            collectionView.reloadSections([0])
+        }
+    }
     
     let selectedMediaSection: [Int] = [0]
     let whereToWatchSection: [Int] = [1]
@@ -18,26 +23,26 @@ class ListMediaDetailViewController: UIViewController {
     var providers: [Provider] = []
     var providerLink: String?
     var similar: [Media] = []
-    
-    static weak var delegate: RefreshDelegate?
-    
+        
     // MARK: - Views
     lazy var dismissViewButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .opaqueSeparator
+        button.tintColor = .systemGray2
         button.contentMode = .scaleAspectFill
+        button.setPreferredSymbolConfiguration(.init(pointSize: 18), forImageIn: .normal)
         button.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         return button
     }()
 
     lazy var collectionView: UICollectionView = {
         let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: self.makeLayout())
-        collectionView.backgroundColor = UIColor.systemGray
+        collectionView.backgroundColor = UIColor.systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
-        //register new cells
+        collectionView.isPrefetchingEnabled = true
+        collectionView.prefetchDataSource = self
         collectionView.register(ListMediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "listMediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
         collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
@@ -49,7 +54,7 @@ class ListMediaDetailViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.systemGray
+        self.view.backgroundColor = UIColor.systemBackground
         setupViews()
     }
     
@@ -62,9 +67,8 @@ class ListMediaDetailViewController: UIViewController {
         self.view.addSubview(self.collectionView)
         
         NSLayoutConstraint.activate([
-            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 12),
-            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-            self.dismissViewButton.heightAnchor.constraint(equalToConstant: 20)
+            self.dismissViewButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            self.dismissViewButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8),
         ])
         
         NSLayoutConstraint.activate([
@@ -76,29 +80,38 @@ class ListMediaDetailViewController: UIViewController {
     }//end func
     
     func makeLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (section: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            if self.selectedMediaSection.contains(section) {
+        return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
+            switch section {
+            case 0:
                 return LayoutBuilder.buildMediaDetailSection()
-            } else if self.whereToWatchSection.contains(section) {
-                return LayoutBuilder.buildWhereToWatchIconSection()
-            } else {
-                return LayoutBuilder.buildMediaHorizontalScrollLayout()
+            case 1:
+                if self.providers.count != 0 {
+                    return LayoutBuilder.buildWhereToWatchIconSection()
+                } else {
+                    return nil
+                }
+            case 2:
+                if self.similar.count != 0 {
+                    return LayoutBuilder.buildMediaHorizontalScrollLayout()
+                } else {
+                    return nil
+                }
+            default:
+                return nil
             }
         }
-        return layout
     }//end func
     
     func fetchWhereToWatch() {
-        guard let media = selectedMedia else {return}
-        guard let mediaType = media.mediaType else {return}
+        guard let media = selectedMedia,
+              let mediaType = media.mediaType else {return}
         WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: mediaType) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let location):
-                    self?.providers = location.streaming
+                    self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
-                    self?.collectionView.reloadData()
-                    print("got providers")
+                    self?.collectionView.reloadSections([1])
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -107,15 +120,14 @@ class ListMediaDetailViewController: UIViewController {
     }//end func
     
     func fetchSimilar() {
-        guard let media = selectedMedia else {return}
-        guard let mediaType = media.mediaType else {return}
+        guard let media = selectedMedia,
+              let mediaType = media.mediaType else {return}
         SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let similar):
                     self?.similar = similar
-                    self?.collectionView.reloadData()
-                    print("got similar")
+                    self?.collectionView.reloadSections([2])
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -123,13 +135,32 @@ class ListMediaDetailViewController: UIViewController {
         }
     }//end func
     
+    func launchApp(provider: Provider) {
+        guard let providerName = provider.providerName else {return}
+        print(providerName)
+        let url = AppLinks.getURLFor(providerName: providerName)
+        if let appURL = URL(string: url) {
+            UIApplication.shared.open(appURL) { success in
+                if success {
+                    print("The URL was delivered successfully.")
+                } else {
+                    print("The URL failed to open.")
+                    let appID = AppLinks.getIDfor(providerName: providerName)
+                    self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                }
+            }
+        } else {
+            print("Invalid URL specified.")
+        }
+    }
+    
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
     }//end func
 }//end class
 
 // MARK: - Extensions
-extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         3
     }
@@ -155,7 +186,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         
         if whereToWatchSection.contains(indexPath.section) {
             if providers.count == 0 {
-                header.setup(label: "No Streaming Providers")
+                header.setup(label: "Streaming Providers Unavailable")
             } else {
                 header.setup(label: "Stream")
             }
@@ -168,12 +199,20 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         return header
     }//end func
     
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            if similarSection.contains(indexPath.section) {
+                MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
+            }
+        }
+    }//end func
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if selectedMediaSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
             cell.delegate = self
-            cell.setup(media: media, link: self.providerLink)
+            cell.setup(media: media)
             return cell
         }
         
@@ -194,8 +233,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if whereToWatchSection.contains(indexPath.section) {
-            print("tapped")
-            AppLinks.launchApp(provider: providers[indexPath.row])
+            self.launchApp(provider: providers[indexPath.row])
         }
         
         if similarSection.contains(indexPath.section) {
@@ -206,28 +244,23 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     }//end func
 }//end extension
 
-extension ListMediaDetailViewController: ListMediaDetailButtonDelegate {
-    func moreWatchOptions() {
-        print("morebuttontapped")
-        
-        guard let link = providerLink else {return presentErrorAlert() }
-        if let appURL = URL(string: link) {
-            UIApplication.shared.open(appURL) { success in
-                if success {
-                    print("The URL was delivered successfully.")
-                } else {
-                    print("The URL failed to open.")
-                }
+extension ListMediaDetailViewController: MoreWatchOptionsDelegate {
+    func moreWatchOptions(_ sender: ListMediaDetailCollectionViewCell) {
+        guard let media = selectedMedia else {return}
+        if let urlString = providerLink {
+            if let url = URL(string: urlString) {
+                let vc = SFSafariViewController(url: url)
+                vc.delegate = self
+                present(vc, animated: true)
             }
         } else {
-            print("Invalid URL specified.")
+            if let date = media.releaseDate {
+                if date > Date() {
+                    presentNotificationAlert(media: media, sender: sender)
+                } else {
+                    presentErrorAlert()
+                }
+            }
         }
-    }
-    
-//    func presentErrorAlert() {
-//        let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for this title...", preferredStyle: .alert)
-//        let dismissAction = UIAlertAction(title: "Ok", style: .cancel)
-//        alertController.addAction(dismissAction)
-//        present(alertController, animated: true)
-//    }
+    }//end func
 }//end extension

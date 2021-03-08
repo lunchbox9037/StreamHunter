@@ -24,6 +24,7 @@ class MediaController {
     static let personComponent = "person"
     static let dayComponent = "day"
     static let popularComponent = "popular"
+    static let upcomingComponent = "upcoming"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
     
     // MARK: - Properties
@@ -70,7 +71,6 @@ class MediaController {
     }//end func
     
     //popularhttps://api.themoviedb.org/3/movie/popular?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1
-
     static func fetchPopularResultsFor(mediaType: String, completion: @escaping (Result<Popular, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -79,9 +79,9 @@ class MediaController {
         
         var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
-//        let pageQuery = URLQueryItem(name: "page", value: "2")
+        let pageQuery = URLQueryItem(name: "page", value: "2")
         
-        components?.queryItems = [apiQuery]
+        components?.queryItems = [apiQuery, pageQuery]
         
         guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
         print(finalURL)
@@ -110,8 +110,51 @@ class MediaController {
         }.resume()
     }//end func
     
+    //https://api.themoviedb.org/3/movie/upcoming?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1&region=US
+    //build out upcoming functions --->>>>
+    static func fetchUpcomingMovies(completion: @escaping (Result<Upcoming, NetworkError>) -> Void) {
+        guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
+        let versionURL = baseURL.appendingPathComponent(versionComponent)
+        let movieURL = versionURL.appendingPathComponent(movieComponent)
+        let upcomingURL = movieURL.appendingPathComponent(upcomingComponent)
+        
+        var components = URLComponents(url: upcomingURL, resolvingAgainstBaseURL: true)
+        let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+        let languageQuery = URLQueryItem(name: "language", value: "en-US")
+        let pageQuery = URLQueryItem(name: "page", value: "1")
+        let regionQuery = URLQueryItem(name: "region", value: "US")
+        
+        components?.queryItems = [apiQuery, languageQuery, pageQuery, regionQuery]
+        
+        guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
+        print(finalURL)
+        
+        URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
+            if let error = error {
+                print("======== ERROR ========")
+                print("Function: \(#function)")
+                print("Error: \(error)")
+                print("Description: \(error.localizedDescription)")
+                print("======== ERROR ========")
+                return completion(.failure(.thrownError(error)))
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print("UPCOMING MEDIA STATUS CODE: \(response.statusCode)")
+            }
+            
+            guard let data = data else {return completion(.failure(.noData))}
+            do {
+                let upcoming = try JSONDecoder().decode(Upcoming.self, from: data)
+                return completion(.success(upcoming))
+            } catch {
+                completion(.failure(.thrownError(error)))
+            }
+        }.resume()
+    }//end func
+    
     /// Function that attempts to get image from cache if not there fetch with api call
-    /// - Parameters:
+    ///   - Parameters:
     ///   - media: movie or tv object from the api
     ///   - completion: will contain UIImage or error
     static func fetchPosterFor(media: Media, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
@@ -161,6 +204,35 @@ class MediaController {
             guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
             completion(.success(poster))
         }.resume()
+    }//end of func
+    
+    //fetches poster for the search results view
+    static func fetchPosterForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
+        guard let posterPath = media.posterPath else {return completion(.failure(.invalidURL))}
+        let finalURL = posterBaseURL.appendingPathComponent(posterPath)
+        
+        if let poster = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
+            completion(.success(poster))
+        } else {
+            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
+                if let error = error {
+                    print("======== ERROR ========")
+                    print("Function: \(#function)")
+                    print("Error: \(error)")
+                    print("Description: \(error.localizedDescription)")
+                    print("======== ERROR ========")
+                    return completion(.failure(.thrownError(error)))
+                }
+                
+                guard let data = data else {return completion(.failure(.noData))}
+                guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
+                //save image to cache
+                imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
+
+                completion(.success(poster))
+            }.resume()
+        }
     }//end of func
     
     static func fetchBackdropImageForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {

@@ -14,6 +14,8 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
     
+    let child = SpinnerViewController()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +38,9 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     func getLocation() {
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
+            createSpinnerView()
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            locationManager.desiredAccuracy = kCLLocationAccuracyReduced
             locationManager.requestLocation()
         } else {
             print("error")
@@ -46,7 +49,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func promptRating() {
         //replace with my app url!!!
-        if let url = URL(string: "itms-apps://apple.com/app/id1523772947") {
+        if let url = URL(string: "") {
             UIApplication.shared.open(url)
         } else {
             print("error with app store URL")
@@ -55,7 +58,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func launchShareSheet() {
         //replace url with my app url once launched!!!
-        if let appURL = NSURL(string: "https://apps.apple.com/us/app/id1523772947") {
+        if let appURL = NSURL(string: "") {
             let objectsToShare: [Any] = [appURL]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             
@@ -68,13 +71,25 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     
     func presentTMDBLink() {
         let urlString = "https://www.themoviedb.org"
-        
         if let url = URL(string: urlString) {
             let vc = SFSafariViewController(url: url)
             vc.delegate = self
             
             present(vc, animated: true)
         }
+    }
+    
+    private func createSpinnerView() {
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    private func stopSpinner() {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
     }
     
     // MARK: - Tableview Methods
@@ -86,8 +101,14 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
         case [1,0]:
             getLocation()
             tableView.deselectRow(at: indexPath, animated: true)
+        case [2,0]:
+            promptRating()
+            tableView.deselectRow(at: indexPath, animated: true)
         case [2,1]:
             launchShareSheet()
+            tableView.deselectRow(at: indexPath, animated: true)
+        case [2,2]:
+            presentAppInfoAlert()
             tableView.deselectRow(at: indexPath, animated: true)
         case [3,0]:
             presentTMDBLink()
@@ -101,13 +122,14 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
 extension SettingsTableViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let currentLocation = locations.first {
-            print("got location!")
-            geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
-                guard let currentLocPlacemark = placemarks?.first else { return }
-                print(currentLocPlacemark.isoCountryCode ?? "No country code found")
-                self.locationManager.stopUpdatingLocation()
-                LocationController.shared.updateLocation(countryCode: currentLocPlacemark.isoCountryCode ?? "US")
-                self.presentLocationUpdatedAlert()
+            self.locationManager.stopUpdatingLocation()
+            geoCoder.reverseGeocodeLocation(currentLocation) { [weak self] (placemarks, error) in
+                guard let currentLocPlacemark = placemarks?.first else {return}
+                guard let countryCode = currentLocPlacemark.isoCountryCode else {return}
+                UserDefaults.standard.setValue(countryCode, forKey: "countryCode")
+                print("got location")
+                self?.stopSpinner()
+                self?.presentLocationUpdatedAlert(cc: countryCode)
             }
         }
     }

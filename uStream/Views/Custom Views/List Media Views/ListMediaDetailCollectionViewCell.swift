@@ -5,32 +5,26 @@
 //  Created by stanley phillips on 3/1/21.
 //
 
-//
-//  MediaDetailCollectionViewCell.swift
-//  uStream
-//
-//  Created by stanley phillips on 2/23/21.
-//
-
 import UIKit
 
-protocol ListMediaDetailButtonDelegate: AnyObject {
-    func moreWatchOptions()
+protocol MoreWatchOptionsDelegate: AnyObject {
+    func moreWatchOptions(_ sender: ListMediaDetailCollectionViewCell)
 }
 
 public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     var moreOptionsButton: UIButton {return moreWaysToWatchButton}
     var homeButton: UIButton {return launchHomeButton}
+    var isReminder: Bool = false
     
-    weak var delegate: ListMediaDetailButtonDelegate?
+    weak var delegate: MoreWatchOptionsDelegate?
     
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.cornerRadius = 20
-        view.layer.shadowOpacity = 0.3
+        view.layer.cornerRadius = 10
+        view.layer.shadowOpacity = 0.5
         view.layer.shadowRadius = 10
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -40,9 +34,9 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     var backdropImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 20
+        imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -57,10 +51,21 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    var labelStackView : UIStackView = {
+        let stackView: UIStackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        
+        return stackView
+    }()
+    
     var moreWaysToWatchButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(" More Watch Options...", for: .normal)
+        button.setTitle(" More Stream Options...", for: .normal)
         button.setImage(UIImage(systemName: "link"), for: .normal)
         button.tintColor = .white
         button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
@@ -91,13 +96,30 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    var releaseDateLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "release date"
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = .tertiaryLabel
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.minimumScaleFactor = CGFloat(0.5)
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     var synopsisLabel: UILabel = {
         let label: UILabel = UILabel()
         label.text = "Synopsis"
         label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.textColor = .opaqueSeparator
-        label.numberOfLines = 0
-        label.textAlignment = .left
+        label.textColor = .systemGray2
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        
+
+        label.minimumScaleFactor = CGFloat(0.5)
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -117,9 +139,11 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.container)
         self.container.addSubview(self.backdropImageView)
         self.container.addSubview(self.buttonStackView)
+        self.container.addSubview(self.labelStackView)
         self.buttonStackView.addArrangedSubview(self.launchHomeButton)
         self.buttonStackView.addArrangedSubview(self.moreWaysToWatchButton)
-        self.container.addSubview(self.synopsisLabel)
+        self.labelStackView.addArrangedSubview(self.synopsisLabel)
+        self.labelStackView.addArrangedSubview(self.releaseDateLabel)
         self.container.addSubview(self.overviewLabel)
         activateButton()
 
@@ -134,7 +158,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.heightAnchor.constraint(equalToConstant: 200)
+            self.backdropImageView.heightAnchor.constraint(equalTo: self.backdropImageView.widthAnchor, multiplier: 0.25, constant: 125)
         ])
         
         NSLayoutConstraint.activate([
@@ -145,13 +169,13 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            self.synopsisLabel.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
-            self.synopsisLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
-            self.synopsisLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
+            self.labelStackView.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10),
+            self.labelStackView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
+            self.labelStackView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
         ])
         
         NSLayoutConstraint.activate([
-            self.overviewLabel.topAnchor.constraint(equalTo: self.synopsisLabel.bottomAnchor, constant: 10),
+            self.overviewLabel.topAnchor.constraint(equalTo: self.labelStackView.bottomAnchor, constant: 10),
             self.overviewLabel.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 12),
             self.overviewLabel.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: -12),
             self.overviewLabel.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: -10)
@@ -163,10 +187,22 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func setup(media: ListMedia, link: String?) {
-//        if link == nil {
-//            disableButton()
-//        }
+    func setup(media: ListMedia) {
+        if let releaseDate = media.releaseDate {
+            if releaseDate > Date() {
+                makeRemindMeButton()
+            }
+        }
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
+            for request in requests {
+                if request.identifier == String(media.id) {
+                    DispatchQueue.main.async {
+                        self.disableButton()
+                    }
+                }
+            }
+        })
         
         MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
             DispatchQueue.main.async {
@@ -174,21 +210,39 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
                 case .success(let image):
                     self?.backdropImageView.image = image
                 case .failure(let error):
-                    self?.backdropImageView.image = UIImage(systemName: "image")
+                    self?.backdropImageView.image = UIImage(systemName: "imageNotAvailable")
                     print(error.localizedDescription)
                 }
             }
         }
         self.overviewLabel.text = media.overview
+        self.releaseDateLabel.text = "\(media.releaseDate?.dateToString(format: .monthDayYear) ?? "tbd")"
+        guard let date = media.releaseDate else {return}
+        if date > Date() {
+            releaseDateLabel.textColor = .systemGreen
+        }
     }
     
     func activateButton() {
         self.moreOptionsButton.addTarget(self, action: #selector(moreButtonTapped(sender:)), for: .touchUpInside)
         self.homeButton.addTarget(self, action: #selector(launchHomeApp), for: .touchUpInside)
     }
+    
+    @objc func disableButton() {
+        moreOptionsButton.isEnabled = false
+        moreOptionsButton.setImage(UIImage(systemName: "checkmark"), for: .disabled)
+        moreOptionsButton.setTitle(" Reminder Set!", for: .disabled)
+        moreOptionsButton.tintColor = .systemGreen
+        moreOptionsButton.backgroundColor = .systemGray2
+    }
+    
+    func makeRemindMeButton() {
+        moreOptionsButton.setTitle(" Remind Me", for: .normal)
+        moreOptionsButton.setImage(UIImage(systemName: "exclamationmark.bubble"), for: .normal)
+    }
 
     @objc func moreButtonTapped(sender: UIButton) {
-        delegate?.moreWatchOptions()
+        delegate?.moreWatchOptions(self)
     }
     
     @objc func launchHomeApp() {
@@ -197,18 +251,6 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         } else {
             print("error with Home App URL")
         }
-    }
-    
-//    func enableButton() {
-//        moreWaysToWatchButton.setTitle("Add to your List?", for: .normal)
-//        moreWaysToWatchButton.backgroundColor = .systemBlue
-//        moreWaysToWatchButton.isEnabled = true
-//    }
-
-    func disableButton() {
-        moreOptionsButton.setTitle("No watch options...", for: .normal)
-        moreOptionsButton.backgroundColor = .systemGray
-        moreOptionsButton.isEnabled = false
     }
 }//end class
 

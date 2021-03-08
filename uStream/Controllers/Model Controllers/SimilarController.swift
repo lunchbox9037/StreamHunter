@@ -30,6 +30,8 @@ class SimilarController {
         
         var components = URLComponents(url: recommendationsURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+//        let pageQuery = URLQueryItem(name: "page", value: "\(id)")
+        
         
         components?.queryItems = [apiQuery]
         
@@ -62,32 +64,4 @@ class SimilarController {
             }
         }.resume()
     }//end func
-    
-    static func fetchPosterFor(media: Media, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-        guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
-        guard let posterPath = media.posterPath else {return completion(.failure(.invalidURL))}
-        let finalURL = posterBaseURL.appendingPathComponent(posterPath)
-        
-        if let poster = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
-            completion(.success(poster))
-        } else {
-            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
-                if let error = error {
-                    print("======== ERROR ========")
-                    print("Function: \(#function)")
-                    print("Error: \(error)")
-                    print("Description: \(error.localizedDescription)")
-                    print("======== ERROR ========")
-                    return completion(.failure(.thrownError(error)))
-                }
-                
-                guard let data = data else {return completion(.failure(.noData))}
-                guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
-                //save image to cache
-                imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
-
-                completion(.success(poster))
-            }.resume()
-        }
-    }//end of func
 }//end class
