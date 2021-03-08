@@ -67,8 +67,6 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     
     // MARK: - Methods
     func setupViews() {
-//        providers = []
-//        similar = []
         fetchWhereToWatch()
         fetchSimilar()
         
@@ -154,14 +152,18 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
                     print("The URL was delivered successfully.")
                 } else {
                     print("The URL failed to open.")
-                    let appID = AppLinks.getIDfor(providerName: providerName)
-                    self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                    if AppLinks.supportedApps.contains(providerName) {
+                        let appID = AppLinks.getIDfor(providerName: providerName)
+                        self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                    } else {
+                        self.presentAppNotSupportedAlert()
+                    }
                 }
             }
         } else {
             print("Invalid URL specified.")
         }
-    }
+    }//end func
     
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)

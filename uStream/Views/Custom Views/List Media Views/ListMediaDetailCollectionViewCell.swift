@@ -220,6 +220,8 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
         guard let date = media.releaseDate else {return}
         if date > Date() {
             releaseDateLabel.textColor = .systemGreen
+        } else {
+            releaseDateLabel.textColor = .tertiaryLabel
         }
     }
     
@@ -246,7 +248,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func launchHomeApp() {
-        if let url = URL(string: "com.apple.home://") {
+        if let url = URL(string: "com.apple.iosremote://") {
             UIApplication.shared.open(url)
         } else {
             print("error with Home App URL")

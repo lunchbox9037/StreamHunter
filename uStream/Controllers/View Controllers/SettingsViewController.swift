@@ -48,8 +48,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     }
     
     func promptRating() {
-        //replace with my app url!!!
-        if let url = URL(string: "") {
+        if let url = URL(string: "itms-apps://apple.com/app/id1556698910") {
             UIApplication.shared.open(url)
         } else {
             print("error with app store URL")
@@ -57,8 +56,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
     }
     
     func launchShareSheet() {
-        //replace url with my app url once launched!!!
-        if let appURL = NSURL(string: "") {
+        if let appURL = NSURL(string: "https://apps.apple.com/us/app/id1556698910") {
             let objectsToShare: [Any] = [appURL]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             

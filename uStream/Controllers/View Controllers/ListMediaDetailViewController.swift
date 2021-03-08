@@ -145,8 +145,12 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                     print("The URL was delivered successfully.")
                 } else {
                     print("The URL failed to open.")
-                    let appID = AppLinks.getIDfor(providerName: providerName)
-                    self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                    if AppLinks.supportedApps.contains(providerName) {
+                        let appID = AppLinks.getIDfor(providerName: providerName)
+                        self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
+                    } else {
+                        self.presentAppNotSupportedAlert()
+                    }
                 }
             }
         } else {
@@ -185,11 +189,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         }
         
         if whereToWatchSection.contains(indexPath.section) {
-            if providers.count == 0 {
-                header.setup(label: "Streaming Providers Unavailable")
-            } else {
-                header.setup(label: "Stream")
-            }
+            header.setup(label: "Stream")
         }
         
         if similarSection.contains(indexPath.section) {

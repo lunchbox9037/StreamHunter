@@ -24,6 +24,8 @@ class AppLinks {
     static let crunchyRollURL = "crunchyroll://www.crunchyroll.com" // working ✅
     static let crunchyRollID = "id329913454"
 
+    static let supportedApps: [String] = ["Netflix", "Hulu", "Disney Plus", "Apple TV Plus", "HBO Max", "Amazon Prime Video", "Crunchyroll"]
+    
     static func getURLFor(providerName: String) -> String {
         switch providerName {
         case "Netflix":

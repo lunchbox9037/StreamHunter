@@ -17,7 +17,7 @@ class NotificationScheduler {
         
         let content = UNMutableNotificationContent()
         content.title = "New Release!"
-        content.body = "\(title) is now available to stream!"
+        content.body = "\(title) should now be available to stream!"
         content.sound = .default
         
         let dateComponents = Calendar.current.dateComponents([.month, .day, .year], from: date)
@@ -28,8 +28,6 @@ class NotificationScheduler {
         UNUserNotificationCenter.current().add(request) { (error) in
             if let error = error {
                 print("There was an error: \(error.localizedDescription)")
-            } else {
-                print("notification scheduled")
             }
         }
     }
@@ -38,6 +36,5 @@ class NotificationScheduler {
         let id = String(media.id)
         print(id)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
-        print("notification canceled")
     }
 }
