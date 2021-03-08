@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import UIKit
 
 public class WhereToWatchCollectionViewCell: UICollectionViewCell {
@@ -66,7 +65,6 @@ public class WhereToWatchCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     func setup(provider: Provider, newIndexPath: IndexPath) {
         self.currentIndexPath = newIndexPath
-        print(provider.providerName as Any)
         WhereToWatchController.fetchLogoFor(provider: provider) { [weak self] (result) in
             switch result {
             case .success(let logo):

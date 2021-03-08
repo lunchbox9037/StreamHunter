@@ -65,7 +65,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     var moreWaysToWatchButton: UIButton = {
         let button: UIButton = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(" More Watch Options...", for: .normal)
+        button.setTitle(" More Stream Options...", for: .normal)
         button.setImage(UIImage(systemName: "link"), for: .normal)
         button.tintColor = .white
         button.titleEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
