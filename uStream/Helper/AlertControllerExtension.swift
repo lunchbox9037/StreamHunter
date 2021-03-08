@@ -9,7 +9,7 @@ import UIKit
 
 extension UIViewController {
     func presentErrorAlert() {
-        let alertController = UIAlertController(title: "Whoops!", message: "No watch options currently available for your region...", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Whoops!", message: "No stream options currently available for your region...", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         alertController.popoverPresentationController?.barButtonItem = editButtonItem
@@ -18,7 +18,7 @@ extension UIViewController {
     }
     
     func presentLocationUpdatedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current region.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming services will now be based on your current country.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.popoverPresentationController?.sourceView = self.view
         alertController.addAction(dismissAction)
@@ -45,21 +45,24 @@ extension UIViewController {
     }
     
     func presentAppNotInstalledAlert(appName: String, appID: String) {
-        let alertController = UIAlertController(title: "\(appName) isn't installed!", message: "Would you like to go to the App Store to download it?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "\(appName) is not installed!", message: "Would you like to download it in the App Store?", preferredStyle: .alert)
         let noAction = UIAlertAction(title: "No", style: .cancel)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in
-            if appID == "error" {
-                if let url = URL(string: "itms-apps://apple.com/apps") {
-                    UIApplication.shared.open(url)
-                }
-            } else {
-                if let url = URL(string: "itms-apps://apple.com/app/\(appID)") {
-                    UIApplication.shared.open(url)
-                }
+            if let url = URL(string: "itms-apps://apple.com/app/\(appID)") {
+                UIApplication.shared.open(url)
             }
         }
         alertController.addAction(noAction)
         alertController.addAction(yesAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentAppNotSupportedAlert() {
+        let alertController = UIAlertController(title: "Sorry!", message: "Linking to this app is not currently supported.\n Would you still like to download it in the App Store?", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(dismissAction)
+        alertController.popoverPresentationController?.barButtonItem = editButtonItem
+        
         present(alertController, animated: true)
     }
 }

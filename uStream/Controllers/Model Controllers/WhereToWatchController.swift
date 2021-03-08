@@ -66,16 +66,13 @@ class WhereToWatchController {
                 let whereToWatch = try JSONDecoder().decode(WhereToWatch.self, from: data)
                 switch countryCode {
                 case "US":
-                    guard let results = whereToWatch.results.unitedStates else {return print("noresults")}
-                    print("returned us results")
+                    guard let results = whereToWatch.results.unitedStates else {return}
                     return completion(.success(results))
                 case "PE":
-                    guard let results = whereToWatch.results.peru else {return print("noresults")}
-                    print("returned pe results")
+                    guard let results = whereToWatch.results.peru else {return}
                     return completion(.success(results))
                 default:
-                    guard let results = whereToWatch.results.unitedStates else {return print("noresults")}
-                    print("returned us results")
+                    guard let results = whereToWatch.results.unitedStates else {return}
                     return completion(.success(results))
                 }
             } catch {

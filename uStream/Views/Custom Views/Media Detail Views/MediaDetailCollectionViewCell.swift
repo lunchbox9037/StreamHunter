@@ -175,6 +175,8 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
         self.releaseDateLabel.text = "\(date.dateToString(format: .monthDayYear))"
         if date > Date() {
             releaseDateLabel.textColor = .systemGreen
+        } else {
+            releaseDateLabel.textColor = .tertiaryLabel
         }
     }
     
