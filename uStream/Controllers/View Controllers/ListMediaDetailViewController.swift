@@ -149,7 +149,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
                         let appID = AppLinks.getIDfor(providerName: providerName)
                         self.presentAppNotInstalledAlert(appName: providerName, appID: appID)
                     } else {
-                        self.presentAppNotSupportedAlert()
+                        self.presentAppNotSupportedAlert(appName: providerName)
                     }
                 }
             }
