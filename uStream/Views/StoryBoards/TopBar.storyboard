@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HAd-Ji-E3U">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Top Bar View Controller-->
+        <scene sceneID="LZy-Tt-Xe6">
+            <objects>
+                <viewController id="HAd-Ji-E3U" customClass="TopBarViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4QX-4e-9Hs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="jgK-Lg-n0z">
+                                <rect key="frame" x="16" y="8" width="382" height="84"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4NY-In-yfp">
+                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="4NY-In-yfp" secondAttribute="height" multiplier="1:1" id="SYG-m7-cUv"/>
+                                        </constraints>
+                                        <state key="normal" image="line.horizontal.3" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="26"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="settingButtonTapped:" destination="HAd-Ji-E3U" eventType="touchUpInside" id="iRk-QG-Cw0"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="üStream" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-xy-g85">
+                                        <rect key="frame" x="84" y="0.0" width="214" height="84"/>
+                                        <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="34"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1g-sN-eIv">
+                                        <rect key="frame" x="298" y="0.0" width="84" height="84"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="S1g-sN-eIv" secondAttribute="height" multiplier="1:1" id="Ifb-nK-rMN"/>
+                                        </constraints>
+                                        <state key="normal" image="magnifyingglass" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="26"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchButtonTapped:" destination="HAd-Ji-E3U" eventType="touchUpInside" id="UY2-gP-svI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ZF8-Kz-ufG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="leading" secondItem="4QX-4e-9Hs" secondAttribute="leading" constant="16" id="6xw-2E-wVt"/>
+                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="top" secondItem="4QX-4e-9Hs" secondAttribute="top" constant="8" id="Bzp-HD-olx"/>
+                            <constraint firstAttribute="trailing" secondItem="jgK-Lg-n0z" secondAttribute="trailing" constant="16" id="gJb-ef-glc"/>
+                            <constraint firstAttribute="bottom" secondItem="jgK-Lg-n0z" secondAttribute="bottom" constant="8" id="nnh-eu-cDv"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="414" height="100"/>
+                    <connections>
+                        <outlet property="searchButton" destination="S1g-sN-eIv" id="sAu-Ug-fLw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e1o-YH-OCO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1192" y="-615"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

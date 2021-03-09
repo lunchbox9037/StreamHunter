@@ -22,6 +22,8 @@ enum CoreDataStack {
     static var context: NSManagedObjectContext {container.viewContext}
     
     static func saveContext() {
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
         if context.hasChanges {
             do {
                 try context.save()

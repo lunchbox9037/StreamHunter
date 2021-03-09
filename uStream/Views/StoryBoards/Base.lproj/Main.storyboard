@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V9k-a3-osQ">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -11,30 +11,110 @@
         <!--My List-->
         <scene sceneID="m8h-dl-aGS">
             <objects>
-                <viewController id="wES-rK-jCZ" sceneMemberID="viewController">
+                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCp-bv-yUD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxx-kb-TKf">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                <connections>
+                                    <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="it0-ZJ-DLx"/>
+                                </connections>
+                            </containerView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lFz-ee-Ieg">
+                                <rect key="frame" x="0.0" y="99" width="375" height="519"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cfR-kx-sEJ">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1uZ-gb-Ffe">
+                                <rect key="frame" x="0.0" y="62" width="375" height="32"/>
+                                <segments>
+                                    <segment title="All"/>
+                                    <segment title="Movies"/>
+                                    <segment title="Shows"/>
+                                    <segment title="Upcoming"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentControlChanged:" destination="wES-rK-jCZ" eventType="valueChanged" id="kNk-hi-166"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="snY-GV-rhB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="AzT-WI-XDL"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="C9h-VJ-ATf"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="bottom" secondItem="lFz-ee-Ieg" secondAttribute="bottom" id="Vd9-JU-LMP"/>
+                            <constraint firstItem="1uZ-gb-Ffe" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="WL3-ya-ebp"/>
+                            <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="nxx-kb-TKf" secondAttribute="trailing" id="aXB-Hi-ek0"/>
+                            <constraint firstItem="nxx-kb-TKf" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="iqw-Z1-h3Y"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="top" secondItem="1uZ-gb-Ffe" secondAttribute="bottom" constant="6" id="prD-ES-b4c"/>
+                            <constraint firstItem="lFz-ee-Ieg" firstAttribute="leading" secondItem="snY-GV-rhB" secondAttribute="leading" id="sRf-n2-z9R"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="My List" image="list.bullet" catalog="system" id="q1J-X0-Mg7"/>
+                    <connections>
+                        <outlet property="listCollectionView" destination="lFz-ee-Ieg" id="fDI-Gl-NmX"/>
+                        <outlet property="segmentControl" destination="1uZ-gb-Ffe" id="Vq6-Xo-j1s"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="thn-9d-YLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="268" y="369"/>
+            <point key="canvasLocation" x="252" y="211.84407796101951"/>
         </scene>
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
             <objects>
-                <viewController id="x1o-cC-BKC" customClass="TrendingViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tUK-bx-tu8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="F6W-PP-f33">
+                                <rect key="frame" x="0.0" y="62" width="375" height="556"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2mX-2a-vlI">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9j5-Ti-xmn">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                <connections>
+                                    <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="yug-5b-bT5"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="17P-6S-lBI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9j5-Ti-xmn" firstAttribute="height" secondItem="17P-6S-lBI" secondAttribute="height" multiplier="0.1" id="1Ap-Og-IWL"/>
+                            <constraint firstItem="17P-6S-lBI" firstAttribute="bottom" secondItem="F6W-PP-f33" secondAttribute="bottom" id="3tn-Os-fwy"/>
+                            <constraint firstItem="17P-6S-lBI" firstAttribute="trailing" secondItem="9j5-Ti-xmn" secondAttribute="trailing" id="6k0-sW-OQ5"/>
+                            <constraint firstItem="9j5-Ti-xmn" firstAttribute="top" secondItem="17P-6S-lBI" secondAttribute="top" id="JlD-8h-Bke"/>
+                            <constraint firstItem="9j5-Ti-xmn" firstAttribute="leading" secondItem="17P-6S-lBI" secondAttribute="leading" id="ZEl-DE-P7E"/>
+                            <constraint firstItem="F6W-PP-f33" firstAttribute="top" secondItem="9j5-Ti-xmn" secondAttribute="bottom" id="hcn-ei-JAq"/>
+                            <constraint firstItem="17P-6S-lBI" firstAttribute="trailing" secondItem="F6W-PP-f33" secondAttribute="trailing" id="ihL-Nn-Axa"/>
+                            <constraint firstItem="F6W-PP-f33" firstAttribute="leading" secondItem="17P-6S-lBI" secondAttribute="leading" id="ys3-Wn-Xzy"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Discover" image="list.and.film" catalog="system" id="KgV-mK-QLb"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="tv" catalog="system" id="KgV-mK-QLb"/>
+                    <connections>
+                        <outlet property="collectionView" destination="F6W-PP-f33" id="rLL-c5-BqP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mGN-Hn-CnS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -58,10 +138,21 @@
             </objects>
             <point key="canvasLocation" x="-636" y="-149"/>
         </scene>
+        <!--TopBar-->
+        <scene sceneID="HMi-7a-aKT">
+            <objects>
+                <viewControllerPlaceholder storyboardName="TopBar" id="6Cn-Oh-gfg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="di6-9H-Y9q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="892" y="-150"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="it0-ZJ-DLx"/>
+    </inferredMetricsTieBreakers>
     <resources>
-        <image name="list.and.film" catalog="system" width="128" height="86"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
+        <image name="tv" catalog="system" width="128" height="97"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
