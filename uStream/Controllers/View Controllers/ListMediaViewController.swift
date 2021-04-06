@@ -91,6 +91,7 @@ class ListMediaViewController: UIViewController {
     }//end func
     
     @objc func loadData() {
+        ListMediaController.shared.fetchListMedia()
         selectSegmentIndex()
         self.refresher.endRefreshing()
     }//end func

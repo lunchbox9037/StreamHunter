@@ -12,6 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         if UserDefaults.standard.value(forKey: "countryCode") == nil {
             UserDefaults.standard.setValue("US", forKey: "countryCode")
         }
@@ -21,10 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("There was an error: \(error.localizedDescription)")
             }
             if authorized {
-                print("✅ Notifications Authorized")
                 UNUserNotificationCenter.current().delegate = self
-            } else {
-                print("❌ Notifications Denied")
             }
         }
         return true

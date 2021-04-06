@@ -40,9 +40,19 @@ struct Media: Codable {
     
     func convertToDate(_ media: Media) -> Date {
         if media.firstAirDate != nil {
+            if media.firstAirDate == "" {
+                var oneYear = DateComponents()
+                oneYear.year = 1
+                return Calendar.current.date(byAdding: oneYear, to: Date()) ?? Date()
+            }
             guard let dateString = media.firstAirDate else {return Date()}
             return dateString.toDate()
         } else {
+            if media.releaseDate == "" {
+                var oneYear = DateComponents()
+                oneYear.year = 1
+                return Calendar.current.date(byAdding: oneYear, to: Date()) ?? Date()
+            }
             guard let dateString = media.releaseDate else {return Date()}
             return dateString.toDate()
         }

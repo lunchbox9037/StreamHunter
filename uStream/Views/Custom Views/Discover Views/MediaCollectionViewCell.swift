@@ -73,6 +73,11 @@ public class MediaCollectionViewCell: UICollectionViewCell {
                         }
                     }
             case .failure(let error):
+                DispatchQueue.main.async {
+                    if self.currentIndexPath == indexPath {
+                        self.posterImageView.image = UIImage(named: "imageNotAvailable")
+                    }
+                }
                 print(error.localizedDescription)
             }
         }

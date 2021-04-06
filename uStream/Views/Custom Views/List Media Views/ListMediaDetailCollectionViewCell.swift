@@ -248,7 +248,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func launchHomeApp() {
-        if let url = URL(string: "com.apple.iosremote://") {
+        if let url = URL(string: "com.apple.home://") {
             UIApplication.shared.open(url)
         } else {
             print("error with Home App URL")

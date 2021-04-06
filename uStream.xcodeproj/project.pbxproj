@@ -74,7 +74,7 @@
 		F650774725F0B9B40040C171 /* Popular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popular.swift; sourceTree = "<group>"; };
 		F650775625F1E70B0040C171 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F650776225F2E9400040C171 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
-		F68AB91C25DF63FA002D56D2 /* uStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = uStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F68AB91C25DF63FA002D56D2 /* StreamHunter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StreamHunter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68AB91F25DF63FA002D56D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F68AB92125DF63FA002D56D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F68AB92625DF63FA002D56D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 		F68AB91D25DF63FA002D56D2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F68AB91C25DF63FA002D56D2 /* uStream.app */,
+				F68AB91C25DF63FA002D56D2 /* StreamHunter.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -325,7 +325,7 @@
 			);
 			name = uStream;
 			productName = uStream;
-			productReference = F68AB91C25DF63FA002D56D2 /* uStream.app */;
+			productReference = F68AB91C25DF63FA002D56D2 /* StreamHunter.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -570,6 +570,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = uStream/uStream.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -578,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.stanphillips.uStream;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StreamHunter;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -591,6 +592,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = uStream/uStream.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = K5A3RPJ76H;
 				INFOPLIST_FILE = uStream/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -599,7 +601,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.stanphillips.uStream;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StreamHunter;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
