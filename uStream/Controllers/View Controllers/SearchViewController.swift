@@ -32,7 +32,7 @@ class SearchViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -50,7 +50,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "resultsCell", for: indexPath) as? SearchResultsCollectionViewCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "resultsCell", for: indexPath) as? MediaCollectionViewCell else {return UICollectionViewCell()}
         cell.setup(media: searchResults[indexPath.row], indexPath: indexPath)
         return cell
     }

@@ -196,9 +196,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     
     func enableButton() {
         addToListButton.setTitle(" Add to your List?", for: .normal)
-        addToListButton.backgroundColor = .systemBlue
         addToListButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addToListButton.tintColor = .white
+        addToListButton.backgroundColor = .systemBlue
         addToListButton.isEnabled = true
     }
     

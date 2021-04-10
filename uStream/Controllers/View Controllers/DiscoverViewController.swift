@@ -274,35 +274,35 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
                 print("fetch more")
                 self.fetchMore(category: "trending", mediaType: "movie", page: trendingMoviePage + 1)
             }
-            cell.setupCell(media: trendingMovies[indexPath.row], indexPath: indexPath)
+            cell.setup(media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if trendingTVSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingTVCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            cell.setupCell(media: trendingTV[indexPath.row], indexPath: indexPath)
+            cell.setup(media: trendingTV[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if popularMovieSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularMovieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            cell.setupCell(media: popularMovies[indexPath.row], indexPath: indexPath)
+            cell.setup(media: popularMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if popularTVSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularTVCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            cell.setupCell(media: popularTV[indexPath.row], indexPath: indexPath)
+            cell.setup(media: popularTV[indexPath.row], indexPath: indexPath)
             return cell
         }
         
         if upcomingMoviesSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "upcomingCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            cell.setupCell(media: upcomingMovies[indexPath.row], indexPath: indexPath)
+            cell.setup(media: upcomingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }
         return UICollectionViewCell()

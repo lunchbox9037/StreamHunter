@@ -32,7 +32,7 @@ class MediaController {
     static var isFetching = false
 
     // MARK: - API Methods
-    static func fetchMoreResultsFor(mediaType: String, category: String, page: Int, completion: @escaping (Result<TrendingMedia, NetworkError>) -> Void) {
+    static func fetchMoreResultsFor(mediaType: String, category: String, page: Int, completion: @escaping (Result<MediaResults, NetworkError>) -> Void) {
         isFetching = true
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -51,11 +51,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -65,7 +61,7 @@ class MediaController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let trending = try JSONDecoder().decode(TrendingMedia.self, from: data)
+                let trending = try JSONDecoder().decode(MediaResults.self, from: data)
                 return completion(.success(trending))
             } catch {
                 completion(.failure(.thrownError(error)))
@@ -73,7 +69,7 @@ class MediaController {
         }.resume()
     }//end func
     
-    static func fetchTrendingResultsFor(mediaType: String, completion: @escaping (Result<TrendingMedia, NetworkError>) -> Void) {
+    static func fetchTrendingResultsFor(mediaType: String, completion: @escaping (Result<MediaResults, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let trendingURL = versionURL.appendingPathComponent(trendingComponent)
@@ -90,11 +86,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -104,7 +96,7 @@ class MediaController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let trending = try JSONDecoder().decode(TrendingMedia.self, from: data)
+                let trending = try JSONDecoder().decode(MediaResults.self, from: data)
                 return completion(.success(trending))
             } catch {
                 completion(.failure(.thrownError(error)))
@@ -113,7 +105,7 @@ class MediaController {
     }//end func
     
     //popularhttps://api.themoviedb.org/3/movie/popular?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1
-    static func fetchPopularResultsFor(mediaType: String, completion: @escaping (Result<Popular, NetworkError>) -> Void) {
+    static func fetchPopularResultsFor(mediaType: String, completion: @escaping (Result<MediaResults, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let mediaTypeURL = versionURL.appendingPathComponent(mediaType)
@@ -121,7 +113,6 @@ class MediaController {
         
         var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
-//        let pageQuery = URLQueryItem(name: "page", value: "2")
         
         components?.queryItems = [apiQuery]
         
@@ -130,11 +121,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -144,7 +131,7 @@ class MediaController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let popular = try JSONDecoder().decode(Popular.self, from: data)
+                let popular = try JSONDecoder().decode(MediaResults.self, from: data)
                 return completion(.success(popular))
             } catch {
                 completion(.failure(.thrownError(error)))
@@ -154,7 +141,7 @@ class MediaController {
     
     //https://api.themoviedb.org/3/movie/upcoming?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&language=en-US&page=1&region=US
     //build out upcoming functions --->>>>
-    static func fetchUpcomingMovies(completion: @escaping (Result<Upcoming, NetworkError>) -> Void) {
+    static func fetchUpcomingMovies(completion: @escaping (Result<MediaResults, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
         let movieURL = versionURL.appendingPathComponent(movieComponent)
@@ -173,11 +160,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -187,7 +170,7 @@ class MediaController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let upcoming = try JSONDecoder().decode(Upcoming.self, from: data)
+                let upcoming = try JSONDecoder().decode(MediaResults.self, from: data)
                 return completion(.success(upcoming))
             } catch {
                 completion(.failure(.thrownError(error)))
@@ -209,17 +192,38 @@ class MediaController {
         } else {
             URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
                 if let error = error {
-                    print("======== ERROR ========")
-                    print("Function: \(#function)")
-                    print("Error: \(error)")
-                    print("Description: \(error.localizedDescription)")
-                    print("======== ERROR ========")
+                    print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                     return completion(.failure(.thrownError(error)))
                 }
                 
                 guard let data = data else {return completion(.failure(.noData))}
                 guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
                 //save the poster to the cache
+                imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
+
+                completion(.success(poster))
+            }.resume()
+        }
+    }//end of func
+    
+    //fetches poster for the search results view
+    static func fetchPosterForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
+        guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
+        guard let posterPath = media.posterPath else {return completion(.failure(.invalidURL))}
+        let finalURL = posterBaseURL.appendingPathComponent(posterPath)
+        
+        if let poster = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
+            completion(.success(poster))
+        } else {
+            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
+                if let error = error {
+                    print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
+                    return completion(.failure(.thrownError(error)))
+                }
+                
+                guard let data = data else {return completion(.failure(.noData))}
+                guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
+                //save image to cache
                 imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
 
                 completion(.success(poster))
@@ -234,11 +238,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -248,35 +248,6 @@ class MediaController {
         }.resume()
     }//end of func
     
-    //fetches poster for the search results view
-    static func fetchPosterForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-        guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
-        guard let posterPath = media.posterPath else {return completion(.failure(.invalidURL))}
-        let finalURL = posterBaseURL.appendingPathComponent(posterPath)
-        
-        if let poster = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
-            completion(.success(poster))
-        } else {
-            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
-                if let error = error {
-                    print("======== ERROR ========")
-                    print("Function: \(#function)")
-                    print("Error: \(error)")
-                    print("Description: \(error.localizedDescription)")
-                    print("======== ERROR ========")
-                    return completion(.failure(.thrownError(error)))
-                }
-                
-                guard let data = data else {return completion(.failure(.noData))}
-                guard let poster = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
-                //save image to cache
-                imageCache.setObject(poster, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
-
-                completion(.success(poster))
-            }.resume()
-        }
-    }//end of func
-    
     static func fetchBackdropImageForList(media: ListMedia, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
         guard let posterBaseURL = posterBaseURL else {return completion(.failure(.invalidURL))}
         guard let posterPath = media.backdropPath else {return completion(.failure(.invalidURL))}
@@ -284,11 +255,7 @@ class MediaController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             

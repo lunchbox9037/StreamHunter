@@ -1,5 +1,5 @@
 //
-//  Trending.swift
+//  MediaResults.swift
 //  uStream
 //
 //  Created by stanley phillips on 2/18/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TrendingMedia: Codable {
+struct MediaResults: Codable {
     let page: Int
     let totalPages: Int
     let results: [Media]

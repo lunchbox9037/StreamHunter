@@ -49,11 +49,7 @@ class WhereToWatchController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -91,11 +87,7 @@ class WhereToWatchController {
         } else {
             URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
                 if let error = error {
-                    print("======== ERROR ========")
-                    print("Function: \(#function)")
-                    print("Error: \(error)")
-                    print("Description: \(error.localizedDescription)")
-                    print("======== ERROR ========")
+                    print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                     return completion(.failure(.thrownError(error)))
                 }
                 

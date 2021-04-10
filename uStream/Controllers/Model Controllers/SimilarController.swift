@@ -18,9 +18,6 @@ class SimilarController {
     static let recommendationsComponent = "similar"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
     
-    // MARK: - Properties
-    static var imageCache = NSCache<NSURL, UIImage>()
-
     static func fetchSimilarFor(mediaType: String, id: Int, completion: @escaping (Result<[Media], NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -38,11 +35,7 @@ class SimilarController {
         
         URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
             if let error = error {
-                print("======== ERROR ========")
-                print("Function: \(#function)")
-                print("Error: \(error)")
-                print("Description: \(error.localizedDescription)")
-                print("======== ERROR ========")
+                print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
                 return completion(.failure(.thrownError(error)))
             }
             
@@ -52,7 +45,7 @@ class SimilarController {
             
             guard let data = data else {return completion(.failure(.noData))}
             do {
-                let similar = try JSONDecoder().decode(Similar.self, from: data)
+                let similar = try JSONDecoder().decode(MediaResults.self, from: data)
                 let similarWithPoster = similar.results.filter { (result) -> Bool in
                     return result.backdropPath != nil
                 }

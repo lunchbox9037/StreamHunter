@@ -52,7 +52,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
         collectionView.prefetchDataSource = self
         collectionView.register(MediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "mediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
-        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -197,11 +197,7 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         if whereToWatchSection.contains(indexPath.section) {
-            if providers.count == 0 {
-                header.setup(label: "Streaming Providers Unavailable")
-            } else {
-                header.setup(label: "Stream")
-            }
+            header.setup(label: "Stream")
         }
         
         if similarSection.contains(indexPath.section) {
@@ -235,8 +231,8 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         if similarSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: similar[indexPath.row], newIndexPath: indexPath)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? MediaCollectionViewCell else {return UICollectionViewCell()}
+            cell.setup(media: similar[indexPath.row], indexPath: indexPath)
             return cell
         }
         

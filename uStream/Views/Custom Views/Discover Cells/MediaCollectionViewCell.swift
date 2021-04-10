@@ -1,23 +1,23 @@
 //
-//  SearchResultsCollectionViewCell.swift
+//  MediaCollectionViewCell.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/26/21.
+//  Created by stanley phillips on 2/18/21.
 //
-
 
 import UIKit
 
-public class SearchResultsCollectionViewCell: UICollectionViewCell {
+public class MediaCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
     var currentIndexPath: IndexPath? = nil
-
+    
     // MARK: - Views
     var container: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.6
+        view.layer.shadowOpacity = 0.5
         view.layer.shadowRadius = 32
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -30,16 +30,6 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
         return imageView
-    }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(8)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
 
     override init(frame: CGRect) {
@@ -71,20 +61,25 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         posterImageView.image = nil
     }
     
+    // MARK: - Methods
     func setup(media: Media, indexPath: IndexPath) {
         self.currentIndexPath = indexPath
         MediaController.fetchPosterFor(media: media) { [weak self] (result) in
             switch result {
             case .success(let image):
+                    DispatchQueue.main.async {
+                        if self?.currentIndexPath == indexPath {
+                            self?.posterImageView.image = image
+                        }
+                    }
+            case .failure(let error):
                 DispatchQueue.main.async {
                     if self?.currentIndexPath == indexPath {
-                        self?.posterImageView.image = image
+                        self?.posterImageView.image = UIImage(named: "imageNotAvailable")
                     }
                 }
-            case .failure(let error):
                 print(error.localizedDescription)
             }
         }
-    }
+    }//end func
 }//end class
-

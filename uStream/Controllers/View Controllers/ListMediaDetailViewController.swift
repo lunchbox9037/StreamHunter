@@ -45,7 +45,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         collectionView.prefetchDataSource = self
         collectionView.register(ListMediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "listMediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
-        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -223,8 +223,8 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
         }
         
         if similarSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: similar[indexPath.row], newIndexPath: indexPath)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? MediaCollectionViewCell else {return UICollectionViewCell()}
+            cell.setup(media: similar[indexPath.row], indexPath: indexPath)
             return cell
         }
         
