@@ -8,6 +8,13 @@
 import Foundation
 
 struct TrendingMedia: Codable {
+    let page: Int
+    let totalPages: Int
     let results: [Media]
+    
+    enum CodingKeys: String, CodingKey {
+        case page, results
+        case totalPages = "total_pages"
+    }
 }
 

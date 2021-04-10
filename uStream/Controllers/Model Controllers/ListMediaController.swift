@@ -48,7 +48,7 @@ class ListMediaController {
     }
     
     func delete(media: ListMedia) {
-        NotificationScheduler.shared.cancelNotification(media: media )
+        NotificationScheduler.shared.cancelNotification(media: media)
         CoreDataStack.context.delete(media)
         CoreDataStack.saveContext()
     }

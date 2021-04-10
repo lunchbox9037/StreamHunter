@@ -19,7 +19,10 @@ class DiscoverViewController: UIViewController {
     let upcomingMoviesSection: [Int] = [4]
     
     var trendingMovies: [Media] = []
+    var trendingMoviePage: Int = 1
     var trendingTV: [Media] = []
+    var trendingTVPage: Int = 1
+
     var popularMovies: [Media] = []
     var popularTV: [Media] = []
     var upcomingMovies: [Media] = []
@@ -129,6 +132,36 @@ class DiscoverViewController: UIViewController {
         }
     }//end func
     
+    func fetchMore(category: String, mediaType: String, page: Int) {
+        guard !MediaController.isFetching else {return}
+        print("fetching more")
+        MediaController.fetchMoreResultsFor(mediaType: mediaType, category: category, page: page) { (result) in
+            switch result {
+            case .success(let more):
+                if mediaType == self.mediaTypes[0] {
+                    self.trendingMovies.append(contentsOf: more.results)
+                    self.trendingMoviePage = more.page
+                    DispatchQueue.main.async {
+                        UIView.performWithoutAnimation {
+                            self.collectionView.reloadData()
+                        }
+                    }
+                }
+                if mediaType == self.mediaTypes[1] {
+                    self.trendingTV.append(contentsOf: more.results)
+                    self.trendingTVPage = more.page
+                    self.collectionView.reloadSections(IndexSet(integer: 1))
+                }
+                
+                MediaController.isFetching = false
+            case .failure(let error):
+                MediaController.isFetching = false
+                print("failed")
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             switch section {
@@ -189,6 +222,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if trendingMovieSection.contains(section) {
+            print(trendingMovies.count)
             return trendingMovies.count
         }
         
@@ -235,6 +269,11 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if trendingMovieSection.contains(indexPath.section) {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingMovieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
+            print(indexPath)
+            if indexPath.row > trendingMovies.count - 10 {
+                print("fetch more")
+                self.fetchMore(category: "trending", mediaType: "movie", page: trendingMoviePage + 1)
+            }
             cell.setupCell(media: trendingMovies[indexPath.row], indexPath: indexPath)
             return cell
         }

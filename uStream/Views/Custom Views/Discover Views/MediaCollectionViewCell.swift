@@ -64,18 +64,18 @@ public class MediaCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     func setupCell(media: Media, indexPath: IndexPath) {
         self.currentIndexPath = indexPath
-        MediaController.fetchPosterFor(media: media) { (result) in
+        MediaController.fetchPosterFor(media: media) { [weak self] (result) in
             switch result {
             case .success(let image):
                     DispatchQueue.main.async {
-                        if self.currentIndexPath == indexPath {
-                            self.posterImageView.image = image
+                        if self?.currentIndexPath == indexPath {
+                            self?.posterImageView.image = image
                         }
                     }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    if self.currentIndexPath == indexPath {
-                        self.posterImageView.image = UIImage(named: "imageNotAvailable")
+                    if self?.currentIndexPath == indexPath {
+                        self?.posterImageView.image = UIImage(named: "imageNotAvailable")
                     }
                 }
                 print(error.localizedDescription)

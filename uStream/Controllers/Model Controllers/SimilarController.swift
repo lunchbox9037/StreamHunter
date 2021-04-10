@@ -29,9 +29,7 @@ class SimilarController {
         let recommendationsURL = mediaIDURL.appendingPathComponent(recommendationsComponent)
         
         var components = URLComponents(url: recommendationsURL, resolvingAgainstBaseURL: true)
-        let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
-//        let pageQuery = URLQueryItem(name: "page", value: "\(id)")
-        
+        let apiQuery = URLQueryItem(name: "api_key", value: apiKey)        
         
         components?.queryItems = [apiQuery]
         

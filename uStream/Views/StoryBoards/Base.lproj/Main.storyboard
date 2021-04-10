@@ -11,7 +11,7 @@
         <!--My List-->
         <scene sceneID="m8h-dl-aGS">
             <objects>
-                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="StreamHunter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCp-bv-yUD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -75,7 +75,7 @@
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
             <objects>
-                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="StreamHunter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tUK-bx-tu8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -148,7 +148,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="it0-ZJ-DLx"/>
+        <segue reference="yug-5b-bT5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="list.bullet" catalog="system" width="128" height="88"/>

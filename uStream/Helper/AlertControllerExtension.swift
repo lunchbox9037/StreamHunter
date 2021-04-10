@@ -23,7 +23,7 @@ extension UIViewController {
     }
     
     func presentAppInfoAlert() {
-        let alertController = UIAlertController(title: "Version \(UIApplication.appVersion ?? "1.0")", message: "All streaming service info is provided by JustWatch. The all other info and images provided by The Movie DB.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Version \(UIApplication.appVersion ?? "1.0")", message: "All streaming service info is provided by JustWatch. All other info and images provided by The Movie DB.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)

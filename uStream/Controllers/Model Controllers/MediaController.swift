@@ -26,11 +26,53 @@ class MediaController {
     static let popularComponent = "popular"
     static let upcomingComponent = "upcoming"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
-    
+
     // MARK: - Properties
     static var imageCache = NSCache<NSURL, UIImage>()
+    static var isFetching = false
 
     // MARK: - API Methods
+    static func fetchMoreResultsFor(mediaType: String, category: String, page: Int, completion: @escaping (Result<TrendingMedia, NetworkError>) -> Void) {
+        isFetching = true
+        guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
+        let versionURL = baseURL.appendingPathComponent(versionComponent)
+        let categoryURL = versionURL.appendingPathComponent(category)
+        let mediaTypeURL = categoryURL.appendingPathComponent(mediaType)
+        let dayURL = mediaTypeURL.appendingPathComponent(dayComponent)
+        
+        var components = URLComponents(url: dayURL, resolvingAgainstBaseURL: true)
+        let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
+        let pageQuery = URLQueryItem(name: "page", value: String(page))
+        
+        components?.queryItems = [apiQuery, pageQuery]
+        
+        guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
+        print(finalURL)
+        
+        URLSession.shared.dataTask(with: finalURL) { (data, response, error) in
+            if let error = error {
+                print("======== ERROR ========")
+                print("Function: \(#function)")
+                print("Error: \(error)")
+                print("Description: \(error.localizedDescription)")
+                print("======== ERROR ========")
+                return completion(.failure(.thrownError(error)))
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print("TRENDING MEDIA STATUS CODE: \(response.statusCode)")
+            }
+            
+            guard let data = data else {return completion(.failure(.noData))}
+            do {
+                let trending = try JSONDecoder().decode(TrendingMedia.self, from: data)
+                return completion(.success(trending))
+            } catch {
+                completion(.failure(.thrownError(error)))
+            }
+        }.resume()
+    }//end func
+    
     static func fetchTrendingResultsFor(mediaType: String, completion: @escaping (Result<TrendingMedia, NetworkError>) -> Void) {
         guard let baseURL = baseURL else {return completion(.failure(.invalidURL))}
         let versionURL = baseURL.appendingPathComponent(versionComponent)
@@ -79,9 +121,9 @@ class MediaController {
         
         var components = URLComponents(url: popularURL, resolvingAgainstBaseURL: true)
         let apiQuery = URLQueryItem(name: "api_key", value: apiKey)
-        let pageQuery = URLQueryItem(name: "page", value: "2")
+//        let pageQuery = URLQueryItem(name: "page", value: "2")
         
-        components?.queryItems = [apiQuery, pageQuery]
+        components?.queryItems = [apiQuery]
         
         guard let finalURL = components?.url else {return completion(.failure(.invalidURL))}
         print(finalURL)
