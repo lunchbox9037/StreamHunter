@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F612320426221FC5004AC924 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612320326221FC5004AC924 /* NetworkError.swift */; };
+		F612321126225E82004AC924 /* NetworkServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612321026225E82004AC924 /* NetworkServicing.swift */; };
+		F612321526225F13004AC924 /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F612321426225F13004AC924 /* MediaService.swift */; };
 		F6195A8625F5552E002127AD /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6195A8525F5552E002127AD /* SpinnerViewController.swift */; };
 		F6195A9125F5B6B4002127AD /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6195A9025F5B6B4002127AD /* UIApplicationExtension.swift */; };
 		F63774E725E5A79F00F4025E /* MediaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63774E625E5A79F00F4025E /* MediaDetailCollectionViewCell.swift */; };
@@ -30,14 +32,13 @@
 		F68AB93E25DF6450002D56D2 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB93D25DF6450002D56D2 /* CoreDataStack.swift */; };
 		F68AB94825DF66A6002D56D2 /* ListMedia+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB94725DF66A6002D56D2 /* ListMedia+Convenience.swift */; };
 		F68AB94C25DF6A75002D56D2 /* MediaResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB94B25DF6A75002D56D2 /* MediaResults.swift */; };
-		F68AB95425DF743C002D56D2 /* MediaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95325DF743C002D56D2 /* MediaController.swift */; };
+		F68AB95425DF743C002D56D2 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95325DF743C002D56D2 /* ImageService.swift */; };
 		F68AB95F25DF7C1C002D56D2 /* MediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */; };
 		F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */; };
 		F6A87FAD25E9ED9600E7A1E0 /* TopBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6A87FAC25E9ED9600E7A1E0 /* TopBar.storyboard */; };
 		F6A87FB025E9EF0700E7A1E0 /* TopBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */; };
 		F6A87FB525E9F2BF00E7A1E0 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6A87FB425E9F2BF00E7A1E0 /* Search.storyboard */; };
 		F6A87FB825E9F2F100E7A1E0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */; };
-		F6A87FC625E9FEDB00E7A1E0 /* SearchResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FC525E9FEDB00E7A1E0 /* SearchResultsController.swift */; };
 		F6A87FCE25EC2B5E00E7A1E0 /* ListMediaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */; };
 		F6A87FD125EC5D2A00E7A1E0 /* ListMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */; };
 		F6A87FD425EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */; };
@@ -45,7 +46,6 @@
 		F6A87FF225ED663300E7A1E0 /* ListMediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */; };
 		F6A87FF525ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */; };
 		F6A87FF925EDEC1700E7A1E0 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */; };
-		F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */; };
 		F6F6638425E413D900C4FC65 /* LayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6638325E413D900C4FC65 /* LayoutBuilder.swift */; };
 		F6F6638725E4146600C4FC65 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6638625E4146600C4FC65 /* SectionHeader.swift */; };
 		F6F6639F25E4808900C4FC65 /* MediaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */; };
@@ -53,6 +53,8 @@
 
 /* Begin PBXFileReference section */
 		F612320326221FC5004AC924 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		F612321026225E82004AC924 /* NetworkServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServicing.swift; sourceTree = "<group>"; };
+		F612321426225F13004AC924 /* MediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaService.swift; sourceTree = "<group>"; };
 		F6195A8525F5552E002127AD /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		F6195A9025F5B6B4002127AD /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		F63774E625E5A79F00F4025E /* MediaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -77,14 +79,13 @@
 		F68AB93D25DF6450002D56D2 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		F68AB94725DF66A6002D56D2 /* ListMedia+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListMedia+Convenience.swift"; sourceTree = "<group>"; };
 		F68AB94B25DF6A75002D56D2 /* MediaResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResults.swift; sourceTree = "<group>"; };
-		F68AB95325DF743C002D56D2 /* MediaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaController.swift; sourceTree = "<group>"; };
+		F68AB95325DF743C002D56D2 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		F6A87FAC25E9ED9600E7A1E0 /* TopBar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TopBar.storyboard; sourceTree = "<group>"; };
 		F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarViewController.swift; sourceTree = "<group>"; };
 		F6A87FB425E9F2BF00E7A1E0 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		F6A87FC525E9FEDB00E7A1E0 /* SearchResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsController.swift; sourceTree = "<group>"; };
 		F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaController.swift; sourceTree = "<group>"; };
 		F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaViewController.swift; sourceTree = "<group>"; };
 		F6A87FD325EC62DE00E7A1E0 /* ListMediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -93,7 +94,6 @@
 		F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailViewController.swift; sourceTree = "<group>"; };
 		F6A87FF425ED66BB00E7A1E0 /* ListMediaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMediaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6A87FF825EDEC1700E7A1E0 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
-		F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarController.swift; sourceTree = "<group>"; };
 		F6F6638325E413D900C4FC65 /* LayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutBuilder.swift; sourceTree = "<group>"; };
 		F6F6638625E4146600C4FC65 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +111,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F612320F26225E18004AC924 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F612321026225E82004AC924 /* NetworkServicing.swift */,
+				F612321426225F13004AC924 /* MediaService.swift */,
+				F68AB95325DF743C002D56D2 /* ImageService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		F68AB91325DF63FA002D56D2 = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +146,7 @@
 				F68AB94325DF6475002D56D2 /* Models */,
 				F68AB94225DF646F002D56D2 /* Views */,
 				F68AB94425DF6487002D56D2 /* Controllers */,
+				F612320F26225E18004AC924 /* Services */,
 				F68AB95825DF7923002D56D2 /* Helper */,
 				F68AB93725DF640C002D56D2 /* Resources */,
 			);
@@ -178,6 +189,7 @@
 		F68AB94225DF646F002D56D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F6F6638325E413D900C4FC65 /* LayoutBuilder.swift */,
 				F68AB95D25DF7C03002D56D2 /* Custom Views */,
 				F68AB94125DF645B002D56D2 /* StoryBoards */,
 			);
@@ -209,10 +221,10 @@
 				F6A87FAF25E9EF0700E7A1E0 /* TopBarViewController.swift */,
 				F650773E25F05E270040C171 /* SettingsViewController.swift */,
 				F6A87FB725E9F2F100E7A1E0 /* SearchViewController.swift */,
+				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
+				F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */,
 				F68AB96325DF81B3002D56D2 /* DiscoverViewController.swift */,
 				F6A87FD025EC5D2A00E7A1E0 /* ListMediaViewController.swift */,
-				F6A87FF125ED663300E7A1E0 /* ListMediaDetailViewController.swift */,
-				F6F6639E25E4808900C4FC65 /* MediaDetailViewController.swift */,
 				F6195A8525F5552E002127AD /* SpinnerViewController.swift */,
 			);
 			path = "View Controllers";
@@ -221,10 +233,7 @@
 		F68AB95625DF744B002D56D2 /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F68AB95325DF743C002D56D2 /* MediaController.swift */,
 				F63774F125E5F80100F4025E /* WhereToWatchController.swift */,
-				F6E2CDCA25E7024F0089DEF1 /* SimilarController.swift */,
-				F6A87FC525E9FEDB00E7A1E0 /* SearchResultsController.swift */,
 				F6A87FCD25EC2B5E00E7A1E0 /* ListMediaController.swift */,
 			);
 			path = "Model Controllers";
@@ -248,8 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				F6F6638625E4146600C4FC65 /* SectionHeader.swift */,
-				F6F6638325E413D900C4FC65 /* LayoutBuilder.swift */,
-				F6E2CDE025E89EF10089DEF1 /* Discover Cells */,
+				F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */,
+				F63774EB25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift */,
 				F6E2CDEC25E99DAD0089DEF1 /* Media Detail Cells */,
 				F6A87FEF25ED641300E7A1E0 /* List Media Cells */,
 			);
@@ -273,19 +282,10 @@
 			path = "List Media Cells";
 			sourceTree = "<group>";
 		};
-		F6E2CDE025E89EF10089DEF1 /* Discover Cells */ = {
-			isa = PBXGroup;
-			children = (
-				F68AB95E25DF7C1C002D56D2 /* MediaCollectionViewCell.swift */,
-			);
-			path = "Discover Cells";
-			sourceTree = "<group>";
-		};
 		F6E2CDEC25E99DAD0089DEF1 /* Media Detail Cells */ = {
 			isa = PBXGroup;
 			children = (
 				F63774E625E5A79F00F4025E /* MediaDetailCollectionViewCell.swift */,
-				F63774EB25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift */,
 			);
 			path = "Media Detail Cells";
 			sourceTree = "<group>";
@@ -365,11 +365,11 @@
 			files = (
 				F68AB94C25DF6A75002D56D2 /* MediaResults.swift in Sources */,
 				F63774EC25E5D28F00F4025E /* WhereToWatchCollectionViewCell.swift in Sources */,
+				F612321526225F13004AC924 /* MediaService.swift in Sources */,
 				F6A87FF925EDEC1700E7A1E0 /* Haptics.swift in Sources */,
-				F6E2CDCB25E7024F0089DEF1 /* SimilarController.swift in Sources */,
 				F68AB96425DF81B3002D56D2 /* DiscoverViewController.swift in Sources */,
 				F650773F25F05E270040C171 /* SettingsViewController.swift in Sources */,
-				F68AB95425DF743C002D56D2 /* MediaController.swift in Sources */,
+				F68AB95425DF743C002D56D2 /* ImageService.swift in Sources */,
 				F650775725F1E70B0040C171 /* DateExtension.swift in Sources */,
 				F6A87FB025E9EF0700E7A1E0 /* TopBarViewController.swift in Sources */,
 				F63774F225E5F80100F4025E /* WhereToWatchController.swift in Sources */,
@@ -392,8 +392,8 @@
 				F6A87FD125EC5D2A00E7A1E0 /* ListMediaViewController.swift in Sources */,
 				F68AB95F25DF7C1C002D56D2 /* MediaCollectionViewCell.swift in Sources */,
 				F6F6638725E4146600C4FC65 /* SectionHeader.swift in Sources */,
+				F612321126225E82004AC924 /* NetworkServicing.swift in Sources */,
 				F6195A8625F5552E002127AD /* SpinnerViewController.swift in Sources */,
-				F6A87FC625E9FEDB00E7A1E0 /* SearchResultsController.swift in Sources */,
 				F6A87FCE25EC2B5E00E7A1E0 /* ListMediaController.swift in Sources */,
 				F6F6639F25E4808900C4FC65 /* MediaDetailViewController.swift in Sources */,
 				F68AB93E25DF6450002D56D2 /* CoreDataStack.swift in Sources */,

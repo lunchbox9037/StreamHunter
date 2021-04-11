@@ -122,15 +122,18 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     func fetchSimilar() {
         guard let media = selectedMedia,
               let mediaType = media.mediaType else {return}
-        SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let similar):
-                    self?.similar = similar
+        MediaService().fetch(.similar(mediaType, Int(media.id))) { [weak self] (result: Result<MediaResults, NetError>) in
+            switch result {
+            case .success(let similar):
+                DispatchQueue.main.async {
+                    let similarWithPoster = similar.results.filter { (result) -> Bool in
+                        return result.backdropPath != nil
+                    }
+                    self?.similar = similarWithPoster
                     self?.collectionView.reloadSections([2])
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func
@@ -202,7 +205,7 @@ extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             if similarSection.contains(indexPath.section) {
-                MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
+                ImageService().fetchImage(.poster(similar[indexPath.row].posterPath ?? "")) {(_) in}
             }
         }
     }//end func

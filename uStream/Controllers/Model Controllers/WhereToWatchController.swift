@@ -16,7 +16,6 @@ import UIKit
 
 class WhereToWatchController {
     // MARK: - String Constants
-    static let imageBaseURL = URL(string: "https://image.tmdb.org/t/p/w500/")
     static let baseURL = URL(string: "https://api.themoviedb.org/")
     static let versionComponent = "3"
     static let tvComponent = "tv"
@@ -76,28 +75,4 @@ class WhereToWatchController {
             }
         }.resume()
     }//end func
-    
-    static func fetchLogoFor(provider: Provider, completion: @escaping (Result<UIImage, NetworkError>) -> Void) {
-        guard let imageBaseURL = imageBaseURL else {return completion(.failure(.invalidURL))}
-        guard let logoPath = provider.logo else {return completion(.failure(.invalidURL))}
-        let finalURL = imageBaseURL.appendingPathComponent(logoPath)
-        
-        if let logo = imageCache.object(forKey: NSURL(string: finalURL.absoluteString) ?? NSURL()) {
-            completion(.success(logo))
-        } else {
-            URLSession.shared.dataTask(with: finalURL) { (data, _, error) in
-                if let error = error {
-                    print("Error: \(error)\nFunction: \(#function)\nDescription: \(error.localizedDescription)")
-                    return completion(.failure(.thrownError(error)))
-                }
-                
-                guard let data = data else {return completion(.failure(.noData))}
-                guard let logoImage = UIImage(data: data) else {return completion(.failure(.unableToDecode))}
-                //save image to cache
-                imageCache.setObject(logoImage, forKey: NSURL(string: finalURL.absoluteString) ?? NSURL())
-
-                completion(.success(logoImage))
-            }.resume()
-        }
-    }//end of func
 }//end class

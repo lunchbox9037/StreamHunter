@@ -160,7 +160,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             enableButton()
         }
         
-        MediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
+        ImageService().fetchImage(.backdrop(media.backdropPath ?? "")) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -171,6 +171,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
+
         self.overviewLabel.text = media.overview
         if media.releaseDate != "" {
             let date = media.convertToDate(media)
