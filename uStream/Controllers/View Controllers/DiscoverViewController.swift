@@ -43,7 +43,6 @@ class DiscoverViewController: UIViewController {
     private var refresher: UIRefreshControl = UIRefreshControl()
     private var dispatchGroup = DispatchGroup()
 
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,17 +57,14 @@ class DiscoverViewController: UIViewController {
     }
     
     // MARK: - Methods(
-    func setupCollectionView() {
+    private func setupCollectionView() {
         collectionView.collectionViewLayout = makeLayout()
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = UIColor.systemFill
-
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
-        
         collectionView.isPrefetchingEnabled = true
-        
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingMovieCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "trendingTVCell")
         collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "upcomingCell")
@@ -76,15 +72,21 @@ class DiscoverViewController: UIViewController {
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
     }
     
-    func setupRefresher() {
+    private func setupRefresher() {
         refresher.attributedTitle = NSAttributedString(string: "Pull to refresh...")
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
         collectionView.addSubview(refresher)
     }//end func
     
-    @objc func loadData() {
+    @objc private func loadData() {
         fetchTrendingMedia()
         fetchUpcomingMedia()
+        dispatchGroup.notify(queue: .main) {
+            print("notify")
+            Section.allCases.forEach { (section) in
+                self.collectionView.reloadSections([section.rawValue])
+            }
+        }
         refresher.endRefreshing()
     }//end func
     
@@ -155,13 +157,13 @@ class DiscoverViewController: UIViewController {
         }
     }
     
-    func makeLayout() -> UICollectionViewCompositionalLayout {
+    private func makeLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             return LayoutBuilder.buildMediaHorizontalScrollLayout()
         }
     }//end func
     
-    func presentDetailVC(media: Media) {
+    private func presentDetailVC(media: Media) {
         let detailVC = MediaDetailViewController()
         detailVC.selectedMedia = media
         present(detailVC, animated: true, completion: nil)
