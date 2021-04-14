@@ -1,5 +1,5 @@
 //
-//  TrendingMediaCollectionViewCell.swift
+//  MediaCollectionViewCell.swift
 //  uStream
 //
 //  Created by stanley phillips on 2/18/21.
@@ -62,20 +62,20 @@ public class MediaCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func setupCell(media: Media, indexPath: IndexPath) {
+    func setup(media: Media, indexPath: IndexPath) {
         self.currentIndexPath = indexPath
-        MediaController.fetchPosterFor(media: media) { (result) in
+        ImageService().fetchImage(.poster(media.posterPath ?? "")) { [weak self] (result) in
             switch result {
             case .success(let image):
-                    DispatchQueue.main.async {
-                        if self.currentIndexPath == indexPath {
-                            self.posterImageView.image = image
-                        }
+                DispatchQueue.main.async {
+                    if self?.currentIndexPath == indexPath {
+                        self?.posterImageView.image = image
                     }
+                }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    if self.currentIndexPath == indexPath {
-                        self.posterImageView.image = UIImage(named: "imageNotAvailable")
+                    if self?.currentIndexPath == indexPath {
+                        self?.posterImageView.image = UIImage(named: "imageNotAvailable")
                     }
                 }
                 print(error.localizedDescription)

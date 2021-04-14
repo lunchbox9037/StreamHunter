@@ -47,6 +47,12 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
         }
     }
     
+    func presentLocationSelectVC() {
+        let detailVC = LocationSelectionViewController()
+        let nav = UINavigationController(rootViewController: detailVC)
+        present(nav, animated: true, completion: nil)
+    }
+    
     func promptRating() {
         if let url = URL(string: "itms-apps://apple.com/app/id1556698910") {
             UIApplication.shared.open(url)
@@ -97,7 +103,7 @@ class SettingsTableViewController: UITableViewController, SFSafariViewController
             launchHomeApp()
             tableView.deselectRow(at: indexPath, animated: true)
         case [1,0]:
-            getLocation()
+            presentLocationSelectionAlert(sender: self)
             tableView.deselectRow(at: indexPath, animated: true)
         case [2,0]:
             promptRating()
@@ -133,6 +139,8 @@ extension SettingsTableViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.stopSpinner()
+        presentLocationUpateFailedAlert()
         print("failed to get location")
     }
 }

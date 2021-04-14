@@ -204,7 +204,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
             }
         })
         
-        MediaController.fetchBackdropImageForList(media: media) { [weak self] (result) in
+        ImageService().fetchImage(.backdrop(media.backdropPath ?? "")) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -215,6 +215,7 @@ public class ListMediaDetailCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
+
         self.overviewLabel.text = media.overview
         self.releaseDateLabel.text = "\(media.releaseDate?.dateToString(format: .monthDayYear) ?? "tbd")"
         guard let date = media.releaseDate else {return}

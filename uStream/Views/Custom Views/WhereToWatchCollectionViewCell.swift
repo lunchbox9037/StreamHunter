@@ -1,14 +1,15 @@
 //
-//  SearchResultsCollectionViewCell.swift
+//  WhereToWatchCollectionViewCell.swift
 //  uStream
 //
-//  Created by stanley phillips on 2/26/21.
+//  Created by stanley phillips on 2/23/21.
 //
 
-
+import Foundation
 import UIKit
 
-public class SearchResultsCollectionViewCell: UICollectionViewCell {
+public class WhereToWatchCollectionViewCell: UICollectionViewCell {
+    // MARK: - Properties
     var currentIndexPath: IndexPath? = nil
 
     // MARK: - Views
@@ -16,36 +17,26 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = UIColor.systemFill
         view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.cornerRadius = 8
-        view.layer.shadowOpacity = 0.6
-        view.layer.shadowRadius = 32
+        view.layer.cornerRadius = 12
+        view.layer.shadowOpacity = 0.3
+        view.layer.shadowRadius = 12
         view.layer.shadowOffset = CGSize(width: 0, height: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    var posterImageView: UIImageView = {
+    var providerLogoImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 8
+        imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
         return imageView
-    }()
-    
-    var subtitleLabel: UILabel = {
-        let label: UILabel = UILabel()
-        label.text = "Some subtitle"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).withSize(8)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.container)
-        self.container.addSubview(self.posterImageView)
+        self.container.addSubview(self.providerLogoImageView)
 
         NSLayoutConstraint.activate([
             self.container.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -55,10 +46,10 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            self.posterImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
-            self.posterImageView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: 0),
-            self.posterImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
-            self.posterImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
+            self.providerLogoImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
+            self.providerLogoImageView.bottomAnchor.constraint(equalTo: self.container.bottomAnchor, constant: 0),
+            self.providerLogoImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
+            self.providerLogoImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0)
         ])
     }
 
@@ -68,23 +59,23 @@ public class SearchResultsCollectionViewCell: UICollectionViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        posterImageView.image = nil
+        self.providerLogoImageView.image = nil
     }
     
-    func setup(media: Media, indexPath: IndexPath) {
-        self.currentIndexPath = indexPath
-        MediaController.fetchPosterFor(media: media) { [weak self] (result) in
+    // MARK: - Methods
+    func setup(provider: Provider, newIndexPath: IndexPath) {
+        self.currentIndexPath = newIndexPath
+        ImageService().fetchImage(.logo(provider.logo ?? "")) { [weak self] (result) in
             switch result {
-            case .success(let image):
+            case .success(let logo):
                 DispatchQueue.main.async {
-                    if self?.currentIndexPath == indexPath {
-                        self?.posterImageView.image = image
+                    if self?.currentIndexPath == newIndexPath {
+                        self?.providerLogoImageView.image = logo
                     }
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
-    }
+    }//end func
 }//end class
-

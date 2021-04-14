@@ -22,7 +22,6 @@ class TopBarViewController: UIViewController {
         let nav = UINavigationController(rootViewController: settingsVC)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true, completion: nil)
-        
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {

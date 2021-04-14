@@ -9,16 +9,19 @@ import UIKit
 import SafariServices
 
 class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDelegate {
+    // MARK: - Sections
+    private enum Section: Int, CaseIterable {
+        case selectedMedia
+        case whereToWatch
+        case similar
+    }
+    
     // MARK: - Properties
     var selectedMedia: ListMedia? {
         didSet {
             collectionView.reloadSections([0])
         }
     }
-    
-    let selectedMediaSection: [Int] = [0]
-    let whereToWatchSection: [Int] = [1]
-    let similarSection: [Int] = [2]
     
     var providers: [Provider] = []
     var providerLink: String?
@@ -45,7 +48,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         collectionView.prefetchDataSource = self
         collectionView.register(ListMediaDetailCollectionViewCell.self, forCellWithReuseIdentifier: "listMediaDetailCell")
         collectionView.register(WhereToWatchCollectionViewCell.self, forCellWithReuseIdentifier: "providerCell")
-        collectionView.register(SimilarCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "similarCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -82,15 +85,15 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     func makeLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             switch section {
-            case 0:
+            case Section.selectedMedia.rawValue:
                 return LayoutBuilder.buildMediaDetailSection()
-            case 1:
+            case Section.whereToWatch.rawValue:
                 if self.providers.count != 0 {
                     return LayoutBuilder.buildWhereToWatchIconSection()
                 } else {
                     return nil
                 }
-            case 2:
+            case Section.similar.rawValue:
                 if self.similar.count != 0 {
                     return LayoutBuilder.buildMediaHorizontalScrollLayout()
                 } else {
@@ -105,16 +108,16 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     func fetchWhereToWatch() {
         guard let media = selectedMedia,
               let mediaType = media.mediaType else {return}
-        WhereToWatchController.fetchWhereToWatchBy(id: Int(media.id), mediaType: mediaType) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let location):
+        MediaService().fetchProviders(.whereToWatch(mediaType, Int(media.id))) { [weak self] (result) in
+            switch result {
+            case .success(let location):
+                DispatchQueue.main.async {
                     self?.providers = location.streaming ?? []
                     self?.providerLink = location.deepLink
                     self?.collectionView.reloadSections([1])
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func
@@ -122,15 +125,18 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
     func fetchSimilar() {
         guard let media = selectedMedia,
               let mediaType = media.mediaType else {return}
-        SimilarController.fetchSimilarFor(mediaType: mediaType, id: Int(media.id)) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let similar):
-                    self?.similar = similar
+        MediaService().fetch(.similar(mediaType, Int(media.id))) { [weak self] (result: Result<MediaResults, NetError>) in
+            switch result {
+            case .success(let similar):
+                DispatchQueue.main.async {
+                    let similarWithPoster = similar.results.filter { (result) -> Bool in
+                        return result.backdropPath != nil
+                    }
+                    self?.similar = similarWithPoster
                     self?.collectionView.reloadSections([2])
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }//end func
@@ -156,7 +162,7 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
         } else {
             print("Invalid URL specified.")
         }
-    }
+    }//end func
     
     @objc func dismissButtonTapped() {
         dismiss(animated: true, completion: nil)
@@ -166,80 +172,84 @@ class ListMediaDetailViewController: UIViewController, SFSafariViewControllerDel
 // MARK: - Extensions
 extension ListMediaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
+        Section.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if selectedMediaSection.contains(section) {
+        switch section {
+        case Section.selectedMedia.rawValue:
             return 1
-        }
-        if whereToWatchSection.contains(section) {
+        case Section.whereToWatch.rawValue:
             return providers.count
-        }
-        if similarSection.contains(section) {
+        case Section.similar.rawValue:
             return similar.count
+        default:
+            return 0
         }
-        return 0
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else {return UICollectionReusableView()}
-        if selectedMediaSection.contains(indexPath.section) {
+        
+        switch indexPath.section {
+        case Section.selectedMedia.rawValue:
             header.setup(label: ((self.selectedMedia?.title) ?? "The Matrix"))
-        }
-        
-        if whereToWatchSection.contains(indexPath.section) {
+        case Section.whereToWatch.rawValue:
             header.setup(label: "Stream")
-        }
-        
-        if similarSection.contains(indexPath.section) {
+        case Section.similar.rawValue:
             header.setup(label: "Similar")
+        default:
+            break
         }
-        
+       
         return header
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if similarSection.contains(indexPath.section) {
-                MediaController.fetchPosterFor(media: similar[indexPath.row]) { (_) in }
+            if indexPath.section == Section.similar.rawValue {
+                ImageService().fetchImage(.poster(similar[indexPath.row].posterPath ?? "")) {(_) in}
             }
         }
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if selectedMediaSection.contains(indexPath.section) {
+        
+        switch indexPath.section {
+        case Section.selectedMedia.rawValue:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "listMediaDetailCell", for: indexPath) as? ListMediaDetailCollectionViewCell else {return UICollectionViewCell()}
             guard let media = selectedMedia else {return UICollectionViewCell()}
             cell.delegate = self
             cell.setup(media: media)
             return cell
-        }
-        
-        if whereToWatchSection.contains(indexPath.section) {
+            
+        case Section.whereToWatch.rawValue:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "providerCell", for: indexPath) as? WhereToWatchCollectionViewCell else {return UICollectionViewCell()}
             cell.setup(provider: providers[indexPath.row], newIndexPath: indexPath)
             return cell
-        }
-        
-        if similarSection.contains(indexPath.section) {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? SimilarCollectionViewCell else {return UICollectionViewCell()}
-            cell.setup(media: similar[indexPath.row], newIndexPath: indexPath)
+            
+        case Section.similar.rawValue:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "similarCell", for: indexPath) as? MediaCollectionViewCell else {return UICollectionViewCell()}
+            cell.setup(media: similar[indexPath.row], indexPath: indexPath)
             return cell
+            
+        default:
+            return UICollectionViewCell()
         }
-        
-        return UICollectionViewCell()
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if whereToWatchSection.contains(indexPath.section) {
-            self.launchApp(provider: providers[indexPath.row])
-        }
-        
-        if similarSection.contains(indexPath.section) {
+        switch indexPath.section {
+        case Section.whereToWatch.rawValue:
+            launchApp(provider: providers[indexPath.row])
+
+        case Section.similar.rawValue:
             let detailVC = MediaDetailViewController()
             detailVC.selectedMedia = similar[indexPath.row]
             present(detailVC, animated: false)
+
+        default:
+            break
         }
     }//end func
 }//end extension

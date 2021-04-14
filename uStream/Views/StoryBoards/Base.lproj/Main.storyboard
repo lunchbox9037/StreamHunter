@@ -11,13 +11,16 @@
         <!--My List-->
         <scene sceneID="m8h-dl-aGS">
             <objects>
-                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wES-rK-jCZ" customClass="ListMediaViewController" customModule="StreamHunter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MCp-bv-yUD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxx-kb-TKf">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="KKJ-dA-IxV"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="it0-ZJ-DLx"/>
                                 </connections>
@@ -50,7 +53,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="lFz-ee-Ieg" secondAttribute="trailing" id="68U-QW-p8B"/>
-                            <constraint firstItem="nxx-kb-TKf" firstAttribute="height" secondItem="snY-GV-rhB" secondAttribute="height" multiplier="0.1" id="7uF-nh-LwV"/>
                             <constraint firstItem="snY-GV-rhB" firstAttribute="trailing" secondItem="1uZ-gb-Ffe" secondAttribute="trailing" id="AzT-WI-XDL"/>
                             <constraint firstItem="1uZ-gb-Ffe" firstAttribute="top" secondItem="nxx-kb-TKf" secondAttribute="bottom" id="C9h-VJ-ATf"/>
                             <constraint firstItem="nxx-kb-TKf" firstAttribute="top" secondItem="snY-GV-rhB" secondAttribute="top" id="IR8-Pi-8AH"/>
@@ -75,7 +77,7 @@
         <!--Discover-->
         <scene sceneID="Ide-Qi-Yq6">
             <objects>
-                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x1o-cC-BKC" customClass="DiscoverViewController" customModule="StreamHunter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tUK-bx-tu8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,6 +95,9 @@
                             </collectionView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9j5-Ti-xmn">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="62" id="gDy-7R-RYh"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="6Cn-Oh-gfg" kind="embed" identifier="TopBar" id="yug-5b-bT5"/>
                                 </connections>
@@ -101,7 +106,6 @@
                         <viewLayoutGuide key="safeArea" id="17P-6S-lBI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="9j5-Ti-xmn" firstAttribute="height" secondItem="17P-6S-lBI" secondAttribute="height" multiplier="0.1" id="1Ap-Og-IWL"/>
                             <constraint firstItem="17P-6S-lBI" firstAttribute="bottom" secondItem="F6W-PP-f33" secondAttribute="bottom" id="3tn-Os-fwy"/>
                             <constraint firstItem="17P-6S-lBI" firstAttribute="trailing" secondItem="9j5-Ti-xmn" secondAttribute="trailing" id="6k0-sW-OQ5"/>
                             <constraint firstItem="9j5-Ti-xmn" firstAttribute="top" secondItem="17P-6S-lBI" secondAttribute="top" id="JlD-8h-Bke"/>
@@ -148,7 +152,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="it0-ZJ-DLx"/>
+        <segue reference="yug-5b-bT5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="list.bullet" catalog="system" width="128" height="88"/>

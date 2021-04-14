@@ -23,7 +23,7 @@ public class LayoutBuilder {
         sectionHeader.pinToVisibleBounds = true
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0)
         section.boundarySupplementaryItems = [sectionHeader]
-        section.orthogonalScrollingBehavior = .groupPaging
+        section.orthogonalScrollingBehavior = .continuous
         
         return section
     }
