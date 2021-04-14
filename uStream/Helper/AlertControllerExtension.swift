@@ -61,7 +61,7 @@ extension UIViewController {
     }
     
     func presentLocationSelectedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your selected country.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Country Code updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your selected country.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
@@ -70,7 +70,7 @@ extension UIViewController {
     }
     
     func presentLocationUpdatedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current country.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Country Code updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current country.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
@@ -90,12 +90,10 @@ extension UIViewController {
     func presentLocationSelectionAlert(sender: SettingsTableViewController) {
         let alertController = UIAlertController(title: "Set new location?", message: "This will change your streaming provider results.", preferredStyle: .alert)
         let currentLocAction = UIAlertAction(title: "Use Current Location", style: .default) { (_) in
-            print("use current location")
             sender.getLocation()
         }
         
         let chooseLocAction = UIAlertAction(title: "Choose Location", style: .default) { (_) in
-            print("select location")
             sender.presentLocationSelectVC()
         }
         

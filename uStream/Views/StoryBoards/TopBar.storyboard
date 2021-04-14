@@ -11,16 +11,16 @@
         <!--Top Bar View Controller-->
         <scene sceneID="LZy-Tt-Xe6">
             <objects>
-                <viewController id="HAd-Ji-E3U" customClass="TopBarViewController" customModule="uStream" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="HAd-Ji-E3U" customClass="TopBarViewController" customModule="StreamHunter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4QX-4e-9Hs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="jgK-Lg-n0z">
-                                <rect key="frame" x="16" y="8" width="382" height="84"/>
+                                <rect key="frame" x="6" y="6" width="402" height="88"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4NY-In-yfp">
-                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="88" height="88"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="4NY-In-yfp" secondAttribute="height" multiplier="1:1" id="SYG-m7-cUv"/>
                                         </constraints>
@@ -31,14 +31,14 @@
                                             <action selector="settingButtonTapped:" destination="HAd-Ji-E3U" eventType="touchUpInside" id="iRk-QG-Cw0"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="StreamHunter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-xy-g85">
-                                        <rect key="frame" x="84" y="0.0" width="214" height="84"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="StreamHunter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-xy-g85">
+                                        <rect key="frame" x="88" y="0.0" width="226" height="88"/>
                                         <fontDescription key="fontDescription" name="AppleColorEmoji" family="Apple Color Emoji" pointSize="30"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1g-sN-eIv">
-                                        <rect key="frame" x="298" y="0.0" width="84" height="84"/>
+                                        <rect key="frame" x="314" y="0.0" width="88" height="88"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="S1g-sN-eIv" secondAttribute="height" multiplier="1:1" id="Ifb-nK-rMN"/>
                                         </constraints>
@@ -55,10 +55,10 @@
                         <viewLayoutGuide key="safeArea" id="ZF8-Kz-ufG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="leading" secondItem="4QX-4e-9Hs" secondAttribute="leading" constant="16" id="6xw-2E-wVt"/>
-                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="top" secondItem="4QX-4e-9Hs" secondAttribute="top" constant="8" id="Bzp-HD-olx"/>
-                            <constraint firstAttribute="trailing" secondItem="jgK-Lg-n0z" secondAttribute="trailing" constant="16" id="gJb-ef-glc"/>
-                            <constraint firstAttribute="bottom" secondItem="jgK-Lg-n0z" secondAttribute="bottom" constant="8" id="nnh-eu-cDv"/>
+                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="leading" secondItem="4QX-4e-9Hs" secondAttribute="leading" constant="6" id="6xw-2E-wVt"/>
+                            <constraint firstItem="jgK-Lg-n0z" firstAttribute="top" secondItem="4QX-4e-9Hs" secondAttribute="top" constant="6" id="Bzp-HD-olx"/>
+                            <constraint firstAttribute="trailing" secondItem="jgK-Lg-n0z" secondAttribute="trailing" constant="6" id="gJb-ef-glc"/>
+                            <constraint firstAttribute="bottom" secondItem="jgK-Lg-n0z" secondAttribute="bottom" constant="6" id="nnh-eu-cDv"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="414" height="100"/>

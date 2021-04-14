@@ -38,6 +38,7 @@ class DiscoverViewController: UIViewController {
     var upcomingMovies: [Media] = []
     var upcomingMoviesPage: Int = 1
     
+    var totalPages = 1000
     private var isFetchingMore = false
 
     private var refresher: UIRefreshControl = UIRefreshControl()
@@ -50,7 +51,6 @@ class DiscoverViewController: UIViewController {
         fetchUpcomingMedia()
         setupRefresher()
         dispatchGroup.notify(queue: .main) {
-            print("notify")
             self.setupCollectionView()
             self.collectionView.reloadData()
         }
@@ -81,13 +81,15 @@ class DiscoverViewController: UIViewController {
     @objc private func loadData() {
         fetchTrendingMedia()
         fetchUpcomingMedia()
+        self.trendingMoviePage = 1
+        self.trendingTVPage = 1
         dispatchGroup.notify(queue: .main) {
-            print("notify")
             Section.allCases.forEach { (section) in
                 self.collectionView.reloadSections([section.rawValue])
             }
+            self.refresher.endRefreshing()
         }
-        refresher.endRefreshing()
+        
     }//end func
     
     func fetchTrendingMedia() {
@@ -99,6 +101,7 @@ class DiscoverViewController: UIViewController {
                     switch mediaType.rawValue {
                     case MediaType.movie.rawValue:
                         self?.trendingMovies = media.results
+                        self?.totalPages = media.totalPages
                     case MediaType.tv.rawValue:
                         self?.trendingTV = media.results
                     default:
@@ -126,11 +129,9 @@ class DiscoverViewController: UIViewController {
     }//end func
     
     func fetchMore(category: String, mediaType: String, page: Int) {
-        print("fetching more")
         switch category {
         case Category.trending.rawValue:
             MediaService().fetch(.trending(mediaType, page: page)) { [weak self] (result: Result<MediaResults, NetError>) in
-                self?.isFetchingMore = true
                 switch result {
                 case .success(let more):
                     if mediaType == MediaType.movie.rawValue{
@@ -142,8 +143,9 @@ class DiscoverViewController: UIViewController {
                         self?.trendingTVPage = more.page
                     }
                     DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+
                         UIView.performWithoutAnimation {
-                            self?.collectionView.reloadData()
                         }
                     }
                     self?.isFetchingMore = false
@@ -153,6 +155,7 @@ class DiscoverViewController: UIViewController {
                 }
             }
         default:
+            self.isFetchingMore = false
             break
         }
     }
@@ -194,7 +197,6 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }//end func
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(section)
         switch section {
         case Section.trendingMovies.rawValue:
             return trendingMovies.count
@@ -211,13 +213,10 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         for indexPath in indexPaths {
             switch indexPath.section {
             case Section.trendingMovies.rawValue:
-                print("prefetching movies")
                 ImageService().fetchImage(.poster(trendingMovies[indexPath.row].posterPath ?? "")) {(_) in}
             case Section.trendingTV.rawValue:
-                print("prefetching tv")
                 ImageService().fetchImage(.poster(trendingTV[indexPath.row].posterPath ?? "")) {(_) in}
             case Section.upcomingMovies.rawValue:
-                print("prefetching upcming")
                 ImageService().fetchImage(.poster(upcomingMovies[indexPath.row].posterPath ?? "")) {(_) in}
             default:
                 break
@@ -231,9 +230,8 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         case Section.trendingMovies.rawValue:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingMovieCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            print(indexPath)
-            if indexPath.row > trendingMovies.count - 10 && !isFetchingMore {
-                print("fetch more trend movie")
+            if indexPath.row > trendingMovies.count - 6 && !isFetchingMore && trendingMoviePage < totalPages {
+                self.isFetchingMore = true
                 self.fetchMore(category: Category.trending.rawValue, mediaType: MediaType.movie.rawValue, page: trendingMoviePage + 1)
             }
             cell.setup(media: trendingMovies[indexPath.row], indexPath: indexPath)
@@ -242,8 +240,8 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         case Section.trendingTV.rawValue:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trendingTVCell", for: indexPath) as? MediaCollectionViewCell
             else {return UICollectionViewCell()}
-            if indexPath.row > trendingTV.count - 10 && !isFetchingMore {
-                print("fetch more trend tv")
+            if indexPath.row > trendingTV.count - 6 && !isFetchingMore && trendingTVPage < totalPages {
+                self.isFetchingMore = true
                 self.fetchMore(category: Category.trending.rawValue, mediaType: MediaType.tv.rawValue, page: trendingTVPage + 1)
             }
             cell.setup(media: trendingTV[indexPath.row], indexPath: indexPath)

@@ -26,9 +26,9 @@ extension NetworkServicing {
                 return completion(.failure(.badRequest(error)))
             }
             
-            if let response = response as? HTTPURLResponse {
-                print("RESPONSE CODE: \(response.statusCode)")
-            }
+//            if let response = response as? HTTPURLResponse {
+//                print("RESPONSE CODE: \(response.statusCode)")
+//            }
             
             guard let data = data else {
                 completion(.failure(.couldNotUnwrap))

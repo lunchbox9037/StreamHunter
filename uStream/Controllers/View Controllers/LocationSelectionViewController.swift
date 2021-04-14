@@ -61,6 +61,7 @@ class LocationSelectionViewController: UIViewController {
             picker.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
             picker.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 24),
             picker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -24),
+            picker.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
         ])
     }
     
