@@ -23,10 +23,20 @@ class AppLinks {
     static let amazonPrimeVideoID = "id545519333"
     static let crunchyRollURL = "crunchyroll://www.crunchyroll.com" // working ✅
     static let crunchyRollID = "id329913454"
-    static let fuboURL = "fuboTV://www.fubo.tv/"
+    static let fuboURL = "fuboTV://www.fubo.tv/" // working ✅
     static let fuboID = "id905401434"
-
-    static let supportedApps: [String] = ["Netflix", "Hulu", "Disney Plus", "Apple TV Plus", "HBO Max", "Amazon Prime Video", "Crunchyroll", "fuboTV"]
+    static let hooplaURL = "hoopladigital://www.hoopladigital.com" // working ✅
+    static let hooplaID = "id580643740"
+    static let funimationURL = "https://www.funimation.com" // working ✅
+    static let funimationID = "id1075603018"
+    static let vrvURL = "vrv://www.vrv.co" // working ✅
+    static let vrvID = "id1165206979"
+    static let direcTVURL = "directv://www.directv.com" // working ✅
+    static let direcTVID = "id307386350"
+    static let slingTVURL = "slingtv://www.sling.com" // working ✅
+    static let slingTVID = "id945077360"
+    
+    static let supportedApps: [String] = ["Netflix", "Hulu", "Disney Plus", "Apple TV Plus", "HBO Max", "Amazon Prime Video", "Crunchyroll", "fuboTV", "Hoopla", "Funimation Now", "VRV", "HiDive", "DIRECTV", "Sling TV"]
     
     static func getURLFor(providerName: String) -> String {
         switch providerName {
@@ -46,6 +56,16 @@ class AppLinks {
             return crunchyRollURL
         case "fuboTV":
             return fuboURL
+        case "Hoopla":
+            return hooplaURL
+        case "Funimation Now":
+            return funimationURL
+        case "VRV":
+            return vrvURL
+        case "DIRECTV":
+            return direcTVURL
+        case "Sling TV":
+            return slingTVURL
         default:
             return "error"
         }
@@ -69,6 +89,16 @@ class AppLinks {
             return crunchyRollID
         case "fuboTV":
             return fuboID
+        case "Hoopla":
+            return hooplaID
+        case "Funimation Now":
+            return funimationID
+        case "VRV":
+            return vrvID
+        case "DIRECTV":
+            return direcTVID
+        case "Sling TV":
+            return slingTVID
         default:
             return "error"
         }
