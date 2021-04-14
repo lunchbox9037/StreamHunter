@@ -12,9 +12,8 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         if UserDefaults.standard.value(forKey: "countryCode") == nil {
-            UserDefaults.standard.setValue("US", forKey: "countryCode")
+            UserDefaults.standard.setValue(Locale.current.regionCode, forKey: "countryCode")
         }
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (authorized, error) in

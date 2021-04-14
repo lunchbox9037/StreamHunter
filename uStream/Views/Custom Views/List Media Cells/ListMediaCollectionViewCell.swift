@@ -72,12 +72,13 @@ class ListMediaCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(media: ListMedia) {
-        MediaController.fetchPosterForList(media: media) { [weak self] (result) in
+        ImageService().fetchImage(.poster(media.posterPath ?? "")) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
                     self?.posterImageView.image = image
                 case .failure(let error):
+                    self?.posterImageView.image = UIImage(named: "imageNotAvailable")
                     print(error.localizedDescription)
                 }
             }

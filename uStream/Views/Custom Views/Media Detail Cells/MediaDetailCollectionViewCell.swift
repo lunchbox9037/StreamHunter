@@ -120,9 +120,8 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             self.backdropImageView.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 0),
             self.backdropImageView.leadingAnchor.constraint(equalTo: self.container.leadingAnchor, constant: 0),
             self.backdropImageView.trailingAnchor.constraint(equalTo: self.container.trailingAnchor, constant: 0),
-            self.backdropImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 9.0/16.0),
+            self.backdropImageView.heightAnchor.constraint(equalTo: self.backdropImageView.widthAnchor, multiplier: 9.0/16.0),
             self.backdropImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 281)
-            //            self.backdropImageView.heightAnchor.constraint(equalTo: self.backdropImageView.widthAnchor, multiplier: 0.25, constant: 125)
         ])
         
         NSLayoutConstraint.activate([
@@ -161,11 +160,10 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
             enableButton()
         }
         
-        MediaController.fetchBackdropImageFor(media: media) { [weak self] (result) in
+        ImageService().fetchImage(.backdrop(media.backdropPath ?? "")) { [weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
-                    print(image)
                     self?.backdropImageView.image = image
                 case .failure(let error):
                     self?.backdropImageView.image = UIImage(systemName: "imageNotAvailabe")
@@ -173,6 +171,7 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
+
         self.overviewLabel.text = media.overview
         if media.releaseDate != "" {
             let date = media.convertToDate(media)
@@ -198,9 +197,9 @@ public class MediaDetailCollectionViewCell: UICollectionViewCell {
     
     func enableButton() {
         addToListButton.setTitle(" Add to your List?", for: .normal)
-        addToListButton.backgroundColor = .systemBlue
         addToListButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addToListButton.tintColor = .white
+        addToListButton.backgroundColor = .systemBlue
         addToListButton.isEnabled = true
     }
     

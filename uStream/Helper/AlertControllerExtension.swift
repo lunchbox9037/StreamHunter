@@ -15,15 +15,8 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
-    func presentLocationUpdatedAlert(cc: String) {
-        let alertController = UIAlertController(title: "Location Updated to \"\(cc)\"!", message: "Your streaming services will now be based on your current country.", preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: "Ok", style: .default)
-        alertController.addAction(dismissAction)
-        present(alertController, animated: true)
-    }
-    
     func presentAppInfoAlert() {
-        let alertController = UIAlertController(title: "Version \(UIApplication.appVersion ?? "1.0")", message: "All streaming service info is provided by JustWatch. The all other info and images provided by The Movie DB.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Version \(UIApplication.appVersion ?? "1.0")", message: "All streaming service info is provided by JustWatch. All other info and images provided by The Movie DB.", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
@@ -64,6 +57,51 @@ extension UIViewController {
         }
         alertController.addAction(noAction)
         alertController.addAction(yesAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentLocationSelectedAlert(cc: String) {
+        let alertController = UIAlertController(title: "Country Code updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your selected country.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default) { (_) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentLocationUpdatedAlert(cc: String) {
+        let alertController = UIAlertController(title: "Country Code updated to \"\(cc)\"!", message: "Your streaming providers will now be based on your current country.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true)
+    }
+    
+    func presentLocationUpateFailedAlert() {
+        let alertController = UIAlertController(title: "Failed to update location!", message: "Make sure location services are enabled in settings.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "OK", style: .default)
+        let settingAction = UIAlertAction(title: "Settings", style: .default) { (_) in
+            UIApplication.shared.open(URL(string: "App-prefs:LOCATION_SERVICES")!)
+        }
+        alertController.addAction(settingAction)
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true, completion: nil)
+    }
+   
+    func presentLocationSelectionAlert(sender: SettingsTableViewController) {
+        let alertController = UIAlertController(title: "Set new location?", message: "This will change your streaming provider results.", preferredStyle: .alert)
+        let currentLocAction = UIAlertAction(title: "Use Current Location", style: .default) { (_) in
+            sender.getLocation()
+        }
+        
+        let chooseLocAction = UIAlertAction(title: "Choose Location", style: .default) { (_) in
+            sender.presentLocationSelectVC()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alertController.addAction(currentLocAction)
+        alertController.addAction(chooseLocAction)
+        alertController.addAction(cancelAction)
         present(alertController, animated: true)
     }
 }

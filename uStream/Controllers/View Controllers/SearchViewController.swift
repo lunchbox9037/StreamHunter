@@ -32,7 +32,7 @@ class SearchViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isPrefetchingEnabled = true
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "resultsCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -50,7 +50,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "resultsCell", for: indexPath) as? SearchResultsCollectionViewCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "resultsCell", for: indexPath) as? MediaCollectionViewCell else {return UICollectionViewCell()}
         cell.setup(media: searchResults[indexPath.row], indexPath: indexPath)
         return cell
     }
@@ -64,11 +64,14 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        SearchResultsController.fetchSearchResultsFor(searchTerm: searchText) { [weak self] (result) in
+        MediaService().fetch(.search(searchText)) { [weak self] (result: Result<MediaResults, NetError>) in
             switch result {
-            case .success(let results):
+            case .success(let search):
                 DispatchQueue.main.async {
-                    self?.searchResults = results
+                    let filteredResults = search.results.filter({ (result) -> Bool in
+                        return result.posterPath != nil && result.backdropPath != nil
+                    })
+                    self?.searchResults = filteredResults
                     self?.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -76,25 +79,8 @@ extension SearchViewController: UISearchBarDelegate {
             }
         }
     }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.view.endEditing(true)
-        guard let searchTerm = searchBar.text?.capitalized else {return}
-        SearchResultsController.fetchSearchResultsFor(searchTerm: searchTerm) { [weak self] (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let results):
-                    self?.searchResults = results
-                    self?.searchbar.text = ""
-                    self?.collectionView.reloadData()
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
-    }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchbar.text = ""
         self.dismiss(animated: true, completion: nil)
     }
-}
+}//end extension
