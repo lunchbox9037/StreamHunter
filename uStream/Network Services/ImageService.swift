@@ -47,7 +47,6 @@ struct ImageService: NetworkServicing {
         }
         
         if let poster = ImageCache.shared.object(forKey: NSURL(string: imageURL.absoluteString) ?? NSURL()) {
-            print("used cache")
             completion(.success(poster))
         } else {
             perform(urlRequest: URLRequest(url: imageURL)) { (result) in

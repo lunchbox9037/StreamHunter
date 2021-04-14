@@ -34,7 +34,6 @@ class NotificationScheduler {
     
     func cancelNotification(media: ListMedia) {
         let id = String(media.id)
-        print(id)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
     }
 }

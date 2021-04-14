@@ -15,6 +15,9 @@ import Foundation
 
 //example URL https://api.themoviedb.org/3/tv/1396/watch/providers?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74
 
+//discover drama https://api.themoviedb.org/3/discover/movie?api_key=48bcdd5f1ad8e7b88756b97c0c6c3c74&with_genres=18&sort_by=vote_average.desc&vote_count.gte=100
+
+
 enum MediaEndPoint {
     static let baseURL = "https://api.themoviedb.org/3"
     static let apiKey = "48bcdd5f1ad8e7b88756b97c0c6c3c74"
@@ -88,6 +91,34 @@ struct MediaService: NetworkServicing {
                     return
                 }
                 completion(.success(decodedObjects))
+            case .failure(let error):
+                completion(.failure(.badRequest(error)))
+            }
+        }
+    }
+    
+    func fetchProviders(_ endpoint: MediaEndPoint, completion: @escaping (Result<Option, NetError>) -> Void) {
+        guard let url = endpoint.url else {
+            completion(.failure(.badURL))
+            return
+        }
+        
+        print(url.absoluteString)
+        perform(urlRequest: URLRequest(url: url)) { result in
+            switch result {
+            case .success(let data):
+                guard let providers = data.decode(type: WhereToWatch.self) else {
+                    completion(.failure(.couldNotUnwrap))
+                    return
+                }
+                
+                guard let results = getProvidersByCountryCode(providers: providers) else {
+                    completion(.failure(.couldNotUnwrap))
+                    return
+                }
+                
+                completion(.success(results))
+
             case .failure(let error):
                 completion(.failure(.badRequest(error)))
             }

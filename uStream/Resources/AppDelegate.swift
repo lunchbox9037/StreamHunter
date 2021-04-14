@@ -12,7 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+        print((Locale.isoRegionCodes.first ?? "uh oh"))
         if UserDefaults.standard.value(forKey: "countryCode") == nil {
             UserDefaults.standard.setValue("US", forKey: "countryCode")
         }

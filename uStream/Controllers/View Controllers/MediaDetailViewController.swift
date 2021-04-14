@@ -115,7 +115,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
     func fetchWhereToWatch() {
         guard let media = selectedMedia else {return}
         let mediaType = media.getMediaTypeFor(media)
-        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
+        MediaService().fetchProviders(.whereToWatch(mediaType, media.id ?? 603)) { [weak self] (result) in
             switch result {
             case .success(let location):
                 DispatchQueue.main.async {
@@ -127,6 +127,18 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
                 print(error.localizedDescription)
             }
         }
+//        WhereToWatchController.fetchWhereToWatchBy(id: media.id ?? 603, mediaType: mediaType) { [weak self] (result) in
+//            switch result {
+//            case .success(let location):
+//                DispatchQueue.main.async {
+//                    self?.providers = location.streaming ?? []
+//                    self?.providerLink = location.deepLink
+//                    self?.collectionView.reloadSections([1])
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }//end func
     
     func fetchSimilar() {
@@ -152,6 +164,7 @@ class MediaDetailViewController: UIViewController, SFSafariViewControllerDelegat
         guard let providerName = provider.providerName else {return}
         print(providerName)
         let url = AppLinks.getURLFor(providerName: providerName)
+        print(url)
         if let appURL = URL(string: url) {
             UIApplication.shared.open(appURL) { success in
                 if success {
@@ -249,11 +262,9 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
         switch indexPath.section {
         case Section.whereToWatch.rawValue:
             launchApp(provider: providers[indexPath.row])
-
         case Section.similar.rawValue:
             selectedMedia = similar[indexPath.row]
             setupViews()
-
         default:
             break
         }
@@ -262,8 +273,8 @@ extension MediaDetailViewController: UICollectionViewDelegate, UICollectionViewD
 
 extension MediaDetailViewController: AddToListButtonDelegate {
     func addToList() {
-        Haptics.playSuccessNotification()
         guard let selectedMedia = self.selectedMedia else {return}
+        Haptics.playSuccessNotification()
         ListMediaController.shared.addToList(media: selectedMedia)
         MediaDetailViewController.delegate?.refresh()
     }

@@ -23,8 +23,10 @@ class AppLinks {
     static let amazonPrimeVideoID = "id545519333"
     static let crunchyRollURL = "crunchyroll://www.crunchyroll.com" // working ✅
     static let crunchyRollID = "id329913454"
+    static let fuboURL = "fuboTV://www.fubo.tv/"
+    static let fuboID = "id905401434"
 
-    static let supportedApps: [String] = ["Netflix", "Hulu", "Disney Plus", "Apple TV Plus", "HBO Max", "Amazon Prime Video", "Crunchyroll"]
+    static let supportedApps: [String] = ["Netflix", "Hulu", "Disney Plus", "Apple TV Plus", "HBO Max", "Amazon Prime Video", "Crunchyroll", "fuboTV"]
     
     static func getURLFor(providerName: String) -> String {
         switch providerName {
@@ -42,6 +44,8 @@ class AppLinks {
             return amazonPrimeVideoURL
         case "Crunchyroll":
             return crunchyRollURL
+        case "fuboTV":
+            return fuboURL
         default:
             return "error"
         }
@@ -63,6 +67,8 @@ class AppLinks {
             return amazonPrimeVideoID
         case "Crunchyroll":
             return crunchyRollID
+        case "fuboTV":
+            return fuboID
         default:
             return "error"
         }
