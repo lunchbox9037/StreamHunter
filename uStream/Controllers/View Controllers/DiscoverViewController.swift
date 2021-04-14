@@ -84,12 +84,9 @@ class DiscoverViewController: UIViewController {
         self.trendingMoviePage = 1
         self.trendingTVPage = 1
         dispatchGroup.notify(queue: .main) {
-            Section.allCases.forEach { (section) in
-                self.collectionView.reloadSections([section.rawValue])
-            }
+            self.collectionView.reloadSections([0,1])
             self.refresher.endRefreshing()
         }
-        
     }//end func
     
     func fetchTrendingMedia() {
