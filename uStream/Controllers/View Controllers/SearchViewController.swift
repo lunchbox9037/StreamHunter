@@ -26,7 +26,7 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func setupCollectionView() {
         collectionView.collectionViewLayout = makeLayout()
-        collectionView.backgroundColor = UIColor.systemFill
+        collectionView.backgroundColor = .systemFill
 
         collectionView.delegate = self
         collectionView.dataSource = self

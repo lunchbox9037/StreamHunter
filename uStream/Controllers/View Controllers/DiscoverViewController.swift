@@ -131,7 +131,7 @@ class DiscoverViewController: UIViewController {
             MediaService().fetch(.trending(mediaType, page: page)) { [weak self] (result: Result<MediaResults, NetError>) in
                 switch result {
                 case .success(let more):
-                    if mediaType == MediaType.movie.rawValue{
+                    if mediaType == MediaType.movie.rawValue {
                         self?.trendingMovies.append(contentsOf: more.results)
                         self?.trendingMoviePage = more.page
                     }
@@ -141,9 +141,6 @@ class DiscoverViewController: UIViewController {
                     }
                     DispatchQueue.main.async {
                         self?.collectionView.reloadData()
-
-                        UIView.performWithoutAnimation {
-                        }
                     }
                     self?.isFetchingMore = false
                 case .failure(let error):
